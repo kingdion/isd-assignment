@@ -1,7 +1,7 @@
 import os
 import datetime
 from flask import render_template, flash, redirect, url_for
-from app.models import Movie, Genre, MovieGenre, Account, MovieOrder, Orders
+from app.models import Movie, Genre, MovieGenre, Account, MovieOrderLine, Orders
 from app import app, db
 
 from flask_script import Manager
@@ -33,6 +33,6 @@ migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':
-    db.create_all()
+    #db.create_all()
     manager.run()
 

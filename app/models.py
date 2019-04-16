@@ -10,9 +10,12 @@ class Movie(db.Model):
     title = db.Column(db.String(50), nullable=False)
     releaseDate = db.Column(db.Date(), nullable=False)
     thumbnailSrc = db.Column(db.String(150), nullable=False)
+    runtime = db.Column(db.Integer, nullable=False)
+    street_address = db.Column(db.String(100), nullable=False)
+    postcode = db.Column(db.Integer, nullable=False)
+    is_staff = db.Column(db.Boolean, nullable=False)
 
     genres = db.relationship('Genre', secondary = 'moviegenre', back_populates="movies")
-    orders = db.relationship('Orders', secondary = 'movieorder', back_populates="movies")
 
     def __init__(self, title, releaseDate, thumbnailSrc):
         self.title = title
@@ -25,7 +28,7 @@ class Movie(db.Model):
 class Genre(db.Model):
     __tablename__ = 'genre'
     
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     name = db.Column(db.String(35), nullable=False)
 
     movies = db.relationship('Movie', secondary = 'moviegenre', back_populates="genres")
@@ -39,7 +42,7 @@ class Genre(db.Model):
 class Account(db.Model):
     __tablename__ = 'account'
     
-    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
     first_name = db.Column(db.String(25), nullable=False)
     last_name = db.Column(db.String(25), nullable=False)
     email = db.Column(db.String(256), nullable=False)
@@ -57,11 +60,12 @@ class Account(db.Model):
 class Orders(db.Model):
     __tablename__ = 'orders'
     
-    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
-    accountId = db.Column(UUID(as_uuid=True), db.ForeignKey('account.id'))
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
+    accountId = db.Column(UUID(as_uuid=True), db.ForeignKey('account.id'), nullable=False)
     trackingStatus = db.Column(db.String(50), nullable=False)
+    methodId = db.Column(UUID(as_uuid=True), default=uuid4)
    
-    movies = db.relationship('Movie', secondary = 'movieorder', back_populates="orders")
+    movies = db.relationship('Movie', secondary = 'movieorderline', back_populates="orders")
 
     def __init__(self, accountId, trackingStatus):
         self.accountId = accountId
@@ -77,13 +81,36 @@ class MovieGenre(db.Model):
     genreId = db.Column(db.Integer, db.ForeignKey('genre.id'), primary_key=True)
 
     def __repr__(self):
-        return f'{self.movie} <-------> {self.genre}'
+        return f'Movie LinkedTo Genre {self.movieId} <-------> {self.genreId}'
 
-class MovieOrder(db.Model):
-    __tablename__ = 'movieorder'
+class MovieOrderLine(db.Model):
+    __tablename__ = 'movieorderline'
 
-    movieId = db.Column(UUID(as_uuid=True), db.ForeignKey('movie.id'), primary_key=True, default=uuid4)
+    copyId = db.Column(UUID(as_uuid=True), db.ForeignKey('moviecopy.id'), primary_key=True, default=uuid4)
     orderId = db.Column(UUID(as_uuid=True), db.ForeignKey('orders.id'), primary_key=True, default=uuid4)
 
     def __repr__(self):
-        return f'{self.order} <-------> {self.movie}'
+        return f'Movie LinkedTo OrderLine: {self.copyId} <-------> {self.orderId}'
+
+
+class MovieCopy(db.Model):
+    __tablename__ = 'moviecopy'
+
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
+    copy_information = db.Column(db.String(256), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    sold = db.Column(db.Boolean, nullable=False)
+
+    orders = db.relationship('Orders', secondary = 'movieorderline', back_populates="movies")
+
+    def __repr__(self):
+        return f'MovieCopy: {self.copy_information}, {self.price}, {self.sold}'
+
+class PaymentMethod(db.Model):
+    __tablename__ = 'paymentmethod'
+
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
+    method_name = db.Column(db.String(20), nullable=False)
+
+    def __repr__(self):
+        return f'PaymentMethod: {self.method_name}'
