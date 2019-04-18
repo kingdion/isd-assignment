@@ -11,16 +11,14 @@ class Movie(db.Model):
     releaseDate = db.Column(db.Date(), nullable=False)
     thumbnailSrc = db.Column(db.String(150), nullable=False)
     runtime = db.Column(db.Integer, nullable=False)
-    street_address = db.Column(db.String(100), nullable=False)
-    postcode = db.Column(db.Integer, nullable=False)
-    is_staff = db.Column(db.Boolean, nullable=False)
 
     genres = db.relationship('Genre', secondary = 'moviegenre', back_populates="movies")
 
-    def __init__(self, title, releaseDate, thumbnailSrc):
+    def __init__(self, title, releaseDate, thumbnailSrc, runtime):
         self.title = title
         self.releaseDate = releaseDate
         self.thumbnailSrc = thumbnailSrc
+        self.runtime = runtime
 
     def __repr__(self):
         return f'Movie: {self.title}, {self.releaseDate}, {self.thumbnailSrc}'
@@ -47,12 +45,18 @@ class Account(db.Model):
     last_name = db.Column(db.String(25), nullable=False)
     email = db.Column(db.String(256), nullable=False)
     password = db.Column(db.String(256), nullable=False)
+    street_address = db.Column(db.String(100), nullable=False)
+    postcode = db.Column(db.Integer, nullable=False)
+    is_staff = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, first_name, last_name, email, password):
+    def __init__(self, first_name, last_name, email, password, street_address, postcode, is_staff):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email 
         self.password = password
+        self.street_address = street_address
+        self.postcode = postcode
+        self.is_staff = is_staff
 
     def __repr__(self):
         return f'Account: {self.first_name} {self.last_name}'
