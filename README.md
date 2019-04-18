@@ -40,6 +40,8 @@ Navigate to the root directory of the project through the command-line:
 
 ## Setup Database
 
+> You probably don't need to set this up just to view the interfaces for ISD-ASSIGNMENT #1 since no objects are being created.
+
 Our project is built using *postgres*. You can find a download of the postgres binaries [here](https://www.postgresql.org/download/).
 There are many ways to install postgres and it depends on your operating system. It is recommended you find an installation that will work for your system. However, if you are running MacOS, we suggest this [graphical application that does some heavy lifting](https://postgresapp.com/).
 
@@ -53,6 +55,12 @@ In the command line, run the following commands:
 
 You can now exit the postgres interpreter using `\q`.
 
+Finally, we have to either upgrade our database if it has any pending changes
+or upgrade the schema if the database is empty. Luckily this is the same 
+command, as the migrations/ folder contains all changes to the database and 
+applies them when upgrade is called.
+
+`python run.py db upgrade`
 
 ## Running the Project
 Once the isd database is created and the requirements are installed - 
@@ -60,7 +68,7 @@ From the root directory of the project, run:
 
 `$ python run.py runserver`
 
-If all is done correctly, a local webserver should be available to the browser at 127.0.0.1
+If all is done correctly, a local webserver should be available to the browser at 127.0.0.1:5000
    
 ---
 
