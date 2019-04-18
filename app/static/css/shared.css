@@ -1,0 +1,40 @@
+.bg-omss-main {
+    background-color: rgba(45,45,45,1);
+}
+
+.omss-important-link {
+    color: rgb(224, 53, 96);
+    font-size: 1.25em !important;
+}
+
+.omss-important-link-nosize {
+    color: rgb(224, 53, 96);
+}
+
+.nav-link {
+    color: rgba(206, 205, 205, 0.90) !important;
+    transition: 1.25s ease;
+}
+
+.navbar-brand {
+    color: rgba(245, 243, 243, 0.9) !important;
+    transition: 1.25s ease;
+}
+
+.nav-link:hover, .navbar-brand:hover {
+    color:white !important;
+}
+
+.greyed {
+    color: rgb(122, 122, 122);
+}
+
+.footer {
+    padding: 20px;
+    position: absolute;
+    width: 100%;
+}
+
+.white {
+    color: white !important;
+}

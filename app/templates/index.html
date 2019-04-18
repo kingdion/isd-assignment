@@ -4,13 +4,60 @@
 <html lang="en">
     <head>
         <title>Index - Online Movie Store Application</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}"/>
         {{ util.head() }}
     </head>
     <body>
         {{ util.navbar() }}
-        <div class="container">
+            <div id="front-page-head" class="container text-center">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 col-xs-12">
+                        <p class="greyed"><b>OMSS x UTS</b></p>
+                        <h1 class="display-4 font-weight-normal">The new big player in the film industry.</h1>
+                        <br/>
+                        <p class="lead font-weight-normal">Bespoke movies at your fingertips, ready to be delivered.</p>
+                   
+                        <br/>
+                        <a class="omss-important-link" href="/browse">Browse our collection ></a>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
 
-        </div>
+            <div id="front-page-secondary" class="container-fluid">
+                <div class="row boxes">
+                    <div class="col-md-6 col-xs-12">
+                        <h3>An enthusiast collection.</h3>
+                        <p class="lead">
+                            Browse our award winning collection full of rare titles.
+                        </p>
+
+                        <br/>
+                        <p class="greyed">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
+                            ex ea commodo consequat.
+                        </p>
+                    </div>
+                    <div class="col-md-6 col-xs-12">
+                        <h3>Secure payment and fast delivery.</h3>
+                        <p class="lead">
+                            Your go to for fast movies, straight to your door.
+                        </p>
+
+                        <br/>
+                        <p class="greyed">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
+                            ex ea commodo consequat.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {{ util.footer() }}
     </body>
 
     {{ util.scripts() }}

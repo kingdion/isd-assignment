@@ -21,7 +21,7 @@ def do_login():
 
 @app.route("/register")
 def register():
-    return render_template("register.html")
+    return "Not implemented yet"
 
 @app.route("/dashboard")
 def dashboard():

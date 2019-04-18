@@ -1,0 +1,21 @@
+#front-page-head {
+    margin-top: 70px;
+}
+
+#front-page-secondary {
+    margin-top: 100px;
+}
+
+.boxes > div
+{
+    text-align: center;
+    padding: 70px;
+}
+
+.boxes div:first-child {
+    background-color: rgb(230, 228, 228);
+}
+
+.boxes div:nth-child(2) {
+    background-color: rgb(209, 207, 207)
+}
