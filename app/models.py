@@ -101,6 +101,7 @@ class MovieCopy(db.Model):
     __tablename__ = 'moviecopy'
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
+    movieId = db.Column(UUID(as_uuid=True), db.ForeignKey('movie.id'), primary_key=True, default=uuid4)
     copy_information = db.Column(db.String(256), nullable=False)
     price = db.Column(db.Float, nullable=False)
     sold = db.Column(db.Boolean, nullable=False)
