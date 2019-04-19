@@ -1,6 +1,5 @@
 from app import db
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.associationproxy import association_proxy
 from uuid import uuid4
 
 class Movie(db.Model):
@@ -11,6 +10,7 @@ class Movie(db.Model):
     releaseDate = db.Column(db.Date(), nullable=False)
     thumbnailSrc = db.Column(db.String(150), nullable=False)
     runtime = db.Column(db.Integer, nullable=False)
+    maturity_rating = db.Column(db.Integer, db.ForeignKey('maturityrating.id'), nullable=False)
 
     genres = db.relationship('Genre', secondary = 'moviegenre', back_populates="movies")
 
@@ -36,6 +36,18 @@ class Genre(db.Model):
 
     def __repr__(self):
         return f'Genre: {self.name}'
+
+class MaturityRating(db.Model):
+    __tablename__ = 'maturityrating'
+    
+    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    maturity_rating = db.Column(db.String(3), nullable=False)
+
+    def __init__(self, maturity_rating):
+        self.maturity_rating = maturity_rating
+
+    def __repr__(self):
+        return f'MaturityRating: {self.maturity_rating}'
 
 class Account(db.Model):
     __tablename__ = 'account'
@@ -95,7 +107,6 @@ class MovieOrderLine(db.Model):
 
     def __repr__(self):
         return f'Movie LinkedTo OrderLine: {self.copyId} <-------> {self.orderId}'
-
 
 class MovieCopy(db.Model):
     __tablename__ = 'moviecopy'
