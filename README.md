@@ -43,7 +43,7 @@ Navigate to the root directory of the project through the command-line:
 > You probably don't need to set this up just to view the interfaces for ISD-ASSIGNMENT #1 since no objects are being created.
 
 Our project is built using *postgres*. You can find a download of the postgres binaries [here](https://www.postgresql.org/download/).
-There are many ways to install postgres and it depends on your operating system. It is recommended you find an installation that will work for your system. If you are running MacOS, we suggest this [graphical application that does some heavy lifting](https://postgresapp.com/). If you are running Windows, we suggest this [graphical application for windows](https://www.postgresql.org/download/windows/)
+There are many ways to install postgres and it depends on your operating system. It is recommended you find an installation that will work for your system. If you are running MacOS, we suggest this [graphical application that does some heavy lifting](https://postgresapp.com/). If you are running Windows, we suggest this [graphical application for windows](https://www.postgresql.org/download/windows/).
 
 When postgres is installed on your machine, you will need to create a database called "isd" before running the project.
 You can do this through most of the graphical postgres interfaces, or alternatively through the commandline.
