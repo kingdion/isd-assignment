@@ -25,6 +25,7 @@ def register():
 
 @app.route("/do-register")
 def do_register():
+    #account = Account()
     return redirect(url_for('dashboard'))
 
 @app.route("/dashboard")

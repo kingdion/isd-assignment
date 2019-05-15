@@ -46,6 +46,42 @@ function validate_form() {
         clear_warning(repeat_pword);
     }
 
+    var fname = $('[name=first-name]');
+    if (fname.val().length == 0) {
+        set_warning(fname, 'Required field.');
+        no_warnings = false;
+    }
+    else {
+        clear_warning(fname);
+    }
+
+    var lname = $('[name=last-name]');
+    if (lname.val().length == 0) {
+        set_warning(lname, 'Required field.');
+        no_warnings = false;
+    }
+    else {
+        clear_warning(lname);
+    }
+
+    var street = $('[name=street-address]');
+    if (street.val().length == 0) {
+        set_warning(street, 'Required field.');
+        no_warnings = false;
+    }
+    else {
+        clear_warning(street);
+    }
+
+    var postcode = $('[name=postcode]');
+    if (postcode.val().length == 0) {
+        set_warning(postcode, 'Required field.');
+        no_warnings = false;
+    }
+    else {
+        clear_warning(postcode);
+    }
+
     return no_warnings;
 }
 
