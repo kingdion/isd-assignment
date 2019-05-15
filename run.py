@@ -1,6 +1,6 @@
 import os
 import datetime
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from app.models import Movie, Genre, MovieGenre, Account, MovieOrderLine, Orders
 from app import app, db
 
@@ -23,9 +23,21 @@ def do_login():
 def register():
     return render_template("register.html")
 
-@app.route("/do-register")
+@app.route("/do-register", methods=["POST"])
 def do_register():
-    #account = Account()
+    account = Account(\
+        first_name=request.form["first-name"],\
+        last_name=request.form["last-name"],\
+        email=request.form["email"],\
+        password=request.form["password"],\
+        street_address=request.form["street-address"],\
+        postcode=request.form["postcode"],\
+        is_staff=False\
+    )
+
+    db.session.add(account)
+    db.session.commit()
+
     return redirect(url_for('dashboard'))
 
 @app.route("/dashboard")

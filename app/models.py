@@ -4,7 +4,7 @@ from uuid import uuid4
 
 class Movie(db.Model):
     __tablename__ = 'movie'
-    
+
     id = db.Column(UUID(as_uuid=True), unique=True, nullable=False, primary_key=True, default=uuid4)
     title = db.Column(db.String(50), nullable=False)
     releaseDate = db.Column(db.Date(), nullable=False)
@@ -25,7 +25,7 @@ class Movie(db.Model):
 
 class Genre(db.Model):
     __tablename__ = 'genre'
-    
+
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     name = db.Column(db.String(35), nullable=False)
 
@@ -39,7 +39,7 @@ class Genre(db.Model):
 
 class MaturityRating(db.Model):
     __tablename__ = 'maturityrating'
-    
+
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     maturity_rating = db.Column(db.String(3), nullable=False)
 
@@ -51,7 +51,7 @@ class MaturityRating(db.Model):
 
 class Account(db.Model):
     __tablename__ = 'account'
-    
+
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
     first_name = db.Column(db.String(25), nullable=False)
     last_name = db.Column(db.String(25), nullable=False)
@@ -64,7 +64,7 @@ class Account(db.Model):
     def __init__(self, first_name, last_name, email, password, street_address, postcode, is_staff):
         self.first_name = first_name
         self.last_name = last_name
-        self.email = email 
+        self.email = email
         self.password = password
         self.street_address = street_address
         self.postcode = postcode
@@ -75,13 +75,13 @@ class Account(db.Model):
 
 class Orders(db.Model):
     __tablename__ = 'orders'
-    
+
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
     accountId = db.Column(UUID(as_uuid=True), db.ForeignKey('account.id'), nullable=False)
     trackingStatus = db.Column(db.String(50), nullable=False)
     methodId = db.Column(UUID(as_uuid=True), default=uuid4)
-   
-    movies = db.relationship('Movie', secondary = 'movieorderline', back_populates="orders")
+
+    movies = db.relationship('MovieCopy', secondary = 'movieorderline', back_populates="orders")
 
     def __init__(self, accountId, trackingStatus):
         self.accountId = accountId
@@ -92,7 +92,7 @@ class Orders(db.Model):
 
 class MovieGenre(db.Model):
     __tablename__ = 'moviegenre'
-    
+
     movieId = db.Column(UUID(as_uuid=True), db.ForeignKey('movie.id'), primary_key=True, default=uuid4)
     genreId = db.Column(db.Integer, db.ForeignKey('genre.id'), primary_key=True)
 
