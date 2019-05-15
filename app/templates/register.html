@@ -1,0 +1,63 @@
+{% import 'utilities.html' as util %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Register - Online Movie Store Application</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/register.css') }}"/>
+        {{ util.head() }}
+    </head>
+    <body>
+        {{ util.navbar() }}
+
+            <div id="page-head" class="container text-center">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 col-xs-12">
+                        <p class="greyed"><b>YOUR ACCOUNT INFORMATION IS SECURE</b></p>
+                        <h1 class="display-4 font-weight-normal">Register</h1>
+                        <p class="lead font-weight-normal">Already have an account?
+                            <a href="/login" class="omss-important-link-nosize">Login.</a>
+                        </p>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <form name="register-form" action="{{ url_for('do_register') }}">
+                            <div class="input-group-lg">
+                                <input type="email" class="form-control input-lg" placeholder="Email" name="email" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="form-check indented">
+                                <input type="checkbox" class="form-check-input" name="email-check">
+                                <label class="form-check-label greyed" for="email_check">Send me emails about new movies and deals I might like.</label>
+                            </div>
+                            <br/>
+
+                            <div class="input-group-lg">
+                                <input type="password" class="form-control input-lg" placeholder="Password*" name="password" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="password" class="form-control input-lg" placeholder="Repeat Password" name="repeat-password" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <label class="indented greyed" for="password">*Must be at least 8 characters long with no spaces, and at least one non-alphanumeric character.</label>
+                            <br/>
+
+                            <button type="submit" class="btn btn-secondary btn-lg">Sign Up</button>
+
+                            <br/><br/>
+                            <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
+                        </form>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+    </body>
+
+    {{ util.scripts() }}
+
+    <script src="static/js/register.js"></script>
+</html>

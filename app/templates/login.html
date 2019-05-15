@@ -16,7 +16,7 @@
                     <div class="col-md-6 col-xs-12">
                         <p class="greyed"><b>YOUR ACCOUNT INFORMATION IS SECURE</b></p>
                         <h1 class="display-4 font-weight-normal">Login</h1>
-                        <p class="lead font-weight-normal">Don't have an account? 
+                        <p class="lead font-weight-normal">Don't have an account?
                             <a href="/register" class="omss-important-link-nosize">Register.</a>
                         </p>
                     </div>
@@ -26,14 +26,14 @@
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
-                        <form action="/do-login">
+                        <form action="{{ url_for('do_login') }}">
                             <div class="input-group-lg">
-                                <input type="email" class="form-control input-lg" aria-describedby="emailHelp" placeholder="Email">
+                                <input type="email" class="form-control input-lg" aria-describedby="emailHelp" placeholder="Email" name="email">
                             </div>
                             <br/>
 
                             <div class="input-group-lg">
-                                <input type="password" class="form-control input-lg" placeholder="Password">
+                                <input type="password" class="form-control input-lg" placeholder="Password" name="password">
                             </div>
 
                             <br/>

@@ -1,0 +1,17 @@
+{% import 'utilities.html' as util %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Index - Online Movie Store Application</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}"/>
+        {{ util.head() }}
+    </head>
+    <body>
+        {{ util.navbar() }}
+
+        {{ util.footer() }}
+    </body>
+
+    {{ util.scripts() }}
+</html>

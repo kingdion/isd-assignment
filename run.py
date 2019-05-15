@@ -21,12 +21,20 @@ def do_login():
 
 @app.route("/register")
 def register():
-    return "Not implemented yet"
+    return render_template("register.html")
+
+@app.route("/do-register")
+def do_register():
+    return redirect(url_for('dashboard'))
 
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html")
-    
+
+@app.route("/browse")
+def browse():
+    return render_template("browse.html")
+
 manager = Manager(app)
 migrate = Migrate(app, db)
 
@@ -34,4 +42,3 @@ manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':
     manager.run()
-
