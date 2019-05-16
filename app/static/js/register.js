@@ -1,7 +1,8 @@
 //console.log('fuck');
 
 $(document).ready(function(){
-    $('[name=register-form]').submit(function(event){
+    var form = $('[name=register-form]');
+    form.submit(function(event) {
         if (!validate_form()) {
             event.preventDefault();
         }
@@ -9,80 +10,121 @@ $(document).ready(function(){
             return;
         }
   });
+
+  $('[name=email]').focusout(validate_email);
+  $('[name=password]').focusout(function () {
+      validate_password();
+      validate_repeat_password();
+  });
+  $('[name=repeat-password]').focusout(function () {
+      validate_repeat_password();
+      validate_password();
+  });
+  $('[name=first-name]').focusout(validate_fname);
+  $('[name=last-name]').focusout(validate_lname);
+  $('[name=street-address]').focusout(validate_street);
+  $('[name=postcode]').focusout(validate_postcode);
 });
 
 function validate_form() {
-    var no_warnings = true;
+    var no_warnings = !(!validate_email()
+                        | !validate_password()
+                        | !validate_repeat_password()
+                        | !validate_fname()
+                        | !validate_lname()
+                        | !validate_street()
+                        | !validate_postcode()
+                       );
+    return no_warnings;
+}
 
+function validate_email() {
     var email = $('[name=email]');
     if (email.val().length == 0) {
         set_warning(email, 'Required field.');
-        no_warnings = false;
+        return false;
     }
     else {
         clear_warning(email);
+        return true;
     }
+}
 
+function validate_password() {
     var pword = $('[name=password]');
-    var pword_validation = validate_password(pword.val());
-    if (!pword_validation.success) {
-        set_warning(pword, pword_validation.warning);
-        no_warnings = false;
+    var pword_check = check_password(pword.val());
+    if (!pword_check.success) {
+        set_warning(pword, pword_check.warning);
+        return false;
     }
     else {
         clear_warning(pword);
+        return true;
     }
+}
 
+function validate_repeat_password() {
     var repeat_pword = $('[name=repeat-password]');
     if (repeat_pword.val().length == 0) {
         set_warning(repeat_pword, 'Required field.');
-        no_warnings = false;
+        return false;
     }
-    else if (repeat_pword.val() != pword.val()) {
+    else if (repeat_pword.val() != $('[name=password]').val()) {
         set_warning(repeat_pword, 'Passwords do not match.');
-        no_warnings = false;
+        return false;
     }
     else {
         clear_warning(repeat_pword);
+        return true;
     }
+}
 
+function validate_fname() {
     var fname = $('[name=first-name]');
     if (fname.val().length == 0) {
         set_warning(fname, 'Required field.');
-        no_warnings = false;
+        return false;
     }
     else {
         clear_warning(fname);
+        return true;
     }
+}
 
+function validate_lname() {
     var lname = $('[name=last-name]');
     if (lname.val().length == 0) {
         set_warning(lname, 'Required field.');
-        no_warnings = false;
+        return false;
     }
     else {
         clear_warning(lname);
+        return true;
     }
+}
 
+function validate_street() {
     var street = $('[name=street-address]');
     if (street.val().length == 0) {
         set_warning(street, 'Required field.');
-        no_warnings = false;
+        return false;
     }
     else {
         clear_warning(street);
+        return true;
     }
+}
 
+function validate_postcode() {
     var postcode = $('[name=postcode]');
     if (postcode.val().length == 0) {
         set_warning(postcode, 'Required field.');
-        no_warnings = false;
+        return false;
     }
     else {
         clear_warning(postcode);
+        return true;
     }
-
-    return no_warnings;
 }
 
 function set_warning(el, warning) {
@@ -102,7 +144,7 @@ function clear_warning(el) {
       .tooltip('hide');
 }
 
-function validate_password(pword) {
+function check_password(pword) {
     var result = { 'success': true, 'warning': '' };
 
     if (pword.length < 8) {
