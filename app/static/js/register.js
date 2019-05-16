@@ -1,11 +1,11 @@
 $(document).ready(function(){
-    var form = $('[name=register-form]');
-    form.submit(function(event) {
-        if (!validate_form()) {
-            event.preventDefault();
-        }
-        else {
-            return;
+    $('#register-form').submit(function(event) {
+        event.preventDefault();
+
+        if (validate_form()) {
+            $('#submit-btn').attr('disabled', true);
+
+            $.post($(this).attr('action'), $(this).serialize(), registration_callback);
         }
   });
 
@@ -24,15 +24,30 @@ $(document).ready(function(){
   $('[name=postcode]').focusout(validate_postcode);
 });
 
+function registration_callback(data) {
+    if (!data.success) {
+        if (data.reason == 'email exists') {
+            set_warning($('[name=email]'), 'A user with this email already exists.');
+            $('#submit-btn').attr('disabled', false);
+        }
+        else {
+            alert("Error, failed to create account: " + data.reason);
+        }
+    }
+
+    console.log(data); //debugging
+}
+
 function validate_form() {
-    return !(!validate_email()
+    return !(
+             !validate_email()
               | !validate_password()
               | !validate_repeat_password()
               | !validate_fname()
               | !validate_lname()
               | !validate_street()
               | !validate_postcode()
-           );
+            );
 }
 
 function validate_email() {

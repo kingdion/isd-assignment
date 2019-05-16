@@ -1,6 +1,6 @@
 import os
 import datetime
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from app.models import Movie, Genre, MovieGenre, Account, MovieOrderLine, Orders
 from app import app, db
 
@@ -19,12 +19,20 @@ def login():
 def do_login():
     return redirect(url_for('dashboard'))
 
+def do_login_manual(username, password):
+    pass
+
 @app.route("/register")
 def register():
     return render_template("register.html")
 
 @app.route("/do-register", methods=["POST"])
 def do_register():
+    email_exists = db.session.query(Account.email).filter_by(email=request.form["email"]).scalar() is not None
+
+    if email_exists:
+        return jsonify({"success": False, "reason": "email exists"})
+
     account = Account(\
         first_name=request.form["first-name"],\
         last_name=request.form["last-name"],\
@@ -35,10 +43,13 @@ def do_register():
         is_staff=False\
     )
 
+    # TODO: Add server-side validation (since clients can just alter the javascript to bypass client-side validation)
+
     db.session.add(account)
     db.session.commit()
 
-    return redirect(url_for('dashboard'))
+    # TODO: Return login() or whatever, Dion will implement later
+    return jsonify({"success": True})
 
 @app.route("/dashboard")
 def dashboard():
