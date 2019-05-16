@@ -1,5 +1,3 @@
-//console.log('fuck');
-
 $(document).ready(function(){
     var form = $('[name=register-form]');
     form.submit(function(event) {
@@ -27,15 +25,14 @@ $(document).ready(function(){
 });
 
 function validate_form() {
-    var no_warnings = !(!validate_email()
-                        | !validate_password()
-                        | !validate_repeat_password()
-                        | !validate_fname()
-                        | !validate_lname()
-                        | !validate_street()
-                        | !validate_postcode()
-                       );
-    return no_warnings;
+    return !(!validate_email()
+              | !validate_password()
+              | !validate_repeat_password()
+              | !validate_fname()
+              | !validate_lname()
+              | !validate_street()
+              | !validate_postcode()
+           );
 }
 
 function validate_email() {
@@ -128,8 +125,6 @@ function validate_postcode() {
 }
 
 function set_warning(el, warning) {
-    console.log(warning);
-
     el.tooltip('hide')
       .css('border', '1px solid red')
       .prop('title', warning)
