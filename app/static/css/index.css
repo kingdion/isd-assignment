@@ -19,3 +19,7 @@
 .boxes div:nth-child(2) {
     background-color: rgb(209, 207, 207)
 }
+
+.col-md-0-5 {
+    width: 4.16%;
+}
