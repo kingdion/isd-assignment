@@ -24,43 +24,128 @@
 
         <div class="spacer5"></div>
 
+        <div id="filters-container" class="container text-center">
+            <div class="row">
+                <div class="col-sm">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-1"></div>
 
-        <div id="page-body" class="container text-center">
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-1"></div>
+                                <label for="genres[]" class="col-sm-1 text-right left-vcentre-label">Genres</label>
+                                <select class="col-sm-2 js-example-basic-multiple" name="genres[]" multiple="multiple">
+                                    <option value="action">Action</option>
+                                    <option value="horror">Horror</option>
+                                    <option value="comedy">Comedy</option>
+                                </select>
 
-                        <label for="genres[]" class="col-sm-1 text-right left-vcentre-label">Genres</label>
-                        <select class="col-sm-2 js-example-basic-multiple" name="genres[]" multiple="multiple">
-                            <option value="action">Action</option>
-                            <option value="horror">Horror</option>
-                            <option value="comedy">Comedy</option>
-                        </select>
+                                <label for="years[]" class="col-sm-1 text-right left-vcentre-label">Years</label>
+                                <select class="col-sm-2 js-example-basic-multiple" name="years[]" multiple="multiple">
+                                    <option value="2019">2019</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2017">2017</option>
+                                </select>
 
-                        <label for="years[]" class="col-sm-1 text-right left-vcentre-label">Years</label>
-                        <select class="col-sm-2 js-example-basic-multiple" name="years[]" multiple="multiple">
-                            <option value="2019">2019</option>
-                            <option value="2018">2018</option>
-                            <option value="2017">2017</option>
-                        </select>
+                                <label for="ratings[]" class="col-sm-1 text-right left-vcentre-label">Ratings</label>
+                                <select class="col-sm-2 js-example-basic-multiple" name="ratings[]" multiple="multiple">
+                                    <option value="5">5✮</option>
+                                    <option value="4">4✮</option>
+                                    <option value="3">3✮</option>
+                                    <option value="2">2✮</option>
+                                    <option value="1">1✮</option>
+                                </select>
 
-                        <label for="ratings[]" class="col-sm-1 text-right left-vcentre-label">Ratings</label>
-                        <select class="col-sm-2 js-example-basic-multiple" name="ratings[]" multiple="multiple">
-                            <option value="5">5✮</option>
-                            <option value="4">4✮</option>
-                            <option value="3">3✮</option>
-                            <option value="2">2✮</option>
-                            <option value="1">1✮</option>
-                        </select>
-
-                        <div class="col-sm-2">
-                            <button id="submit-btn" type="submit" class="btn btn-secondary btn-sm" style="float:left;">Apply Filters</button>
+                                <div class="col-sm-2">
+                                    <button id="submit-btn" type="submit" class="btn btn-secondary btn-sm" style="float:left;">Apply Filters</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
+
+        <div class="spacer5"></div>
+
+        <div id="movies-container" class="container-fluid text-center">
+            <div class="movie-grid">
+
+            <!--not going to use jinja to dynamically generate this html as i want it updateable through ajax. Therefore using javascript instead.-->
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the first movie title is a really long title and you have no idea just how long it is<br>(2012)</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the first movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the first movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+            <div class="movie-cell">
+                <img src="static/images/image.png" alt="movie1">
+                <div class="movie-description">the second movie</div>
+            </div>
+        </div>
+
+        <div class="spacer5"></div>
 
         {{ util.footer() }}
     </body>

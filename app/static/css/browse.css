@@ -3,3 +3,31 @@
     margin-top: 4px !important;
     margin-bottom: 0px !important;
 }
+
+.movie-grid {
+    position: relative;
+    width: 100%;
+    /* background-color: blue; */
+    padding: 0 10%;
+}
+
+.movie-cell {
+    position: relative;
+    width: 220px;
+    height: 350px;
+    /* background-color: red; */
+    /* color: red; */
+    display: inline-block;
+    overflow: hidden;
+}
+
+.movie-cell img {
+    border-radius: 5px;
+    height: 300px;
+}
+
+.movie-description {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
