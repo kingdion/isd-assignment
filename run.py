@@ -59,6 +59,35 @@ def dashboard():
 def browse():
     return render_template("browse.html")
 
+@app.route("/do-get-movies", methods=["POST"])
+def do_get_movies():
+    genres = request.form.getlist('genres[]')
+    years = request.form.getlist('years[]')
+    ratings = request.form.getlist('ratings[]')
+    print(genres, years, ratings, request.form["test"])
+    return jsonify({"success": False})
+
+@app.route("/do-add-movie")
+def do_add_movie():
+    movie_exists = False #later this will actually check
+
+    if (movie_exists):
+        return jsonify({"success": False, "reason": "movie exists"})
+
+    movie = Movie(\
+        title = request.form["title"],\
+        releaseDate = request.form["release-date"],\
+        thumbnailSrc = "static/images/image.png",\
+        runtime = request.form["runtime"],\
+        maturity_rating = request.form["maturity-rating"]
+        #genre? not sure how alchemy works with associative entities, should ask dion
+    )
+
+    db.session.add(movie)
+    db.session.commit()
+
+    return jsonify({"success": False})
+
 manager = Manager(app)
 migrate = Migrate(app, db)
 
