@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from .routes import routes
 
 app = Flask(__name__)
 app.config.update(
@@ -12,5 +11,7 @@ app.config.update(
 )
 
 db = SQLAlchemy(app)
+
+from .routes import routes
 
 app.register_blueprint(routes)

@@ -1,6 +1,6 @@
-from app import db
 from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
+from . import db
 
 class Movie(db.Model):
     __tablename__ = 'movie'
