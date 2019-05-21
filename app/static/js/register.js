@@ -25,6 +25,7 @@ $(document).ready(function(){
 });
 
 function registration_callback(data) {
+    console.log(data); //debugging
     if (!data.success) {
         if (data.reason == 'email exists') {
             set_warning($('[name=email]'), 'A user with this email already exists.');
@@ -34,9 +35,9 @@ function registration_callback(data) {
             alert("Error, failed to create account: " + data.reason);
         }
     }
-
-    window.location.href = '/dashboard';
-    console.log(data); //debugging
+    else {
+        window.location.href = '/dashboard';
+    }
 }
 
 function validate_form() {

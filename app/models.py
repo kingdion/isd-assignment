@@ -16,11 +16,25 @@ class Movie(db.Model):
 
     genres = db.relationship('Genre', secondary = 'moviegenre', back_populates="movies")
 
-    def __init__(self, title, releaseDate, thumbnailSrc, runtime):
+    def to_dict(self):
+        dict = { 'id': self.id,\
+                 'title': self.title,\
+                 'releaseDate': self.releaseDate,\
+                 'thumbnailSrc': self.thumbnailSrc,\
+                 'runtime': self.runtime,\
+                 'maturity_rating': self.maturity_rating,\
+                 'genres': [] }
+        for genre in self.genres:
+            dict['genres'].append(genre.to_dict())
+
+        return dict
+
+    def __init__(self, title, releaseDate, thumbnailSrc, runtime, maturity_rating):
         self.title = title
         self.releaseDate = releaseDate
         self.thumbnailSrc = thumbnailSrc
         self.runtime = runtime
+        self.maturity_rating = maturity_rating
 
     def __repr__(self):
         return f'Movie: {self.title}, {self.releaseDate}, {self.thumbnailSrc}'
@@ -32,6 +46,9 @@ class Genre(db.Model):
     name = db.Column(db.String(35), nullable=False)
 
     movies = db.relationship('Movie', secondary = 'moviegenre', back_populates="genres")
+
+    def to_dict(self):
+        return { 'id': self.id, 'name': self.name }
 
     def __init__(self, name):
         self.name = name

@@ -10,13 +10,14 @@ function catalogue() {
     this.loadedMovies = [];
     this.moviesCache = []; //will possibly implement caching later
 
-    this.get_movies = function(startIndex, length, filter) {
+    this.get_movies = function(startPage, length) {
         var form = $('#filters-form');
-        var data = form.serialize() + "&index=" + startIndex + "&amount=" + length;
+        var data = form.serialize() + "&page=" + startPage + "&amount=" + length;
         $.post(form.attr('action'), data, this.get_movies_callback);
     }
 
     this.get_movies_callback = function(data) {
+        console.log(data)
         if (data.success) {
             this.loadedMovies = data.movies;
         }

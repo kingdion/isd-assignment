@@ -10,9 +10,9 @@ from .models import *
 
 auth = Blueprint("auth", __name__)
 
-''' 
-Decorator to protect a view, wraps around a view function 
-and checks the request header for x-access-token, if one is 
+'''
+Decorator to protect a view, wraps around a view function
+and checks the request header for x-access-token, if one is
 given and is valid, the view will be returned and the view function
 will have access to a logged in user.
 '''
@@ -42,8 +42,8 @@ def do_login():
     username = request.form.get("email")
     password = request.form.get("password")
 
-    if not username or not password:
-        return jsonify({'message' : 'Invalid login request data'}), 401
+    if not username and not password:
+        return jsonify({'success': False, 'message' : 'Invalid login request data'}), 401
 
     return login(username, password)
 
@@ -51,11 +51,11 @@ def login(username, password):
     login_token = get_login_token(username, password)
 
     if login_token == None:
-        return jsonify({'message' : 'Invalid credentials'}), 401
+        return jsonify({'success': False, 'message' : 'Invalid credentials'}), 401
 
     session["token"] = login_token.decode('UTF-8')
 
-    return jsonify({'token' : login_token.decode('UTF-8')})
+    return jsonify({'success': True, 'token' : login_token.decode('UTF-8')})
 
 def get_login_token(username, password):
     account = Account.query.filter_by(email = username).first()
@@ -64,7 +64,7 @@ def get_login_token(username, password):
         return None
 
     if check_password_hash(account.password, password):
-        token = jwt.encode({'id' : str(account.id), 
+        token = jwt.encode({'id' : str(account.id),
                             'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=60)}, # expires in 60 minutes
                             current_app.config['SECRET_KEY'])
         return token
