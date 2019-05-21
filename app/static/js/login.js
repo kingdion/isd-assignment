@@ -8,7 +8,7 @@ $(document).ready(function()
             type: "POST",
             url: $(this).attr('action'),
             data: {email : $("[name=email]").val(), password : $("[name=password]").val()},
-            success: (data) => { window.location.href = '/dashboard'; },
+            success: (data) => {},
             error: (error) => { $(".error-message").text(JSON.parse(error.responseText).message) },
           });
     });

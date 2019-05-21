@@ -13,7 +13,6 @@ def index():
 @routes.route("/dashboard")
 @protected_view
 def dashboard(current_user):
-    print(current_user)
     return render_template("dashboard.html")
 
 @routes.route("/browse")

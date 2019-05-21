@@ -35,19 +35,33 @@ def protected_view(f):
 
 @auth.route("/login")
 def login_page():
+    if session.get("token"):
+        return redirect(url_for("dashboard"))
+
     return render_template("login.html")
 
 @auth.route("/do-login", methods=["POST"])
 def do_login():
+    # Get data from the form input, check if they are valid 
+    # and send login data to the login function
+
     username = request.form.get("email")
     password = request.form.get("password")
 
+    login_attempt = login(username, password)
+
+    if (login_attempt.get_json())["success"]:
+        return redirect(url_for("routes.dashboard"))
+    else:
+        return redirect(url_for("login"))
+    
+
+def login(username, password):
+    # See if a login is successful and return 
+    # a valid JSON response
     if not username and not password:
         return jsonify({'success': False, 'message' : 'Invalid login request data'}), 401
 
-    return login(username, password)
-
-def login(username, password):
     login_token = get_login_token(username, password)
 
     if login_token == None:
@@ -58,6 +72,9 @@ def login(username, password):
     return jsonify({'success': True, 'token' : login_token.decode('UTF-8')})
 
 def get_login_token(username, password):
+    # Return a token if the user exists and 
+    # the password matches the user's password 
+
     account = Account.query.filter_by(email = username).first()
 
     if not account:
@@ -73,8 +90,11 @@ def get_login_token(username, password):
 
 @auth.route("/logout")
 def logout():
-    session["token"] = None
-    return "success"
+    # Since we validate our user based on the token 
+    # stored in the HTTPonly secure session cookie 
+    # All we do is remove it to log a user out 
+    session.pop('token', None)
+    return redirect(url_for("routes.index"))
 
 @auth.route("/register")
 def register():

@@ -35,9 +35,6 @@ function registration_callback(data) {
             alert("Error, failed to create account: " + data.reason);
         }
     }
-    else {
-        window.location.href = '/dashboard';
-    }
 }
 
 function validate_form() {

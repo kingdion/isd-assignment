@@ -1,5 +1,5 @@
 import pytest
-from ..app import create_app
+from .. import app
 from ..app.models import *
 
 @pytest.fixture(scope='module')

@@ -26,10 +26,17 @@ def test_protected_views_return_unauthorised(test_client):
     db.session.add(account)
     db.session.commit()
 
-    token = test_client.post("/do-login", data={"email": "dion.misic@gmail.com", "password": "ISD"})
+    test_client.post("/do-login", data={"email": "dion.misic@gmail.com", "password": "ISD"})
 
     for route in ["/dashboard"]:
         response = test_client.get(route, follow_redirects=True)
         assert response.status_code == 200
         assert "<title>Dashboard - Online Movie Store Application</title>" in str(response.data)
-    
+
+    test_client.get("/logout")
+       
+    for route in ["/dashboard"]:
+        response = test_client.get(route, follow_redirects=True)
+        assert test_client.get(route).status_code == 302
+        assert response.status_code == 200
+        assert "<title>Login - Online Movie Store Application</title>" in str(response.data)
