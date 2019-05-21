@@ -18,7 +18,7 @@ def dashboard(current_user):
 
 @routes.route("/browse")
 def browse():
-    return render_template("browse.html")
+    return render_template("browse.html", genres=db.session.query(Genre).all())
 
 @routes.route("/do-get-movies", methods=["POST"])
 def do_get_movies():
@@ -62,8 +62,7 @@ def do_add_movie():
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():
     result = []
-    genres = db.session.query(Genre).all()
-    for genre in genres:
-        result.append(genre.__dict__)
+    for genre in db.session.query(Genre).all():
+        result.append(genre.to_dict())
 
     return jsonify(result)

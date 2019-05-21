@@ -32,7 +32,7 @@ class Genre(db.Model):
     movies = db.relationship('Movie', secondary = 'moviegenre', back_populates="genres")
 
     def to_dict(self):
-        return {'id': self.id, 'name': self.name}
+        return { 'id': self.id, 'name': self.name }
 
     def __init__(self, name):
         self.name = name

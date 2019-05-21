@@ -34,9 +34,9 @@
 
                                 <label for="genres[]" class="col-sm-1 text-right left-vcentre-label">Genres</label>
                                 <select class="col-sm-2 js-example-basic-multiple" name="genres[]" multiple="multiple">
-                                    <option value="action">Action</option>
-                                    <option value="horror">Horror</option>
-                                    <option value="comedy">Comedy</option>
+                                    {% for genre in genres %}
+                                    <option value="{{ genre.id }}">{{ genre.name }}</option>
+                                    {% endfor %}
                                 </select>
 
                                 <label for="years[]" class="col-sm-1 text-right left-vcentre-label">Years</label>
