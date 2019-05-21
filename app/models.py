@@ -1,6 +1,8 @@
 from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
-from . import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 class Movie(db.Model):
     __tablename__ = 'movie'

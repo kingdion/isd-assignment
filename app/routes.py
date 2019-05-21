@@ -1,8 +1,7 @@
 from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request, jsonify
-from . import db
 from .authentication import protected_view
-from .models import Movie, Genre, MovieGenre, Account, MovieOrderLine, Orders
+from .models import *
 
 routes = Blueprint("routes", __name__)
 

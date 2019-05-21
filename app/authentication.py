@@ -2,11 +2,10 @@ import uuid
 import jwt
 import datetime
 from flask import Flask, request, session, jsonify, make_response, Blueprint, \
-                render_template, flash, redirect, url_for, request, jsonify
+                render_template, flash, redirect, url_for, request, jsonify, current_app
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
-from . import app, db
 from .models import *
 
 auth = Blueprint("auth", __name__)
@@ -26,7 +25,7 @@ def protected_view(f):
             return redirect(url_for('auth.login_page'))
 
         try: 
-            token_payload = jwt.decode(token, app.config['SECRET_KEY'])
+            token_payload = jwt.decode(token, current_app.config['SECRET_KEY'])
             account = Account.query.filter_by(id = token_payload['id']).first()
         except:
             return redirect(url_for('auth.login_page'))
@@ -43,7 +42,7 @@ def do_login():
     username = request.form.get("email")
     password = request.form.get("password")
 
-    if not username and not password:
+    if not username or not password:
         return jsonify({'message' : 'Invalid login request data'}), 401
 
     return login(username, password)
@@ -67,7 +66,7 @@ def get_login_token(username, password):
     if check_password_hash(account.password, password):
         token = jwt.encode({'id' : str(account.id), 
                             'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=60)}, # expires in 60 minutes
-                            app.config['SECRET_KEY'])
+                            current_app.config['SECRET_KEY'])
         return token
 
     return None
