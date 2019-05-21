@@ -3,6 +3,7 @@ from flask import render_template, flash, redirect, url_for, request, jsonify
 from . import db
 from .authentication import protected_view
 from .models import Movie, Genre, MovieGenre, Account, MovieOrderLine, Orders
+from sqlalchemy import extract
 
 routes = Blueprint("routes", __name__)
 
@@ -20,45 +21,6 @@ def dashboard(current_user):
 def browse():
     return render_template("browse.html", genres=db.session.query(Genre).all())
 
-@routes.route("/do-get-movies", methods=["POST"])
-def do_get_movies():
-    genres = request.form.getlist("genres[]")
-    years = request.form.getlist("years[]")
-    ratings = request.form.getlist("ratings[]")
-    index = request.form["index"]
-    length = request.form["amount"]
-
-    movies = db.session.query(Movie)
-    print(movies) #use sql alchemy slice
-
-    return jsonify({"success": False})
-
-@routes.route("/do-add-movie")
-def do_add_movie():
-    movie_exists = False #later this will actually check
-
-    if movie_exists:
-        return jsonify({"success": False, "reason": "movie exists"})
-
-    movie = Movie(\
-        title = request.form["title"],\
-        releaseDate = request.form["release-date"],\
-        thumbnailSrc = "static/images/image.png",\
-        runtime = request.form["runtime"],\
-        maturity_rating = int(request.form["maturity-rating"]) #assumes the client has gotten list of maturity ratings
-        #genre? not sure how alchemy works with associative entities, should ask dion
-    )
-
-    for genre in request.form.getlist("genres[]"):
-        email_exists = db.session.query(Account.email).filter_by(email=request.form["email"]).scalar() is not None
-        dbGenreID = db.session.query(Genre).filter_by(name=genre).one()
-        movie.genres.append(dbGenreID)
-
-    db.session.add(movie)
-    db.session.commit()
-
-    return jsonify({"success": True})
-
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():
     result = []
@@ -66,3 +28,47 @@ def do_get_genres():
         result.append(genre.to_dict())
 
     return jsonify(result)
+
+@routes.route("/do-get-movies-page", methods=["POST"])
+def do_get_movies_page():
+    result = []
+
+    movies = db.session.query(Movie)
+    genres = request.form.getlist("genres[]")
+    if (len(genres) > 0):
+        movies = movies.filter(Movie.genres.any(Genre.id.in_(request.form.getlist("genres[]"))))
+
+    years = request.form.getlist("years[]")
+    if (len(years) > 0):
+        movies = movies.filter(extract("year", Movie.releaseDate).in_(request.form.getlist("years[]")))
+
+    movies = movies.order_by(Movie.title.asc(), Movie.releaseDate.desc())\
+                   .paginate(int(request.form["page"]), int(request.form["amount"]), False)\
+                   .items
+
+    for movie in movies:
+        result.append(movie.to_dict())
+
+    return jsonify({ "success": True, "movies": result })
+
+@routes.route("/do-add-movie", methods=["POST"])
+def do_add_movie():
+    if db.session.query(Movie.id).filter_by(title=request.form["title"], releaseDate=request.form["release-date"]).scalar() is not None:
+        return jsonify({"success": False, "reason": "movie exists"})
+
+    movie = Movie(\
+        title = request.form["title"],\
+        releaseDate = request.form["release-date"],\
+        thumbnailSrc = "static/images/image.png",\
+        runtime = request.form["runtime"],\
+        maturity_rating = request.form["maturity-rating"] #assumes the client has gotten list of maturity ratings
+    )
+
+    for id in request.form.getlist("genres[]"):
+        genre = db.session.query(Genre).filter_by(id=id).one()
+        movie.genres.append(genre)
+
+    db.session.add(movie)
+    db.session.commit()
+
+    return jsonify({ "success": True })
