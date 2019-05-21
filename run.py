@@ -1,6 +1,7 @@
 import os
 import datetime
 from flask import render_template, flash, redirect, url_for, request, jsonify
+from app.models import Movie, Genre, MovieGenre, Account, MovieOrderLine, Orders
 from app import app, db
 
 from flask_script import Manager
