@@ -35,7 +35,6 @@ function registration_callback(data) {
         }
     }
 
-    window.location.href = '/dashboard';
     console.log(data); //debugging
 }
 
