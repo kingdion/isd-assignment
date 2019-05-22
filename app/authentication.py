@@ -53,19 +53,19 @@ def do_login():
     if (login_attempt.get_json())["success"]:
         return redirect(url_for("routes.dashboard"))
     else:
-        return redirect(url_for("login"))
+        return redirect(url_for("auth.login_page"))
     
 
 def login(username, password):
     # See if a login is successful and return 
     # a valid JSON response
     if not username and not password:
-        return jsonify({'success': False, 'message' : 'Invalid login request data'}), 401
+        return jsonify({'success': False, 'message' : 'Invalid login request data'})
 
     login_token = get_login_token(username, password)
 
     if login_token == None:
-        return jsonify({'success': False, 'message' : 'Invalid credentials'}), 401
+        return jsonify({'success': False, 'message' : 'Invalid credentials'})
 
     session["token"] = login_token.decode('UTF-8')
 
