@@ -36,7 +36,7 @@ def protected_view(f):
 @auth.route("/login")
 def login_page():
     if session.get("token"):
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("routes.dashboard"))
 
     return render_template("login.html")
 
@@ -45,7 +45,7 @@ def do_login():
     # Get data from the form input, check if they are valid 
     # and send login data to the login function
 
-    username = request.form.get("email")
+    username = request.form.get("username")
     password = request.form.get("password")
 
     login_attempt = login(username, password)
@@ -75,7 +75,7 @@ def get_login_token(username, password):
     # Return a token if the user exists and 
     # the password matches the user's password 
 
-    account = Account.query.filter_by(email = username).first()
+    account = Account.query.filter_by(username = username).first()
 
     if not account:
         return None
@@ -106,15 +106,22 @@ def do_register():
 
     if email_exists:
         return jsonify({"success": False, "reason": "email exists"})
+    
+    username = request.form["username"]
+    password = request.form["password"]
 
     account = Account(\
         first_name=request.form["first-name"],\
         last_name=request.form["last-name"],\
         email=request.form["email"],\
-        password=generate_password_hash(request.form["password"], method='sha256'),\
+        username=username,\
+        password=generate_password_hash(password, method='sha256'),\
         street_address=request.form["street-address"],\
         postcode=request.form["postcode"],\
-        is_staff=False\
+        phone_number=request.form["phone-number"],\
+        is_staff=False,\
+        is_active=True,\
+        join_date=datetime.datetime.utcnow()\
     )
 
     # TODO: Add server-side validation (since clients can just alter the javascript to bypass client-side validation)
@@ -122,4 +129,4 @@ def do_register():
     db.session.add(account)
     db.session.commit()
 
-    return login(request.form["email"], request.form["password"])
+    return login(username, password)

@@ -9,8 +9,8 @@ class Movie(db.Model):
 
     id = db.Column(UUID(as_uuid=True), unique=True, nullable=False, primary_key=True, default=uuid4)
     title = db.Column(db.String(50), nullable=False)
-    releaseDate = db.Column(db.Date(), nullable=False)
-    thumbnailSrc = db.Column(db.String(150), nullable=False)
+    release_date = db.Column(db.Date(), nullable=False)
+    thumbnail_src = db.Column(db.String(150), nullable=False)
     runtime = db.Column(db.Integer, nullable=False)
     maturity_rating = db.Column(db.Integer, db.ForeignKey('maturityrating.id'), nullable=False)
 
@@ -19,8 +19,8 @@ class Movie(db.Model):
     def to_dict(self):
         dict = { 'id': self.id,\
                  'title': self.title,\
-                 'releaseDate': self.releaseDate,\
-                 'thumbnailSrc': self.thumbnailSrc,\
+                 'release_date': self.release_date,\
+                 'thumbnailSrc': self.thumbnail_src,\
                  'runtime': self.runtime,\
                  'maturity_rating': self.maturity_rating,\
                  'genres': [] }
@@ -29,15 +29,15 @@ class Movie(db.Model):
 
         return dict
 
-    def __init__(self, title, releaseDate, thumbnailSrc, runtime, maturity_rating):
+    def __init__(self, title, release_date, thumbnail_src, runtime, maturity_rating):
         self.title = title
-        self.releaseDate = releaseDate
-        self.thumbnailSrc = thumbnailSrc
+        self.release_date = release_date
+        self.thumbnail_src = thumbnail_src
         self.runtime = runtime
         self.maturity_rating = maturity_rating
 
     def __repr__(self):
-        return f'Movie: {self.title}, {self.releaseDate}, {self.thumbnailSrc}'
+        return f'Movie: {self.title}, {self.release_date}, {self.thumbnail_src}'
 
 class Genre(db.Model):
     __tablename__ = 'genre'
@@ -74,40 +74,48 @@ class Account(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
     first_name = db.Column(db.String(25), nullable=False)
     last_name = db.Column(db.String(25), nullable=False)
-    email = db.Column(db.String(256), nullable=False)
+    email = db.Column(db.String(256), nullable=False, unique=True)
+    username = db.Column(db.String(25), nullable=False, unique=True)
     password = db.Column(db.String(256), nullable=False)
     street_address = db.Column(db.String(100), nullable=False)
     postcode = db.Column(db.Integer, nullable=False)
+    phone_number = db.Column(db.String(20), nullable=False)
     is_staff = db.Column(db.Boolean, nullable=False)
+    is_active = db.Column(db.Boolean, nullable=False)
+    join_date = db.Column(db.Date(), nullable=False)
 
-    def __init__(self, first_name, last_name, email, password, street_address, postcode, is_staff):
+    def __init__(self, first_name, last_name, email, username, password, street_address, postcode, phone_number, is_staff, is_active, join_date):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
+        self.username = username
         self.password = password
         self.street_address = street_address
         self.postcode = postcode
+        self.phone_number = phone_number
         self.is_staff = is_staff
+        self.is_active = is_active
+        self.join_date = join_date
 
     def __repr__(self):
-        return f'Account: {self.first_name} {self.last_name}'
+        return f'Account: {self.first_name} {self.last_name} ({self.username})'
 
 class Orders(db.Model):
     __tablename__ = 'orders'
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
     accountId = db.Column(UUID(as_uuid=True), db.ForeignKey('account.id'), nullable=False)
-    trackingStatus = db.Column(db.String(50), nullable=False)
+    tracking_status = db.Column(db.String(50), nullable=False)
     methodId = db.Column(UUID(as_uuid=True), default=uuid4)
 
     movies = db.relationship('MovieCopy', secondary = 'movieorderline', back_populates="orders")
 
     def __init__(self, accountId, trackingStatus):
         self.accountId = accountId
-        self.trackingStatus = trackingStatus
+        self.trackingStatus = tracking_status
 
     def __repr__(self):
-        return f'Order: {self.id} {self.accountId} {self.trackingStatus}'
+        return f'Order: {self.id} {self.accountId} {self.tracking_status}'
 
 class MovieGenre(db.Model):
     __tablename__ = 'moviegenre'

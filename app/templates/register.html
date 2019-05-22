@@ -28,6 +28,10 @@
                     <div class="col-md-6">
                         <form id="register-form" action="{{ url_for('auth.do_register') }}" method=post>
                             <div class="input-group-lg">
+                                <input type="username" class="form-control input-lg" placeholder="Username" name="username" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
                                 <input type="email" class="form-control input-lg" placeholder="Email" name="email" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                             </div>
                             <div class="form-check indented">
@@ -61,6 +65,10 @@
                             <div class="spacer"></div>
                             <div class="input-group-lg">
                                 <input type="number" class="form-control input-lg" placeholder="Postcode" name="postcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="number" class="form-control input-lg" placeholder="Phone Number (xxxx xxx xxx)" name="phone-number" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                             </div>
 
                             <br/>

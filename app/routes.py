@@ -38,9 +38,9 @@ def do_get_movies_page():
 
     years = request.form.getlist("years[]")
     if (len(years) > 0):
-        movies = movies.filter(extract("year", Movie.releaseDate).in_(request.form.getlist("years[]")))
+        movies = movies.filter(extract("year", Movie.release_date).in_(request.form.getlist("years[]")))
 
-    movies = movies.order_by(Movie.title.asc(), Movie.releaseDate.desc())\
+    movies = movies.order_by(Movie.title.asc(), Movie.release_date.desc())\
                    .paginate(int(request.form["page"]), int(request.form["amount"]), False)\
                    .items
 
@@ -51,13 +51,13 @@ def do_get_movies_page():
 
 @routes.route("/do-add-movie", methods=["POST"])
 def do_add_movie():
-    if db.session.query(Movie.id).filter_by(title=request.form["title"], releaseDate=request.form["release-date"]).scalar() is not None:
+    if db.session.query(Movie.id).filter_by(title=request.form["title"], release_date=request.form["release-date"]).scalar() is not None:
         return jsonify({"success": False, "reason": "movie exists"})
 
     movie = Movie(\
         title = request.form["title"],\
-        releaseDate = request.form["release-date"],\
-        thumbnailSrc = "static/images/image.png",\
+        release_date = request.form["release-date"],\
+        thumbnail_src = "static/images/image.png",\
         runtime = request.form["runtime"],\
         maturity_rating = request.form["maturity-rating"] #assumes the client has gotten list of maturity ratings
     )
