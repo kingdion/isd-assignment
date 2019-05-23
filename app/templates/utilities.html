@@ -19,6 +19,9 @@
 
         <div class="collapse navbar-collapse" id="navbar-links">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+                {% if g.logged_in_user == None %}
+
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home</a>
                 </li>
@@ -28,6 +31,19 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/register">Register</a>
                 </li>
+
+                {% else %}
+
+                <li class="nav-item active">
+                    <div class="omss-profile-container">
+                        Logged in as: <a class="omss-profile-link" href="/profile"> {{g.logged_in_user.username}} </a>
+                    </div>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+
+                {% endif %}
             </ul>
 
             <form class="form-inline my-2 my-lg-0">

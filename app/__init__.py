@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, session, g
+import jwt
 
 def create_app(debugMode = True):
     app = Flask(__name__)
@@ -20,8 +21,23 @@ def create_app(debugMode = True):
             DEBUG = False,
         )
 
-    from .models import db
+    from .models import db, Account
     db.init_app(app)
+
+    @app.before_request
+    def load_user():
+        token = session.get("token")
+        account = None
+
+        if token:
+            token_payload = jwt.decode(token, app.config['SECRET_KEY'])
+            account = Account.query.filter_by(id = token_payload['id']).first()
+
+        g.logged_in_user = account
+
+    @app.context_processor
+    def context_processor():
+        return dict(logged_in_user={"username":"penis"})
 
     from .routes import routes
     from .authentication import auth

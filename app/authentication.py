@@ -50,7 +50,7 @@ def do_login():
 
     login_attempt = login(username, password)
 
-    if (login_attempt.get_json())["success"]:
+    if (login_attempt.get_json())["success"] == True:
         return redirect(url_for("routes.dashboard"))
     else:
         return redirect(url_for("auth.login_page"))
@@ -84,6 +84,7 @@ def get_login_token(username, password):
         token = jwt.encode({'id' : str(account.id),
                             'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=60)}, # expires in 60 minutes
                             current_app.config['SECRET_KEY'])
+
         return token
 
     return None

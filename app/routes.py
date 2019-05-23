@@ -1,5 +1,6 @@
+import jwt
 from flask import Blueprint
-from flask import render_template, flash, redirect, url_for, request, jsonify
+from flask import render_template, flash, redirect, url_for, request, jsonify, current_app, session
 from .authentication import protected_view
 from .models import *
 from sqlalchemy import extract

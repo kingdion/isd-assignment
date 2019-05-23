@@ -11,6 +11,20 @@
     color: rgb(224, 53, 96);
 }
 
+.omss-profile-link {
+    color: white;
+}
+
+.omss-profile-link:hover {
+    color: #dddddd !important;
+}
+
+.omss-profile-container {
+    display: block;
+    padding: .5rem 1rem;
+    color: #cdcdcd;
+}
+
 .nav-link {
     color: rgba(206, 205, 205, 0.90) !important;
     transition: 1.25s ease;
