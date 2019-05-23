@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from .models import *
+from enum import Enum
 
 auth = Blueprint("auth", __name__)
 
@@ -78,6 +79,9 @@ def do_register():
 @protected_view
 def update_registration_details():
     try:
+        # Try access the global logged in user and update it 
+        # according to the users' changes.
+
         g.logged_in_user.first_name = request.form["first_name"]
         g.logged_in_user.last_name = request.form["last_name"]
         g.logged_in_user.postcode = request.form["postcode"]
@@ -93,10 +97,11 @@ def update_registration_details():
 @auth.route("/delete-account", methods=["POST", "DELETE"])
 @protected_view
 def delete_account():
+    # Remove and logout the user from the session
     db.session.delete(g.logged_in_user)
     session.pop('token', None)
-
     db.session.commit()
+
     return jsonify({"success": True, "message": "Your account has been successfully deleted"})
 
 '''
@@ -127,7 +132,6 @@ def do_login():
     else:
         return redirect(url_for("auth.login_page"))
     
-
 def login(username, password):
     # See if a login is successful and return 
     # a valid JSON response
@@ -153,9 +157,14 @@ def get_login_token(username, password):
         return None
 
     if check_password_hash(account.password, password):
+        now = datetime.datetime.utcnow()
         token = jwt.encode({'id' : str(account.id),
-                            'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=60)}, # expires in 60 minutes
+                            'exp' : now + datetime.timedelta(minutes=60)}, # expires in 60 minutes
                             current_app.config['SECRET_KEY'])
+
+        log = UserAccessLog(account.id, now, str(AccessLogTypes.login))
+        db.session.add(log)
+        db.session.commit()
 
         return token
 
@@ -167,5 +176,14 @@ def logout():
     # Since we validate our user based on the token 
     # stored in the HTTPonly secure session cookie 
     # All we do is remove it to log a user out 
+    log = UserAccessLog(g.logged_in_user.id, datetime.datetime.utcnow(), str(AccessLogTypes.logout))
+    db.session.add(log)
+    db.session.commit()
+
     session.pop('token', None)
+
     return redirect(url_for("routes.index"))
+
+class AccessLogTypes(Enum):
+    login = "Login"
+    logout = "Logout"

@@ -119,9 +119,10 @@ class Orders(db.Model):
 
 class UserAccessLog(db.Model):
     __tablename__ = 'useraccesslog'
-    accountId = db.Column(UUID(as_uuid=True), db.ForeignKey('account.id'), default=uuid4, nullable=False, primary_key=True)
-    timestamp = db.Column(db.Date(), nullable=False, primary_key=True)
-    log_type = db.Column(db.String(20), nullable=False)
+    id = db.Column(UUID(as_uuid=True), default=uuid4, unique=True, nullable=False, primary_key=True)
+    accountId = db.Column(UUID(as_uuid=True), db.ForeignKey('account.id'), nullable=False, primary_key=False)
+    timestamp = db.Column(db.Date(), nullable=False)
+    log_type = db.Column(db.String(30), nullable=False)
 
     def __init__(self, accountId, timestamp, log_type):
         self.accountId = accountId

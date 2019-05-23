@@ -30,8 +30,12 @@ def create_app(debugMode = True):
         account = None
 
         if token:
-            token_payload = jwt.decode(token, app.config['SECRET_KEY'])
-            account = Account.query.filter_by(id = token_payload['id']).first()
+            try:
+                token_payload = jwt.decode(token, app.config['SECRET_KEY'])
+                account = Account.query.filter_by(id = token_payload['id']).first()
+            except:
+                account = None
+                session.pop("token")
 
         g.logged_in_user = account
 
