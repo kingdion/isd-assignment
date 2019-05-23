@@ -25,6 +25,11 @@ def browse():
 def profile():
     return render_template("profile.html")
 
+@routes.route("/logs")
+@protected_view
+def logs():
+    return render_template("logs.html")
+
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():
     result = []

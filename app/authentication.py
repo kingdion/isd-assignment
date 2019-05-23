@@ -162,7 +162,7 @@ def get_login_token(username, password):
                             'exp' : now + datetime.timedelta(minutes=60)}, # expires in 60 minutes
                             current_app.config['SECRET_KEY'])
 
-        log = UserAccessLog(account.id, now, str(AccessLogTypes.login))
+        log = UserAccessLog(account.id, now, AccessLogTypes.login.value)
         db.session.add(log)
         db.session.commit()
 
@@ -170,13 +170,25 @@ def get_login_token(username, password):
 
     return None
 
+@auth.route("/delete-log", methods=["POST", "DELETE"])
+@protected_view
+def delete_log():
+    try:
+        log = UserAccessLog.query.filter_by(id = request.form["log_id"]).first()
+        db.session.delete(log)
+        db.session.commit()
+    except:
+        return jsonify({'success': False, 'message' : 'Something went wrong trying to delete this log.'})
+
+    return jsonify({'success': False, 'message' : 'The log has been deleted.'})
+
 @auth.route("/logout")
 @protected_view
 def logout():
     # Since we validate our user based on the token 
     # stored in the HTTPonly secure session cookie 
     # All we do is remove it to log a user out 
-    log = UserAccessLog(g.logged_in_user.id, datetime.datetime.utcnow(), str(AccessLogTypes.logout))
+    log = UserAccessLog(g.logged_in_user.id, datetime.datetime.utcnow(), AccessLogTypes.logout.value)
     db.session.add(log)
     db.session.commit()
 

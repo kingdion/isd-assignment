@@ -83,7 +83,9 @@ class Account(db.Model):
     phone_number = db.Column(db.String(20), nullable=False)
     is_staff = db.Column(db.Boolean, nullable=False)
     is_active = db.Column(db.Boolean, nullable=False)
-    join_date = db.Column(db.Date(), nullable=False)
+    join_date = db.Column(db.DateTime(), nullable=False)
+
+    logs = db.relationship('UserAccessLog')
 
     def __init__(self, first_name, last_name, email, username, password, street_address, postcode, phone_number, is_staff, is_active, join_date):
         self.first_name = first_name
@@ -122,7 +124,7 @@ class UserAccessLog(db.Model):
     __tablename__ = 'useraccesslog'
     id = db.Column(UUID(as_uuid=True), default=uuid4, unique=True, nullable=False, primary_key=True)
     accountId = db.Column(UUID(as_uuid=True), db.ForeignKey('account.id'), nullable=False, primary_key=False)
-    timestamp = db.Column(db.Date(), nullable=False)
+    timestamp = db.Column(db.DateTime(), nullable=False)
     log_type = db.Column(db.String(30), nullable=False)
 
     def __init__(self, accountId, timestamp, log_type):
@@ -160,7 +162,7 @@ class MovieCopy(db.Model):
     price = db.Column(db.Float, nullable=False)
     sold = db.Column(db.Boolean, nullable=False)
 
-    orders = db.relationship('Orders', secondary = 'movieorderline', back_populates="movies")
+    orders = db.relationship('Orders', secondary='movieorderline', back_populates="movies")
 
     def __repr__(self):
         return f'MovieCopy: {self.copy_information}, {self.price}, {self.sold}'
