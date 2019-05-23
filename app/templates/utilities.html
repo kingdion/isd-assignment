@@ -42,6 +42,20 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/logs">Logs</a>
                 </li>
+
+                {% if g.logged_in_user.is_staff %}
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Staff Actions
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/browse-staff">Add/Remove/Update a Movie</a>
+                    </div>
+                 </li>
+
+                {% endif %}
+
                 <li class="nav-item active">
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>

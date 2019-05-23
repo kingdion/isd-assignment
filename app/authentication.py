@@ -17,17 +17,18 @@ and checks the request header for x-access-token, if one is
 given and is valid, the view will be returned and the view function
 will have access to a logged in user.
 '''
-def protected_view(f):
+def protected_view(f, staff_required=False):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = session.get("token")
-
         if token == None:
             return redirect(url_for('auth.login_page'))
 
-        try: 
+        try:
             token_payload = jwt.decode(token, current_app.config['SECRET_KEY'])
             account = Account.query.filter_by(id = token_payload['id']).first()
+            if (staff_required and not account.is_staff):
+                return "Only staff members can view this page.", 403
         except:
             return redirect(url_for('auth.login_page'))
 
@@ -50,7 +51,7 @@ def do_register():
 
     if email_exists:
         return jsonify({"success": False, "reason": "email exists"})
-    
+
     username = request.form["username"]
     password = request.form["password"]
 
@@ -79,7 +80,7 @@ def do_register():
 @protected_view
 def update_registration_details():
     try:
-        # Try access the global logged in user and update it 
+        # Try access the global logged in user and update it
         # according to the users' changes.
 
         g.logged_in_user.first_name = request.form["first_name"]
@@ -90,7 +91,7 @@ def update_registration_details():
 
         db.session.commit()
     except:
-        return jsonify({"success": False, "message": "Something went wrong trying to save your changes."}) 
+        return jsonify({"success": False, "message": "Something went wrong trying to save your changes."})
 
     return jsonify({"success": True, "message": "Your details have been successfully changed!"})
 
@@ -119,7 +120,7 @@ def login_page():
 
 @auth.route("/do-login", methods=["POST"])
 def do_login():
-    # Get data from the form input, check if they are valid 
+    # Get data from the form input, check if they are valid
     # and send login data to the login function
 
     username = request.form.get("username")
@@ -131,9 +132,9 @@ def do_login():
         return redirect(url_for("routes.dashboard"))
     else:
         return redirect(url_for("auth.login_page"))
-    
+
 def login(username, password):
-    # See if a login is successful and return 
+    # See if a login is successful and return
     # a valid JSON response
     if not username and not password:
         return jsonify({'success': False, 'message' : 'Invalid login request data'})
@@ -148,8 +149,8 @@ def login(username, password):
     return jsonify({'success': True, 'token' : login_token.decode('UTF-8')})
 
 def get_login_token(username, password):
-    # Return a token if the user exists and 
-    # the password matches the user's password 
+    # Return a token if the user exists and
+    # the password matches the user's password
 
     account = Account.query.filter_by(username = username).first()
 
@@ -185,9 +186,9 @@ def delete_log():
 @auth.route("/logout")
 @protected_view
 def logout():
-    # Since we validate our user based on the token 
-    # stored in the HTTPonly secure session cookie 
-    # All we do is remove it to log a user out 
+    # Since we validate our user based on the token
+    # stored in the HTTPonly secure session cookie
+    # All we do is remove it to log a user out
     log = UserAccessLog(g.logged_in_user.id, datetime.datetime.utcnow(), AccessLogTypes.logout.value)
     db.session.add(log)
     db.session.commit()

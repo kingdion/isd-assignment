@@ -1,6 +1,7 @@
 import jwt
 from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request, jsonify, current_app, session
+from functools import partial
 from .authentication import protected_view
 from .models import *
 from sqlalchemy import extract
@@ -19,6 +20,12 @@ def dashboard():
 @routes.route("/browse")
 def browse():
     return render_template("browse.html", genres=db.session.query(Genre).all())
+
+# protected_view_staff = partial(protected_view, staff_required=True)
+# @routes.route("/browse-staff")
+# @protected_view_staff
+# def browse_staff():
+#     return "fuck you", 403
 
 @routes.route("/profile")
 @protected_view

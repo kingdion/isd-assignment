@@ -21,6 +21,7 @@ class Movie(db.Model):
         dict = { 'id': self.id,\
                  'title': self.title,\
                  'release_date': self.release_date,\
+                 'release_year': self.release_date.year,\
                  'thumbnailSrc': self.thumbnail_src,\
                  'runtime': self.runtime,\
                  'maturity_rating': self.maturity_rating,\
