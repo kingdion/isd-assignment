@@ -13,12 +13,17 @@ def index():
 
 @routes.route("/dashboard")
 @protected_view
-def dashboard(current_user):
+def dashboard():
     return render_template("dashboard.html")
 
 @routes.route("/browse")
 def browse():
     return render_template("browse.html", genres=db.session.query(Genre).all())
+
+@routes.route("/profile")
+@protected_view
+def profile():
+    return render_template("profile.html")
 
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():

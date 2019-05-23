@@ -2,7 +2,7 @@ import uuid
 import jwt
 import datetime
 from flask import Flask, request, session, jsonify, make_response, Blueprint, \
-                render_template, flash, redirect, url_for, request, jsonify, current_app
+                render_template, flash, redirect, url_for, request, jsonify, current_app, g
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
@@ -30,8 +30,80 @@ def protected_view(f):
         except:
             return redirect(url_for('auth.login_page'))
 
-        return f(account, *args, **kwargs)
+        return f(*args, **kwargs)
     return decorated
+
+'''
+
+User Registration
+
+'''
+
+@auth.route("/register", methods=["GET"])
+def register():
+    return render_template("register.html")
+
+@auth.route("/do-register", methods=["POST"])
+def do_register():
+    email_exists = db.session.query(Account.email).filter_by(email=request.form["email"]).scalar() is not None
+
+    if email_exists:
+        return jsonify({"success": False, "reason": "email exists"})
+    
+    username = request.form["username"]
+    password = request.form["password"]
+
+    account = Account(\
+        first_name=request.form["first-name"],\
+        last_name=request.form["last-name"],\
+        email=request.form["email"],\
+        username=username,\
+        password=generate_password_hash(password, method='sha256'),\
+        street_address=request.form["street-address"],\
+        postcode=request.form["postcode"],\
+        phone_number=request.form["phone-number"],\
+        is_staff=False,\
+        is_active=True,\
+        join_date=datetime.datetime.utcnow()\
+    )
+
+    # TODO: Add server-side validation (since clients can just alter the javascript to bypass client-side validation)
+
+    db.session.add(account)
+    db.session.commit()
+
+    return login(username, password)
+
+@auth.route("/update-registration-details", methods=["POST", "PUT"])
+@protected_view
+def update_registration_details():
+    try:
+        g.logged_in_user.first_name = request.form["first_name"]
+        g.logged_in_user.last_name = request.form["last_name"]
+        g.logged_in_user.postcode = request.form["postcode"]
+        g.logged_in_user.phone_number = request.form["phone_number"]
+        g.logged_in_user.street_address = request.form["street_address"]
+
+        db.session.commit()
+    except:
+        return jsonify({"success": False, "message": "Something went wrong trying to save your changes."}) 
+
+    return jsonify({"success": True, "message": "Your details have been successfully changed!"})
+
+@auth.route("/delete-account", methods=["POST", "DELETE"])
+@protected_view
+def delete_account():
+    db.session.delete(g.logged_in_user)
+    session.pop('token', None)
+
+    db.session.commit()
+    return jsonify({"success": True, "message": "Your account has been successfully deleted"})
+
+'''
+
+User Login
+
+'''
 
 @auth.route("/login")
 def login_page():
@@ -90,44 +162,10 @@ def get_login_token(username, password):
     return None
 
 @auth.route("/logout")
+@protected_view
 def logout():
     # Since we validate our user based on the token 
     # stored in the HTTPonly secure session cookie 
     # All we do is remove it to log a user out 
     session.pop('token', None)
     return redirect(url_for("routes.index"))
-
-@auth.route("/register")
-def register():
-    return render_template("register.html")
-
-@auth.route("/do-register", methods=["POST"])
-def do_register():
-    email_exists = db.session.query(Account.email).filter_by(email=request.form["email"]).scalar() is not None
-
-    if email_exists:
-        return jsonify({"success": False, "reason": "email exists"})
-    
-    username = request.form["username"]
-    password = request.form["password"]
-
-    account = Account(\
-        first_name=request.form["first-name"],\
-        last_name=request.form["last-name"],\
-        email=request.form["email"],\
-        username=username,\
-        password=generate_password_hash(password, method='sha256'),\
-        street_address=request.form["street-address"],\
-        postcode=request.form["postcode"],\
-        phone_number=request.form["phone-number"],\
-        is_staff=False,\
-        is_active=True,\
-        join_date=datetime.datetime.utcnow()\
-    )
-
-    # TODO: Add server-side validation (since clients can just alter the javascript to bypass client-side validation)
-
-    db.session.add(account)
-    db.session.commit()
-
-    return login(username, password)
