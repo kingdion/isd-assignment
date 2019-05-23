@@ -117,6 +117,20 @@ class Orders(db.Model):
     def __repr__(self):
         return f'Order: {self.id} {self.accountId} {self.tracking_status}'
 
+class UserAccessLog(db.Model):
+    __tablename__ = 'useraccesslog'
+    accountId = db.Column(UUID(as_uuid=True), db.ForeignKey('account.id'), default=uuid4, nullable=False, primary_key=True)
+    timestamp = db.Column(db.Date(), nullable=False, primary_key=True)
+    log_type = db.Column(db.String(20), nullable=False)
+
+    def __init__(self, accountId, timestamp, log_type):
+        self.accountId = accountId
+        self.timestamp = timestamp
+        self.log_type = log_type
+
+    def __repr__(self):
+        return f'User Access Log {self.accountId} | {self.timestamp}, {self.log_type}'
+
 class MovieGenre(db.Model):
     __tablename__ = 'moviegenre'
 
