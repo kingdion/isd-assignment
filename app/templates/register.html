@@ -68,7 +68,14 @@
                             </div>
                             <div class="spacer"></div>
                             <div class="input-group-lg">
-                                <input type="number" class="form-control input-lg" placeholder="Phone Number (xxxx xxx xxx)" name="phone-number" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                                <input type="number"
+                                       class="form-control input-lg"
+                                       placeholder="Phone Number (xxxx xxx xxx)"
+                                       oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                       maxlength = "10"
+                                       name="phone-number"
+                                       data-toggle="tooltip" data-trigger="manual" data-placement="right"
+                                       title="">
                             </div>
 
                             <br/>

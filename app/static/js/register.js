@@ -22,6 +22,7 @@ $(document).ready(function(){
   $('[name=last-name]').focusout(validate_lname);
   $('[name=street-address]').focusout(validate_street);
   $('[name=postcode]').focusout(validate_postcode);
+  $('[name=phone-number]').focusout(validate_phone);
 });
 
 function registration_callback(data) {
@@ -36,7 +37,7 @@ function registration_callback(data) {
         }
     }
     else {
-        window.location.href = "/dashboard" 
+        window.location.href = "/dashboard"
     }
 }
 
@@ -49,6 +50,7 @@ function validate_form() {
               | !validate_lname()
               | !validate_street()
               | !validate_postcode()
+              | !validate_phone()
             );
 }
 
@@ -137,6 +139,18 @@ function validate_postcode() {
     }
     else {
         clear_warning(postcode);
+        return true;
+    }
+}
+
+function validate_phone() {
+    var phone = $('[name=phone-number]');
+    if (phone.val().length == 0) {
+        set_warning(phone, 'Required field.');
+        return false;
+    }
+    else {
+        clear_warning(phone);
         return true;
     }
 }
