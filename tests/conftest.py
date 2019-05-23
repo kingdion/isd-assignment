@@ -9,6 +9,7 @@ def test_client():
 
     with app.app_context():
         db.session.begin_nested()
+        db.drop_all()
         db.create_all()
 
         yield testing_client
