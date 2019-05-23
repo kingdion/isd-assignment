@@ -15,6 +15,7 @@ class Movie(db.Model):
     maturity_rating = db.Column(db.Integer, db.ForeignKey('maturityrating.id'), nullable=False)
 
     genres = db.relationship('Genre', secondary = 'moviegenre', back_populates="movies")
+    copies = db.relationship('MovieCopy')
 
     def to_dict(self):
         dict = { 'id': self.id,\
