@@ -160,7 +160,7 @@ class MovieCopy(db.Model):
     price = db.Column(db.Float, nullable=False)
     sold = db.Column(db.Boolean, nullable=False)
 
-    orders = db.relationship('Orders', secondary = 'movieorderline', back_populates="movies")
+    orders = db.relationship('Orders', secondary='movieorderline', back_populates="movies")
 
     def __repr__(self):
         return f'MovieCopy: {self.copy_information}, {self.price}, {self.sold}'
