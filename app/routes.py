@@ -72,15 +72,15 @@ def do_get_movies_grid_html():
         result += '<div class="movie-cell" id="' + str(movie.id) + '"><img src="' + movie.thumbnail_src + '" alt="' + movie.title + '">'
         if (isStaff):
             result += '<div class="movie-buttons">\
-                         <button type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="top" title="Edit movie details">\
+                         <button type="button" class="btn btn-dark edit-movie-btn" data-toggle="tooltip" data-placement="top" title="Edit movie details">\
                            <i class="far fa-edit"></i>\
                          </button>\
                          <div class="spacer-h"></div>\
-                         <button type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="top" title="Add a copy of this movie">\
+                         <button type="button" class="btn btn-dark add-copy-btn" data-toggle="tooltip" data-placement="top" title="Add a copy of this movie">\
                             <i class="fas fa-compact-disc"></i>\
                          </button>\
                          <div class="spacer-h"></div>\
-                         <button type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="top" title="Delete this movie">\
+                         <button type="button" class="btn btn-dark delete-movie-btn" data-toggle="tooltip" data-placement="top" title="Delete this movie">\
                             <i class="far fa-trash-alt"></i>\
                          </button>\
                        </div>'
@@ -109,3 +109,12 @@ def do_add_movie():
     db.session.commit()
 
     return jsonify({ "success": True })
+
+@routes.route("/edit-movie/<movieID>")
+@protected_view
+def edit_movie(movieID):
+    try:
+        movie = Movie.query.filter_by(id=movieID).one()
+        return render_template("edit_movie.html", movie=movie)
+    except:
+        return 'Something went wrong trying to edit this movie.', 400

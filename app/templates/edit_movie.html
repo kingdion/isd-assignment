@@ -1,0 +1,62 @@
+{% import 'utilities.html' as util %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Edit Movie - Online Movie Store Application</title>
+        {{ util.head() }}
+    </head>
+    <body>
+        {{ util.navbar() }}
+
+        <div class="container">
+            <h4 id="error-message" class="error-message"></h4>
+
+            <h1> {{ movie.title }} </h1>
+
+            <hr/>
+
+            <h5>Movie Details</h5>
+
+            <!-- <form id="registration-update-form" action="{{ url_for('auth.update_registration_details') }}" method=post>
+                <div class="input-group-lg">
+                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.first_name}}" name="first-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div>
+                <div class="spacer"></div>
+                <div class="input-group-lg">
+                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.last_name}}" name="last-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div>
+                <br/>
+
+                <div class="input-group-lg">
+                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.street_address}}" name="street-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div>
+                <div class="spacer"></div>
+                <div class="input-group-lg">
+                    <input type="number" class="form-control input-lg" value="{{g.logged_in_user.postcode}}" name="postcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div>
+                <div class="spacer"></div>
+                <div class="input-group-lg">
+                    <input type="number" class="form-control input-lg" value="{{g.logged_in_user.phone_number}}" name="phone-number" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div>
+
+                <br/>
+
+                <button id="submit-btn" type="submit" class="btn btn-success btn-lg">Save Changes</button>
+
+                <br/><br/>
+            </form> -->
+
+            <hr/>
+            <!-- <p class="error-message"><b>WARNING: This action is FINAL and cannot be reversed</b></p>
+            <button id="delete-btn" type="submit" class="btn btn-danger btn-lg">Delete Account</button> -->
+
+            <br/><br/>
+            <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
+        </div>
+    </body>
+
+    {{ util.scripts() }}
+
+    <!-- <script src="static/js/profile.js"></script> -->
+</html>

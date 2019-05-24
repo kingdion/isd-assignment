@@ -21,6 +21,14 @@ function catalogue() {
         console.log(data);
         if (data.success) {
             $('#movies-container').html(data.gridHtml);
+
+            $('[data-toggle="tooltip"]').tooltip()
+
+            $('.edit-movie-btn').click(function(event) {
+                event.preventDefault();
+                console.log("fuck you");
+                window.location.href = "/edit-movie/" + $(this).parent().parent().attr('id');
+            });
         }
         else {
             alert("An unexpected error has occurred while trying to refresh the movie catalogue: " + data.message)
@@ -28,7 +36,6 @@ function catalogue() {
 
         setTimeout(function() {
             $('#movies-container').css('opacity', 1);
-            $('[data-toggle="tooltip"]').tooltip()
         }, 250)
     }
 }
