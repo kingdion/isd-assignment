@@ -47,7 +47,6 @@ def do_get_genres():
 
 @routes.route("/do-get-movies-grid-html", methods=["POST"])
 def do_get_movies_grid_html():
-    result = '<div class="movie-grid">'
 
     movies = db.session.query(Movie)
     genres = request.form.getlist("genres[]")
@@ -62,11 +61,21 @@ def do_get_movies_grid_html():
                    .paginate(int(request.form["page"]), int(request.form["amount"]), False)\
                    .items
 
+    result = '<div class="movie-grid">'
     isStaff = False;
     token = session.get("token")
     if token != None:
         token_payload = jwt.decode(token, current_app.config['SECRET_KEY'])
         isStaff = Account.query.filter_by(id = token_payload['id']).first().is_staff
+
+    if (isStaff):
+        result += '<div class="movie-cell">\
+                     <a href="/add-movie">\
+                       <div class="new-movie-placeholder">\
+                         <i class="far fa-plus-square"></i>\
+                       </div>\
+                     </a>\
+                   </div>'
 
     for movie in movies:
         result += '<div class="movie-cell" id="' + str(movie.id) + '"><img src="' + movie.thumbnail_src + '" alt="' + movie.title + '">'
@@ -87,6 +96,11 @@ def do_get_movies_grid_html():
         result += '<div class="movie-description">' + movie.title + '<br>(' + str(movie.release_date.year) + ')</div></div>'
 
     return jsonify({ "success": True, "gridHtml": result + "</div>" })
+
+@routes.route("/add-movie")
+@protected_view
+def add_movie():
+    return render_template("add_movie.html")
 
 @routes.route("/do-add-movie", methods=["POST"])
 def do_add_movie():

@@ -1,6 +1,30 @@
 #body-content, #movies-container {
     opacity: 0;
-    transition: opacity 250ms linear;
+    transition: opacity 250ms;
+}
+
+.new-movie-placeholder {
+    background-color: rgb(160, 160, 160);
+    border: 2px solid rgb(100, 100, 100);
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px;
+    width: 200px;
+    color: rgb(60, 60, 60);
+    transition: all 200ms;
+}
+
+.new-movie-placeholder:hover {
+    background-color: rgb(100, 100, 100);
+    color: rgb(230, 230, 230);
+}
+
+.new-movie-placeholder i {
+    --font-size: 20px;
+    position: relative;
+    font-size: var(--font-size);
+    top: calc(50% - var(--font-size) / 2);
 }
 
 .movie-buttons {
