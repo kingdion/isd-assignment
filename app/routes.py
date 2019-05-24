@@ -69,9 +69,21 @@ def do_get_movies_grid_html():
         isStaff = Account.query.filter_by(id = token_payload['id']).first().is_staff
 
     for movie in movies:
-        result += '<div class="movie-cell"><img src="' + movie.thumbnail_src + '" alt="' + movie.title + '">'
+        result += '<div class="movie-cell" id="' + str(movie.id) + '"><img src="' + movie.thumbnail_src + '" alt="' + movie.title + '">'
         if (isStaff):
-            result += '<div class="movie-buttons"><button type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="top" title="Edit movie details"><i class="far fa-edit"></i></button><div class="spacer-h"></div><button type="button" class="btn btn-dark"><i class="fas fa-compact-disc"></i></button><div class="spacer-h"></div><button type="button" class="btn btn-dark"><i class="far fa-trash-alt"></i></button></div>'
+            result += '<div class="movie-buttons">\
+                         <button type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="top" title="Edit movie details">\
+                           <i class="far fa-edit"></i>\
+                         </button>\
+                         <div class="spacer-h"></div>\
+                         <button type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="top" title="Add a copy of this movie">\
+                            <i class="fas fa-compact-disc"></i>\
+                         </button>\
+                         <div class="spacer-h"></div>\
+                         <button type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="top" title="Delete this movie">\
+                            <i class="far fa-trash-alt"></i>\
+                         </button>\
+                       </div>'
         result += '<div class="movie-description">' + movie.title + '<br>(' + str(movie.release_date.year) + ')</div></div>'
 
     return jsonify({ "success": True, "gridHtml": result + "</div>" })
