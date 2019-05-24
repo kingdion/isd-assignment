@@ -22,10 +22,10 @@ def browse():
     return render_template("browse.html", genres=db.session.query(Genre).all())
 
 # protected_view_staff = partial(protected_view, staff_required=True)
-# @routes.route("/browse-staff")
+# @routes.route("/browse-modify")
 # @protected_view_staff
-# def browse_staff():
-#     return "fuck you", 403
+# def browse_modify():
+#     return render_template("browse-modify.html", genres=db.session.query(Genre).all())
 
 @routes.route("/profile")
 @protected_view
@@ -45,9 +45,9 @@ def do_get_genres():
 
     return jsonify(result)
 
-@routes.route("/do-get-movies-page", methods=["POST"])
-def do_get_movies_page():
-    result = []
+@routes.route("/do-get-movies-grid-html", methods=["POST"])
+def do_get_movies_grid_html():
+    result = '<div class="movie-grid">'
 
     movies = db.session.query(Movie)
     genres = request.form.getlist("genres[]")
@@ -62,10 +62,19 @@ def do_get_movies_page():
                    .paginate(int(request.form["page"]), int(request.form["amount"]), False)\
                    .items
 
-    for movie in movies:
-        result.append(movie.to_dict())
+    isStaff = False;
+    token = session.get("token")
+    if token != None:
+        token_payload = jwt.decode(token, current_app.config['SECRET_KEY'])
+        isStaff = Account.query.filter_by(id = token_payload['id']).first().is_staff
 
-    return jsonify({ "success": True, "movies": result })
+    for movie in movies:
+        result += '<div class="movie-cell"><img src="' + movie.thumbnail_src + '" alt="' + movie.title + '">'
+        if (isStaff):
+            result += '<div class="movie-buttons"><button type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="top" title="Edit movie details"><i class="far fa-edit"></i></button><div class="spacer-h"></div><button type="button" class="btn btn-dark"><i class="fas fa-compact-disc"></i></button><div class="spacer-h"></div><button type="button" class="btn btn-dark"><i class="far fa-trash-alt"></i></button></div>'
+        result += '<div class="movie-description">' + movie.title + '<br>(' + str(movie.release_date.year) + ')</div></div>'
+
+    return jsonify({ "success": True, "gridHtml": result + "</div>" })
 
 @routes.route("/do-add-movie", methods=["POST"])
 def do_add_movie():

@@ -3,78 +3,86 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Browse - Online Movie Store Application</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/browse.css') }}"/>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css"/>
+        {% if g.logged_in_user.is_staff %}
+        <title>Browse - Staff View</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        {% else %}
+        <title>Browse - Online Movie Store Application</title>
+        {% endif %}
         {{ util.head() }}
     </head>
     <body>
         {{ util.navbar() }}
-
-        <div id="page-head" class="container text-center">
-            <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-8 col-xs-12">
-                    <h1 class="display-4 font-weight-normal">Browse Our Collection</h1>
+        <div id="body-content">
+            <div id="page-head" class="container text-center">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8 col-xs-12">
+                        {% if g.logged_in_user.is_staff %}
+                        <h1 class="display-4 font-weight-normal">Modify the Catalogue</h1>
+                        {% else %}
+                        <h1 class="display-4 font-weight-normal">Browse Our Collection</h1>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-2"></div>
                 </div>
-                <div class="col-md-2"></div>
             </div>
-        </div>
 
-        <div class="spacer5"></div>
+            <div class="spacer5"></div>
 
-        <div id="filters-container" class="container text-center">
-            <div class="row">
-                <div class="col-sm">
-                    <form id="filters-form" class="form-horizontal" action="{{ url_for('routes.do_get_movies_page') }}" method=post>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-sm-1"></div>
+            <div id="filters-container" class="container text-center">
+                <div class="row">
+                    <div class="col-sm">
+                        <form id="filters-form" class="form-horizontal" action="{{ url_for('routes.do_get_movies_grid_html') }}" method=post>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-1"></div>
 
-                                <label for="genres[]" class="col-sm-1 text-right left-vcentre-label">Genres</label>
-                                <select class="col-sm-2 js-example-basic-multiple" name="genres[]" multiple="multiple">
-                                    {% for genre in genres %}
-                                    <option value="{{ genre.id }}">{{ genre.name }}</option>
-                                    {% endfor %}
-                                </select>
+                                    <label for="genres[]" class="col-sm-1 text-right left-vcentre-label">Genres</label>
+                                    <select class="col-sm-2 js-example-basic-multiple" name="genres[]" multiple="multiple">
+                                        {% for genre in genres %}
+                                        <option value="{{ genre.id }}">{{ genre.name }}</option>
+                                        {% endfor %}
+                                    </select>
 
-                                <label for="years[]" class="col-sm-1 text-right left-vcentre-label">Years</label>
-                                <select class="col-sm-2 js-example-basic-multiple" name="years[]" multiple="multiple">
-                                    <option value="2019">2019</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2017">2017</option>
-                                </select>
+                                    <label for="years[]" class="col-sm-1 text-right left-vcentre-label">Years</label>
+                                    <select class="col-sm-2 js-example-basic-multiple" name="years[]" multiple="multiple">
+                                        <option value="2019">2019</option>
+                                        <option value="2018">2018</option>
+                                        <option value="2017">2017</option>
+                                    </select>
 
-                                <label for="ratings[]" class="col-sm-1 text-right left-vcentre-label">Ratings</label>
-                                <select class="col-sm-2 js-example-basic-multiple" name="ratings[]" multiple="multiple">
-                                    <option value="5">5✮</option>
-                                    <option value="4">4✮</option>
-                                    <option value="3">3✮</option>
-                                    <option value="2">2✮</option>
-                                    <option value="1">1✮</option>
-                                </select>
+                                    <label for="ratings[]" class="col-sm-1 text-right left-vcentre-label">Ratings</label>
+                                    <select class="col-sm-2 js-example-basic-multiple" name="ratings[]" multiple="multiple">
+                                        <option value="5">5✮</option>
+                                        <option value="4">4✮</option>
+                                        <option value="3">3✮</option>
+                                        <option value="2">2✮</option>
+                                        <option value="1">1✮</option>
+                                    </select>
 
-                                <div class="col-sm-2">
-                                    <button id="submit-btn" type="submit" class="btn btn-secondary btn-sm" style="float:left;">Apply Filters</button>
+                                    <div class="col-sm-2">
+                                        <button id="submit-btn" type="submit" class="btn btn-secondary btn-sm" style="float:left;">Apply Filters</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="spacer5"></div>
+            <div class="spacer5"></div>
 
-        <div id="movies-container" class="container-fluid text-center">
-            <div class="movie-grid">
+            <div id="movies-container" class="container-fluid text-center">
             </div>
+
+            <div class="spacer5"></div>
+
+            {{ util.footer() }}
         </div>
-
-        <div class="spacer5"></div>
-
-        {{ util.footer() }}
     </body>
 
     {{ util.scripts() }}

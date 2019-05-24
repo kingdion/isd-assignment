@@ -53,6 +53,14 @@
     color: white !important;
 }
 
+.spacer-h {
+    position: relative;
+    display: inline-block;
+    width: 5px;
+    height: 100%;
+    vertical-align: top;
+}
+
 .spacer {
     position: relative;
     width: 100%;

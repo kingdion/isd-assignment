@@ -1,6 +1,27 @@
-#filters-container, #movies-container {
+#body-content, #movies-container {
     opacity: 0;
     transition: opacity 250ms linear;
+}
+
+.movie-buttons {
+    position: absolute;
+    width: calc(100% - 20px);
+    height: 40px;
+    top: 260px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    z-index: 1;
+    color: white;
+    font-size: 10px;
+}
+
+.movie-buttons button {
+    position: relative;
+    height: 30px;
+    width: 30px;
+    padding: 0px !important;
+    top: 5px;
 }
 
 .left-vcentre-label {
@@ -12,7 +33,6 @@
 .movie-grid {
     position: relative;
     width: 100%;
-    /* background-color: blue; */
     padding: 0 10%;
 }
 
@@ -20,8 +40,6 @@
     position: relative;
     width: 220px;
     height: 350px;
-    /* background-color: red; */
-    /* color: red; */
     display: inline-block;
     overflow: hidden;
 }
@@ -29,6 +47,8 @@
 .movie-cell img {
     border-radius: 5px;
     height: 300px;
+    width: 200px;
+    z-index: 0;
 }
 
 .movie-description {

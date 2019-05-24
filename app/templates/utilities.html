@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/shared.css') }}"/>
-
 {% endmacro %}
 
 {% macro navbar() -%}
@@ -19,12 +18,12 @@
 
         <div class="collapse navbar-collapse" id="navbar-links">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-
-                {% if g.logged_in_user == None %}
-
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home</a>
                 </li>
+
+                {% if g.logged_in_user == None %}
+
                 <li class="nav-item active">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
@@ -32,27 +31,38 @@
                     <a class="nav-link" href="/register">Register</a>
                 </li>
 
+                <li class="nav-item active">
+                    <a class="nav-link" href="/browse">Browse Movies</a>
+                </li>
+
                 {% else %}
 
-                <li class="nav-item active">
-                    <div class="omss-profile-container">
-                        Logged in as: <a class="omss-profile-link" href="/profile"> {{g.logged_in_user.username}} </a>
+                <li class="nav-item active dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="accountActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Logged in as: {{g.logged_in_user.username}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="accountActionsDropdown">
+                        <a class="dropdown-item" href="/profile">Account Controls</a>
+                        <a class="dropdown-item" href="/logs">Access Logs</a>
                     </div>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/logs">Logs</a>
                 </li>
 
                 {% if g.logged_in_user.is_staff %}
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     Staff Actions
+                    <a class="nav-link dropdown-toggle" href="#" id="staffActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Staff Actions
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="/browse-staff">Add/Remove/Update a Movie</a>
+                    <div class="dropdown-menu" aria-labelledby="staffActionsDropdown">
+                        <a class="dropdown-item" href="/browse">Modify the Catalogue</a>
                     </div>
-                 </li>
+                </li>
+
+                {% else %}
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="/browse">Browse Movies</a>
+                </li>
 
                 {% endif %}
 
