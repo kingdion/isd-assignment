@@ -5,6 +5,7 @@ from functools import partial
 from .authentication import protected_view
 from .models import *
 from sqlalchemy import extract
+from operator import itemgetter
 
 routes = Blueprint("routes", __name__)
 
@@ -50,17 +51,28 @@ def do_get_genres():
 def do_get_movies_grid_html():
 
     movies = db.session.query(Movie)
+
     genres = request.form.getlist("genres[]")
     if (len(genres) > 0):
         movies = movies.filter(Movie.genres.any(Genre.id.in_(request.form.getlist("genres[]"))))
 
-    years = request.form.getlist("years[]")
-    if (len(years) > 0):
-        movies = movies.filter(extract("year", Movie.release_date).in_(request.form.getlist("years[]")))
-        
-    movies = movies.order_by(Movie.title.asc(), Movie.release_date.desc())\
-                   .paginate(int(request.form["page"]), int(request.form["amount"]), False)\
-                   .items
+    movies = movies.order_by(Movie.title.asc(), Movie.release_date.desc()).all()
+
+    #moviesPaged = moviesQuery.paginate(int(request.form["page"]), int(request.form["amount"]), False).items
+
+    scoredMovies = []
+    searchString = request.form.get("title")
+    for movie in movies:
+        if searchString:
+            score = score_movie_title(movie.title, searchString)
+            if (score > 0):
+                scoredMovies.append((movie, score, movie.title))
+        else:
+            scoredMovies.append((movie, 1, movie.title))
+
+    if searchString:
+        scoredMovies.sort(key=itemgetter(2))
+        scoredMovies.sort(key=itemgetter(1), reverse=True)
 
     result = '<div class="movie-grid">'
     isStaff = False;
@@ -78,7 +90,10 @@ def do_get_movies_grid_html():
                      </a>\
                    </div>'
 
-    for movie in movies:
+    startIndex = int(request.form["page"]) * int(request.form["amount"])
+    endIndex = startIndex + int(request.form["amount"])
+    for movie, score, title in scoredMovies[startIndex : endIndex]:
+        print(score)
         result += '<div class="movie-cell" id="' + str(movie.id) + '"><img src="' + movie.thumbnail_src + '" alt="' + movie.title + '">'
         if (isStaff):
             result += '<div class="movie-buttons">\
@@ -97,6 +112,28 @@ def do_get_movies_grid_html():
         result += '<div class="movie-description">' + movie.title + '<br>(' + str(movie.release_date.year) + ')</div></div>'
 
     return jsonify({ "success": True, "gridHtml": result + "</div>" })
+
+def score_movie_title(title, searchTitle):
+    if title == searchTitle:
+        return 1
+
+    searchWords = set(searchTitle.split());
+    titleWords = set(title.split());
+
+    score = 0;
+
+    for searchWord in searchWords:
+        for titleWord in titleWords:
+            sWord = searchWord.lower()
+            tWord = titleWord.lower()
+            if sWord == tWord:
+                score += 1
+            elif (sWord in tWord and len(sWord) > 2) or (tWord in sWord and len(tWord) > 2):
+                score += 0.5
+
+    score = score / max(len(titleWords), len(searchWords))
+
+    return score if score < 1 else 0.99
 
 @routes.route("/add-movie")
 @protected_view_staff

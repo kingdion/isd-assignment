@@ -90,6 +90,6 @@
     font-size: 1rem;
 }
 
-#submit-btn {
-    height: 100%;
+#submit-btn, #title-input {
+    height: 34px;
 }

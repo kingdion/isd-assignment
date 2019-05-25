@@ -6,6 +6,7 @@ $(document).ready(function() {
 
     $('#filters-form').submit(function(event) {
         event.preventDefault();
+        window.catalogue.currentPage = 0;
         update_movies_grid();
     });
 });
@@ -20,11 +21,12 @@ function catalogue() {
 function update_movies_grid() {
     var form = $('#filters-form');
     var data = form.serialize() + "&page=" + window.catalogue.currentPage + "&amount=" + window.catalogue.maxLoadedMovies;
-    $.post(form.attr('action'), data, update_movies_grid_callback);
     $('#movies-container').css('opacity', 0);
+    $.post(form.attr('action'), data, update_movies_grid_callback);
 }
 
 function update_movies_grid_callback(data) {
+    console.log('y num');
     if (data.success) {
         $('#movies-container').html(data.gridHtml);
 
