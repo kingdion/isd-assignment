@@ -176,3 +176,17 @@ class PaymentMethod(db.Model):
 
     def __repr__(self):
         return f'PaymentMethod: {self.method_name}'
+
+class ShipmentDetails(db.Model):
+    __tablename__ = 'shipmentdetails'
+
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
+    date = db.Column(db.Date(), nullable=False)
+    shipment_method = db.Column(db.String(20), nullable=False)
+    address = db.Column(db.String(100), nullable=False)
+
+    order_id = db.Column(UUID(as_uuid=True), db.ForeignKey("orders.id"))
+    order = db.relationship("Orders", backref="shipment_details")
+
+    def __repr__(self):
+        return f'ShipmentDetails: {self.date}, {self.address}, {self.shipment_method}'
