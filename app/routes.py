@@ -6,6 +6,7 @@ from .authentication import protected_view
 from .models import *
 from sqlalchemy import extract
 from operator import itemgetter
+from werkzeug.utils import secure_filename
 
 routes = Blueprint("routes", __name__)
 
@@ -23,11 +24,6 @@ def dashboard():
 @routes.route("/browse")
 def browse():
     return render_template("browse.html", genres=db.session.query(Genre).all())
-
-# @routes.route("/browse-modify")
-# @protected_view_staff
-# def browse_modify():
-#     return render_template("browse-modify.html", genres=db.session.query(Genre).all())
 
 @routes.route("/profile")
 @protected_view
@@ -57,8 +53,6 @@ def do_get_movies_grid_html():
         movies = movies.filter(Movie.genres.any(Genre.id.in_(request.form.getlist("genres[]"))))
 
     movies = movies.order_by(Movie.title.asc(), Movie.release_date.desc()).all()
-
-    #moviesPaged = moviesQuery.paginate(int(request.form["page"]), int(request.form["amount"]), False).items
 
     scoredMovies = []
     searchString = request.form.get("title")
@@ -93,7 +87,6 @@ def do_get_movies_grid_html():
     startIndex = int(request.form["page"]) * int(request.form["amount"])
     endIndex = startIndex + int(request.form["amount"])
     for movie, score, title in scoredMovies[startIndex : endIndex]:
-        print(score)
         result += '<div class="movie-cell" id="' + str(movie.id) + '"><img src="' + movie.thumbnail_src + '" alt="' + movie.title + '">'
         if (isStaff):
             result += '<div class="movie-buttons">\
