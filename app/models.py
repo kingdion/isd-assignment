@@ -14,7 +14,7 @@ class Movie(db.Model):
     runtime = db.Column(db.Integer, nullable=False)
     maturity_rating = db.Column(db.Integer, db.ForeignKey('maturityrating.id'), nullable=False)
 
-    genres = db.relationship('Genre', secondary = 'moviegenre', back_populates="movies")
+    genres = db.relationship('Genre', secondary='moviegenre', back_populates="movies")
     copies = db.relationship('MovieCopy')
 
     def to_dict(self):
@@ -47,7 +47,7 @@ class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
     name = db.Column(db.String(35), nullable=False)
 
-    movies = db.relationship('Movie', secondary = 'moviegenre', back_populates="genres")
+    movies = db.relationship('Movie', secondary='moviegenre', back_populates="genres")
 
     def to_dict(self):
         return { 'id': self.id, 'name': self.name }

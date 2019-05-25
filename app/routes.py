@@ -8,6 +8,8 @@ from sqlalchemy import extract
 
 routes = Blueprint("routes", __name__)
 
+protected_view_staff = partial(protected_view, staff_required=True)
+
 @routes.route("/")
 def index():
     return render_template("index.html")
@@ -21,7 +23,6 @@ def dashboard():
 def browse():
     return render_template("browse.html", genres=db.session.query(Genre).all())
 
-# protected_view_staff = partial(protected_view, staff_required=True)
 # @routes.route("/browse-modify")
 # @protected_view_staff
 # def browse_modify():
@@ -98,11 +99,12 @@ def do_get_movies_grid_html():
     return jsonify({ "success": True, "gridHtml": result + "</div>" })
 
 @routes.route("/add-movie")
-@protected_view
+@protected_view_staff
 def add_movie():
     return render_template("add_movie.html")
 
 @routes.route("/do-add-movie", methods=["POST"])
+@protected_view_staff
 def do_add_movie():
     if db.session.query(Movie.id).filter_by(title=request.form["title"], release_date=request.form["release-date"]).scalar() is not None:
         return jsonify({"success": False, "reason": "movie exists"})
@@ -125,16 +127,37 @@ def do_add_movie():
     return jsonify({ "success": True })
 
 @routes.route("/edit-movie/<movieID>")
-@protected_view
+@protected_view_staff
 def edit_movie(movieID):
     try:
         movie = Movie.query.filter_by(id=movieID).one()
-        return render_template("edit_movie.html", movie=movie)
-    except:
+        return render_template("edit_movie.html", movie=movie, genres=db.session.query(Genre).all(), maturityRatings=db.session.query(MaturityRating).all())
+    except Exception as e:
+        print(e)
         return 'Something went wrong trying to edit this movie.', 400
 
+@routes.route("/do-edit-movie", methods=["POST"])
+@protected_view_staff
+def do_edit_movie():
+    try:
+        movie = Movie.query.filter_by(id=request.form["id"]).one()
+        movie.title = request.form["title"]
+        movie.release_date = request.form["release-date"]
+        movie.runtime = request.form["runtime"]
+        movie.maturity_rating = request.form["maturity-rating"]
+        movie.genres = [];
+        for id in request.form.getlist("genres[]"):
+            genre = db.session.query(Genre).filter_by(id=id).one()
+            movie.genres.append(genre)
+        db.session.commit()
+
+        return render_template("edit_movie.html", movie=movie, genres=db.session.query(Genre).all(), maturityRatings=db.session.query(MaturityRating).all())
+    except Exception as e:
+        print(e)
+        return 'Something went wrong trying submit edits to this movie.', 400
+
 @routes.route("/edit-movie-copies/<movieID>")
-@protected_view
+@protected_view_staff
 def add_movie_copy(movieID):
     try:
         movie = Movie.query.filter_by(id=movieID).one()
@@ -143,7 +166,7 @@ def add_movie_copy(movieID):
         return 'Something went wrong trying to edit copies of this movie.', 400
 
 @routes.route("/delete-movie", methods=["POST"])
-@protected_view
+@protected_view_staff
 def delete_movie():
     try:
         movie = Movie.query.filter_by(id=request.form["id"]).one()

@@ -1,0 +1,10 @@
+#body-content {
+    opacity: 0;
+    transition: opacity 250ms;
+}
+
+@media (max-width: 992px) {
+   .spacer-h {
+      display: none;
+   }
+}

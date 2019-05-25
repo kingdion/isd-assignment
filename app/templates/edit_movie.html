@@ -4,12 +4,15 @@
 <html lang="en">
     <head>
         <title>Edit Movie - Staff View</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/edit_movie.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css"/>
         {{ util.head() }}
     </head>
     <body>
         {{ util.navbar() }}
 
-        <div class="container">
+        <div id="body-content" class="container">
             <h4 id="error-message" class="error-message"></h4>
 
             <h1> {{ movie.title }} </h1>
@@ -18,38 +21,64 @@
 
             <h5>Movie Details</h5>
 
-            <!-- <form id="registration-update-form" action="{{ url_for('auth.update_registration_details') }}" method=post>
-                <div class="input-group-lg">
-                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.first_name}}" name="first-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+            <form id="movie-edit-form" class="container" action="{{ url_for('routes.do_edit_movie') }}" method=post>
+                <div class="row input-group-lg">
+                    <input type="text" class="form-control input-lg col-lg-12" value="{{ movie.id }}" name="id" readonly>
                 </div>
+
                 <div class="spacer"></div>
-                <div class="input-group-lg">
-                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.last_name}}" name="last-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+
+                <div class="row input-group-lg">
+                    <input type="text" class="form-control input-lg col-lg-12" value="{{ movie.title }}" name="title" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
+
+                <div class="spacer"></div>
+
+                <div class="row input-group-lg">
+                    <select class="col-lg-12 js-example-basic-multiple" name="genres[]" multiple="multiple">
+                        {% for genre in genres %}
+
+
+                        <option value="{{ genre.id }}"
+                                {% for movieGenre in movie.genres %}
+                                {% if genre.id == movieGenre.id %}
+                                selected="selected"
+                                {% endif %}
+                                {% endfor %}>
+                            {{ genre.name }}
+                        </option>
+
+
+                        <!-- <option value="{{ genre.id }}">{{ genre.name }}</option> -->
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="spacer"></div>
+
+                <div class="input-group-lg row">
+                    <input class="col-lg-3 form-control" type="date" id="date-time-picker" value="{{ movie.release_date }}" name="release-date" data-toggle="tooltip" data-trigger="manual" data-placement="right" title=""/>
+                    <div class="spacer-h"></div>
+                    <input class="col-lg-1 form-control" style="min-width: 100px !important;" type="number" value="{{ movie.runtime }}" name="runtime" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <div class="spacer-h"></div>
+                    <select class="col-lg-1 js-example-basic-single" name="maturity-rating" value="{{ movie.maturity_rating }}">
+                        {% for maturityRating in maturityRatings %}
+                        {% if maturityRating.id == movie.maturity_rating %}
+                        <option value="{{ maturityRating.id }}" selected="selected">{{ maturityRating.maturity_rating }}</option>
+                        {% else %}
+                        <option value="{{ maturityRating.id }}">{{ maturityRating.maturity_rating }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
                 <br/>
-
-                <div class="input-group-lg">
-                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.street_address}}" name="street-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                <div class="row">
+                    <button id="submit-btn" type="submit" class="btn btn-success btn-lg">Save Changes</button>
                 </div>
-                <div class="spacer"></div>
-                <div class="input-group-lg">
-                    <input type="number" class="form-control input-lg" value="{{g.logged_in_user.postcode}}" name="postcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
-                </div>
-                <div class="spacer"></div>
-                <div class="input-group-lg">
-                    <input type="number" class="form-control input-lg" value="{{g.logged_in_user.phone_number}}" name="phone-number" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
-                </div>
-
-                <br/>
-
-                <button id="submit-btn" type="submit" class="btn btn-success btn-lg">Save Changes</button>
-
-                <br/><br/>
-            </form> -->
+            </form>
 
             <hr/>
-            <p class="error-message"><b>WARNING: This action is FINAL and cannot be reversed</b></p>
-            <button id="delete-btn" type="submit" class="btn btn-danger btn-lg">Delete Movie</button>
 
             <br/><br/>
             <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
@@ -57,6 +86,6 @@
     </body>
 
     {{ util.scripts() }}
-
-    <!-- <script src="static/js/profile.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <script src="{{ url_for('static', filename='js/edit_movie.js') }}"></script>
 </html>

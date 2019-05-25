@@ -88,5 +88,5 @@
 
     {{ util.scripts() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-    <script src="static/js/browse.js"></script>
+    <script src="{{ url_for('static', filename='js/browse.js') }}"></script>
 </html>
