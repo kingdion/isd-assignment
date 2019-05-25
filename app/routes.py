@@ -140,4 +140,15 @@ def add_movie_copy(movieID):
         movie = Movie.query.filter_by(id=movieID).one()
         return render_template("edit_movie_copies.html", movie=movie)
     except:
-        return 'Something went wrong trying to add a copy of this movie.', 400
+        return 'Something went wrong trying to edit copies of this movie.', 400
+
+@routes.route("/delete-movie", methods=["POST"])
+@protected_view
+def delete_movie():
+    try:
+        movie = Movie.query.filter_by(id=request.form["id"]).one()
+        db.session.delete(movie)
+        db.session.commit()
+        return jsonify( {"success": True} )
+    except:
+        return 'Something went wrong trying to delete this movie.', 400
