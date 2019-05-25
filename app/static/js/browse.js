@@ -1,8 +1,13 @@
 $(document).ready(function() {
-    $('.js-example-basic-multiple').select2({ theme: "bootstrap", width: "resolve" });
+    $('.js-example-placeholder-multiple').select2({ theme: "bootstrap", width: "resolve", placeholder: "Genres" });
     $('#body-content').css('opacity', 1);
     window.catalogue = new catalogue();
     update_movies_grid();
+
+    $('#filters-form').submit(function(event) {
+        event.preventDefault();
+        update_movies_grid();
+    });
 });
 
 //Only one catalogue object should ever be created, and it should be attached to the window

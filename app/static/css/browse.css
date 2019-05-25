@@ -82,3 +82,14 @@
     width: 200px;
     margin: 0 auto;
 }
+
+*::placeholder {
+    color: #636c72 !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    opacity: 0.8 !important;
+    font-size: 1rem;
+}
+
+#submit-btn {
+    height: 100%;
+}
