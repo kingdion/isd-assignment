@@ -85,7 +85,7 @@ def do_get_movies_grid_html():
                            <i class="far fa-edit"></i>\
                          </button>\
                          <div class="spacer-h"></div>\
-                         <button type="button" class="btn btn-dark add-copy-btn" data-toggle="tooltip" data-placement="top" title="Add a copy of this movie">\
+                         <button type="button" class="btn btn-dark edit-movie-copies-btn" data-toggle="tooltip" data-placement="top" title="Edit copies of this movie">\
                             <i class="fas fa-compact-disc"></i>\
                          </button>\
                          <div class="spacer-h"></div>\
@@ -132,3 +132,12 @@ def edit_movie(movieID):
         return render_template("edit_movie.html", movie=movie)
     except:
         return 'Something went wrong trying to edit this movie.', 400
+
+@routes.route("/edit-movie-copies/<movieID>")
+@protected_view
+def add_movie_copy(movieID):
+    try:
+        movie = Movie.query.filter_by(id=movieID).one()
+        return render_template("edit_movie_copies.html", movie=movie)
+    except:
+        return 'Something went wrong trying to add a copy of this movie.', 400

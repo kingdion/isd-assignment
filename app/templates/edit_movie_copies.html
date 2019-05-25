@@ -1,0 +1,50 @@
+{% import 'utilities.html' as util %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Edit Movie Copies - Staff View</title>
+        {{ util.head() }}
+    </head>
+    <body>
+        {{ util.navbar() }}
+
+        <div class="container">
+            <h4 id="error-message" class="error-message"></h4>
+
+            <h1>Copies of {{ movie.title }}</h1>
+
+            <hr/>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Information</th>
+                            <th>Price</th>
+                            <th>Sold</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for copy in movie.copies %}
+                        <tr class="copy">
+                            <td>{{loop.index}}</td>
+                            <td>{{copy.copy_information}}</td>
+                            <td>{{copy.sold}}</td>
+                            <!-- later, do if copy.sold, show orderid (and maybe link to order), otherwise show "not sold" -->
+                            <td><button id="{{log.id}}" class="delete-log btn btn-danger btn-sm">Delete Log</button>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <br/><br/>
+            <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
+        </div>
+    </body>
+
+    {{ util.scripts() }}
+
+    <script src="static/js/edit_movie_copies.js"></script>
+</html>
