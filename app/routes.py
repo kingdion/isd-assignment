@@ -101,7 +101,7 @@ def do_get_movies_grid_html():
 @routes.route("/add-movie")
 @protected_view_staff
 def add_movie():
-    return render_template("add_movie.html")
+    return render_template("add_movie.html", genres=db.session.query(Genre).all(), maturityRatings=db.session.query(MaturityRating).all())
 
 @routes.route("/do-add-movie", methods=["POST"])
 @protected_view_staff
@@ -114,7 +114,7 @@ def do_add_movie():
         release_date = request.form["release-date"],\
         thumbnail_src = "static/images/image.png",\
         runtime = request.form["runtime"],\
-        maturity_rating = request.form["maturity-rating"] #assumes the client has gotten list of maturity ratings
+        maturity_rating = request.form["maturity-rating"]
     )
 
     for id in request.form.getlist("genres[]"):

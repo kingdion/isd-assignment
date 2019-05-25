@@ -21,9 +21,9 @@
 
             <h5>Movie Details</h5>
 
-            <form id="movie-edit-form" class="container" action="{{ url_for('routes.do_edit_movie') }}" method=post>
+            <form id="movie-form" class="container" action="{{ url_for('routes.do_edit_movie') }}" method=post>
                 <div class="row input-group-lg">
-                    <input type="text" class="form-control input-lg col-lg-12" value="{{ movie.id }}" name="id" readonly>
+                    <input type="text" class="form-control input-lg col-lg-12" value="{{ movie.id }}" name="id" readonly data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
 
                 <div class="spacer"></div>
@@ -35,10 +35,8 @@
                 <div class="spacer"></div>
 
                 <div class="row input-group-lg">
-                    <select class="col-lg-12 js-example-basic-multiple" name="genres[]" multiple="multiple">
+                    <select class="col-lg-12 js-example-placeholder-multiple" name="genres[]" multiple="multiple" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                         {% for genre in genres %}
-
-
                         <option value="{{ genre.id }}"
                                 {% for movieGenre in movie.genres %}
                                 {% if genre.id == movieGenre.id %}
@@ -47,9 +45,6 @@
                                 {% endfor %}>
                             {{ genre.name }}
                         </option>
-
-
-                        <!-- <option value="{{ genre.id }}">{{ genre.name }}</option> -->
                         {% endfor %}
                     </select>
                 </div>
@@ -61,7 +56,7 @@
                     <div class="spacer-h"></div>
                     <input class="col-lg-1 form-control" style="min-width: 100px !important;" type="number" value="{{ movie.runtime }}" name="runtime" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                     <div class="spacer-h"></div>
-                    <select class="col-lg-1 js-example-basic-single" name="maturity-rating" value="{{ movie.maturity_rating }}">
+                    <select class="col-lg-2 js-example-placeholder-single" name="maturity-rating" value="{{ movie.maturity_rating }}" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                         {% for maturityRating in maturityRatings %}
                         {% if maturityRating.id == movie.maturity_rating %}
                         <option value="{{ maturityRating.id }}" selected="selected">{{ maturityRating.maturity_rating }}</option>
@@ -87,5 +82,5 @@
 
     {{ util.scripts() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-    <script src="{{ url_for('static', filename='js/edit_movie.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/add_edit_movie.js') }}"></script>
 </html>
