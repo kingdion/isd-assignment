@@ -39,11 +39,11 @@
                 <div class="spacer"></div>
 
                 <div class="input-group-lg row">
-                    <input class="col-lg-3 form-control" type="date" id="date-time-picker" name="release-date" placeholder="Release Date" data-toggle="tooltip" data-trigger="manual" data-placement="right" title=""/>
+                    <input class="col-lg-3 form-control" type="date" id="date-time-picker" name="release-date" placeholder="Release Date" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title=""/>
                     <div class="spacer-h"></div>
-                    <input class="col-lg-1 form-control" style="min-width: 100px !important;" type="number" name="runtime" placeholder="Dur." data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input class="col-lg-1 form-control" style="min-width: 100px !important;" type="number" name="runtime" placeholder="Dur." data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="">
                     <div class="spacer-h"></div>
-                    <select class="col-lg-1 js-example-placeholder-single" name="maturity-rating" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <select class="col-lg-1 js-example-placeholder-single" name="maturity-rating">
                         {% for maturityRating in maturityRatings %}
                         <option value="{{ maturityRating.id }}">{{ maturityRating.maturity_rating }}</option>
                         {% endfor %}

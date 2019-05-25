@@ -40,7 +40,7 @@
                         <form id="filters-form" class="form-horizontal" action="{{ url_for('routes.do_get_movies_grid_html') }}" method=post>
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-2"></div>
 
                                     <label for="genres[]" class="col-sm-1 text-right left-vcentre-label">Genres</label>
                                     <select class="col-sm-2 js-example-basic-multiple" name="genres[]" multiple="multiple">
@@ -56,18 +56,11 @@
                                         <option value="2017">2017</option>
                                     </select>
 
-                                    <label for="ratings[]" class="col-sm-1 text-right left-vcentre-label">Ratings</label>
-                                    <select class="col-sm-2 js-example-basic-multiple" name="ratings[]" multiple="multiple">
-                                        <option value="5">5✮</option>
-                                        <option value="4">4✮</option>
-                                        <option value="3">3✮</option>
-                                        <option value="2">2✮</option>
-                                        <option value="1">1✮</option>
-                                    </select>
-
                                     <div class="col-sm-2">
                                         <button id="submit-btn" type="submit" class="btn btn-secondary btn-sm" style="float:left;">Apply Filters</button>
                                     </div>
+
+                                    <div class="col-sm-2"></div>
                                 </div>
                             </div>
                         </form>

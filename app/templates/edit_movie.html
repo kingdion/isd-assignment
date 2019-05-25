@@ -52,11 +52,11 @@
                 <div class="spacer"></div>
 
                 <div class="input-group-lg row">
-                    <input class="col-lg-3 form-control" type="date" id="date-time-picker" value="{{ movie.release_date }}" name="release-date" data-toggle="tooltip" data-trigger="manual" data-placement="right" title=""/>
+                    <input class="col-lg-3 form-control" type="date" id="date-time-picker" value="{{ movie.release_date }}" name="release-date" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title=""/>
                     <div class="spacer-h"></div>
-                    <input class="col-lg-1 form-control" style="min-width: 100px !important;" type="number" value="{{ movie.runtime }}" name="runtime" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input class="col-lg-1 form-control" style="min-width: 100px !important;" type="number" value="{{ movie.runtime }}" name="runtime" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="">
                     <div class="spacer-h"></div>
-                    <select class="col-lg-2 js-example-placeholder-single" name="maturity-rating" value="{{ movie.maturity_rating }}" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <select class="col-lg-2 js-example-placeholder-single" name="maturity-rating" value="{{ movie.maturity_rating }}">
                         {% for maturityRating in maturityRatings %}
                         {% if maturityRating.id == movie.maturity_rating %}
                         <option value="{{ maturityRating.id }}" selected="selected">{{ maturityRating.maturity_rating }}</option>
