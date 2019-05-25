@@ -57,8 +57,7 @@ def do_get_movies_grid_html():
     years = request.form.getlist("years[]")
     if (len(years) > 0):
         movies = movies.filter(extract("year", Movie.release_date).in_(request.form.getlist("years[]")))
-    print("fuck this")
-    print(request.form["page"])
+        
     movies = movies.order_by(Movie.title.asc(), Movie.release_date.desc())\
                    .paginate(int(request.form["page"]), int(request.form["amount"]), False)\
                    .items

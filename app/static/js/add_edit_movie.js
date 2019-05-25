@@ -21,7 +21,7 @@ function add_edit_movie_callback(data) {
     }
     else {
         if (data.reason == 'movie exists') {
-            set_warning($('[name="title"]'), "A movie with that title already exists");
+            set_warning($('[name="title"]'), "A movie with that title and release date already exists");
         }
     }
 }
