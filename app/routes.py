@@ -38,7 +38,7 @@ def logs():
 @routes.route("/payment")
 @protected_view
 def payment():
-    return render_template("paymente.html")
+    return render_template("payment.html")
 
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():
