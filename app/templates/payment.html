@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Payment Information - Online Movie Store Application</title>
+        <title>Payment Details - Online Movie Store Application</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/payment.css') }}"/>
         {{ util.head() }}
     </head>
@@ -15,7 +15,7 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-6 col-xs-12">
                         <p class="greyed"><b>YOUR PAYMENT INFORMATION IS SECURE</b></p>
-                        <h1 class="display-4 font-weight-normal">Enter Payment Details</h1>
+                        <h1 class="display-4 font-weight-normal">Payment Details</h1>
                         <p class="lead font-weight-normal">Please review the details below before entering payment information  </p>
                     </div>
                     <div class="col-md-3"></div>
@@ -26,25 +26,30 @@
                     <div class="col-md-6">
                         <form id="payment-form" action="{{ url_for('auth.do_register') }}" method=POST>
                             <h4>Billing Address</h4>
+                            <p class="lead font-weight-normal"> Please edit if billing address is different </p>
                             <div class="spacer"></div>
                             <div class="row">
-                                <div class="input-group-lg col-md-7">
+                                <h5>Street Address</h5>
+                                <div class="input-group-lg col-md-9">
                                     <input type="text" class="form-control input-lg" value="{{g.logged_in_user.street_address}}" name="street-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                                 </div>
-                                <div class="input-group-lg col-md-3">
+                               
+                            </div>
+                            <div class="row">
+                                <h5>Postcode:</h5>
+                                 <div class="input-group-lg col-md-3">
                                     <input type="number" class="form-control input-lg" value="{{g.logged_in_user.postcode}}" name="postcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                                 </div>
                             </div>
-                            
                             <br/>
                             <h4>Credit Card Details</h4>
                             <p class="lead font-weight-normal"> We accept the following cards: </p>
                             <div class="spacer"></div>
                             <div>
-                                <img src="../static/images/bank_icons/mastercard.jpg" alt="Mastercard">
-                                <img src="../static/images/bank_icons/visa.jpg" alt="Visa">
-                                <img src="../static/images/bank_icons/paypal.jpg" alt="Paypal">
-                                <img src="../static/images/bank_icons/amex.jpg" alt="American Express">
+                                <img class="icon" src="../static/images/bank_icons/mastercard.jpg" alt="Mastercard">
+                                <img class="icon" src="../static/images/bank_icons/visa.jpg" alt="Visa">
+                                <img class="icon" src="../static/images/bank_icons/paypal.jpg" alt="Paypal">
+                                <img class="icon" src="../static/images/bank_icons/amex.jpg" alt="American Express">
                             </div>
                             <div class="spacer"></div>
                             <div class="input-group-lg"> <!--  enhances input by adding help test -->
@@ -55,7 +60,7 @@
                                 <input type="text" class="form-control input-lg" placeholder="Cardholder's Last Name" name="last-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                             </div>
                             <div class="row">
-                                <div class="input-group-lg col-md-7">
+                                <div class="input-group-lg col-md-8">
                                     <input type="number"
                                         class="form-control input-lg"
                                         placeholder="Credit Card Number (xxxx xxxx xxxx xxxx)"
@@ -65,7 +70,7 @@
                                         data-toggle="tooltip" data-trigger="manual" data-placement="right"
                                         title="">
                                 </div>
-                                <div class="input-group-lg col-md-3">
+                                <div class="input-group-lg col-md-4">
                                     <input type="number"
                                         class="form-control input-lg"
                                         placeholder="CVC (xxx)"
@@ -101,3 +106,4 @@
 
     <script src="static/js/payment.js"></script>
 </html>
+
