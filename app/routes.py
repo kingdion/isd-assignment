@@ -274,3 +274,12 @@ def list_shipment_details():
 @protected_view_staff
 def admin_create_user():
     return render_template("create_user.html")
+
+@routes.route("/order")
+def view_order():
+    orderlist = db.session.query(MovieOrderLine).all()
+    return render_template("orders.html", orderlist = orderlist)
+
+@routes.route("/order/add")
+def add_order():
+    return redirect(url_for("routes.browse"))
