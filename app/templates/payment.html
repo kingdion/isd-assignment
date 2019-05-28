@@ -48,7 +48,7 @@
                                 <div class="col-md-4">
                                     <h5>Street Address:</h5>
                                 </div>
-                                <div class="input-group-lg col-md-9">
+                                <div class="input-group-lg col-md-8">
                                     <input type="text" class="form-control input-lg" value="{{g.logged_in_user.street_address}}" name="dstreet-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                                 </div> 
                             </div>
@@ -108,35 +108,25 @@
                                 <div class="col-md-4">
                                     <h5>Expiration Date:</h5>
                                 </div>
-                                <div class="input-group-lg col-md-2">
-                                    <select name="month">
-                                        <option value="01">01</option>   
-                                        <option value="02">02</option>   
-                                        <option value="03">03</option>   
-                                        <option value="04">04</option>   
-                                        <option value="05">05</option>   
-                                        <option value="06">06</option>   
-                                        <option value="07">07</option>   
-                                        <option value="08">08</option>   
-                                        <option value="09">09</option>   
-                                        <option value="10">10</option>   
-                                        <option value="11">11</option>   
-                                        <option value="12">12</option>   
+                                <div class="input-group-lg col-md-4">
+                                    <input type="number"
+                                        class="form-control input-lg"
+                                        placeholder="Month (MM)"
+                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                        maxlength = "2"
+                                        name="month"
+                                        data-toggle="tooltip" data-trigger="manual" data-placement="right"
+                                        title="">
                                 </div>
-                                <div class="input-group-lg col-md-2">
-                                    <select name="year">
-                                        <option value="2019">2019</option>   
-                                        <option value="2020">2020</option>   
-                                        <option value="2021">2021</option>   
-                                        <option value="2022">2022</option>   
-                                        <option value="2023">2023</option>   
-                                        <option value="2024">2024</option>   
-                                        <option value="2025">2025</option>   
-                                        <option value="2026">2026</option>   
-                                        <option value="2027">2027</option>   
-                                        <option value="2028">2028</option>   
-                                        <option value="2029">2029</option>   
-                                        <option value="2030">2030</option>   
+                                <div class="input-group-lg col-md-4">
+                                    <input type="number"
+                                        class="form-control input-lg"
+                                        placeholder="Year (YYYY)"
+                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                        maxlength = "4"
+                                        name="month"
+                                        data-toggle="tooltip" data-trigger="manual" data-placement="right"
+                                        title="">
                                 </div>
                             </div>
                             <br/>
@@ -145,20 +135,14 @@
                             <p class="lead font-weight-normal"> Please enter Billing Details</p>
                             <div class="spacer"></div>
                             <div class="row">
-                                <div class="col-md-4">
-                                    <h5>Street Address:</h5>
-                                </div>
-                                <div class="input-group-lg col-md-9">
-                                    <input type="text" class="form-control input-lg" placeholder="Billing Street Address" name="bstreet-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                                <div class="input-group-lg ">
+                                    <input type="text" class="form-control input-lg" placeholder="Street Address" name="bstreet-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                                 </div> 
                             </div>
                             <div class="spacer"></div>
                             <div class="row">
-                                <div class="col-md-4">
-                                    <h5>Postcode:</h5>
-                                </div>
-                                 <div class="input-group-lg col-md-3">
-                                    <input type="number" class="form-control input-lg" placeholder="Billing Postcode" name="bpostcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                                 <div class="input-group-lg col-md-4">
+                                    <input type="number" class="form-control input-lg" placeholder="Postcode" name="bpostcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                                 </div>
                             </div>
                             <br/>
