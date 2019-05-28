@@ -25,22 +25,37 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                         <form id="payment-form" action="{{ url_for('auth.do_register') }}" method=POST>
+                            <h4>Billing Address</h4>
+                            <div class="spacer"></div>
+                            <div class="row">
+                                <div class="input-group-lg col-md-7">
+                                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.street_address}}" name="street-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                                </div>
+                                <div class="input-group-lg col-md-3">
+                                    <input type="number" class="form-control input-lg" value="{{g.logged_in_user.postcode}}" name="postcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                                </div>
+                            </div>
+                            
+                            <br/>
+                            <h4>Credit Card Details</h4>
+                            <p class="lead font-weight-normal"> We accept the following cards: </p>
+                            <div class="spacer"></div>
                             <div>
                                 <img src="../static/images/bank_icons/mastercard.jpg" alt="Mastercard">
                                 <img src="../static/images/bank_icons/visa.jpg" alt="Visa">
                                 <img src="../static/images/bank_icons/paypal.jpg" alt="Paypal">
                                 <img src="../static/images/bank_icons/amex.jpg" alt="American Express">
                             </div>
+                            <div class="spacer"></div>
                             <div class="input-group-lg"> <!--  enhances input by adding help test -->
-                                <input type="text" class="form-control input-lg" placeholder="First Name" name="first-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                                <input type="text" class="form-control input-lg" placeholder="Cardholder's First Name" name="first-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                             </div>
                             <div class="spacer"></div>
                             <div class="input-group-lg">
-                                <input type="text" class="form-control input-lg" placeholder="Last Name" name="last-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                                <input type="text" class="form-control input-lg" placeholder="Cardholder's Last Name" name="last-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                             </div>
-                            <div class="spacer"></div>
                             <div class="row">
-                                <div class="input-group-lg col-md-4">
+                                <div class="input-group-lg col-md-7">
                                     <input type="number"
                                         class="form-control input-lg"
                                         placeholder="Credit Card Number (xxxx xxxx xxxx xxxx)"
@@ -50,7 +65,7 @@
                                         data-toggle="tooltip" data-trigger="manual" data-placement="right"
                                         title="">
                                 </div>
-                                <div class="input-group-lg col-md-2">
+                                <div class="input-group-lg col-md-3">
                                     <input type="number"
                                         class="form-control input-lg"
                                         placeholder="CVC (xxx)"
@@ -64,7 +79,7 @@
                             <div class="spacer"></div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <p class="lead font-weight-normal"><b>Expiration Date:</b></p>
+                                    <h5>Expiration Date:</h5>
                                 </div>
                                 <div class="input-group-lg col-md-2">
                                     <input type="month" name="expmonth">    

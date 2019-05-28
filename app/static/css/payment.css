@@ -15,3 +15,8 @@
 .tooltip-inner {
     max-width: 250px !important;
 }
+
+img {
+    width:100px;
+    height:70px;
+}
