@@ -35,6 +35,11 @@ def profile():
 def logs():
     return render_template("logs.html")
 
+@routes.route("/payment")
+@protected_view
+def payment():
+    return render_template("paymente.html")
+
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():
     result = []
