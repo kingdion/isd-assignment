@@ -7,6 +7,8 @@ from .models import *
 from sqlalchemy import extract
 from operator import itemgetter
 from werkzeug.utils import secure_filename
+import uuid
+from datetime import date
 
 routes = Blueprint("routes", __name__)
 
@@ -210,3 +212,60 @@ def delete_movie():
         return jsonify( {"success": True} )
     except:
         return 'Something went wrong trying to delete this movie.', 400
+
+@routes.route("/shipmentdetails/create", methods=["GET", "POST"])
+@protected_view
+def create_shipment_details():
+    if request.method == "POST":
+        # TODO: validation
+        shipment_details = ShipmentDetails(
+            date=date.fromisoformat(request.form["date"]),
+            shipment_method=request.form["shipment_method"],
+            address=request.form["address"],
+            order_id=uuid.UUID(request.form["order_id"]) if request.form["order_id"] else None
+        )
+        db.session.add(shipment_details)
+        db.session.commit()
+        return redirect(url_for("routes.view_shipment_details", id=shipment_details.id))
+    return render_template("create_shipment_details.html")
+
+@routes.route("/shipmentdetails/<id>", methods=["GET"])
+@protected_view
+def view_shipment_details(id):
+    shipment_details = db.session.query(ShipmentDetails).get(uuid.UUID(id))
+    if not shipment_details:
+        return "Error. Shipment Details not found", 404
+    return render_template("view_shipment_details.html", shipment_details=shipment_details)
+
+@routes.route("/shipmentdetails/<id>/edit", methods=["GET", "POST"])
+@protected_view
+def edit_shipment_details(id):
+    shipment_details = db.session.query(ShipmentDetails).get(uuid.UUID(id))
+    if not shipment_details:
+        return "Error. Shipment Details not found", 404
+    if request.method == "POST":
+        # TODO: validation
+        shipment_details.date = date.fromisoformat(request.form["date"])
+        shipment_details.shipment_method = request.form["shipment_method"]
+        shipment_details.address = request.form["address"]
+        shipment_details.order_id = uuid.UUID(request.form["order_id"]) if request.form["order_id"] else None
+        db.session.commit()
+        return redirect(url_for("routes.view_shipment_details", id=shipment_details.id))
+    return render_template("edit_shipment_details.html", shipment_details=shipment_details)
+
+
+@routes.route("/shipmentdetails/<id>/delete", methods=["GET"])
+@protected_view
+def delete_shipment_details(id):
+    shipment_details = db.session.query(ShipmentDetails).get(uuid.UUID(id))
+    if not shipment_details:
+        return "Error. Shipment Details not found", 404
+    db.session.delete(shipment_details)
+    db.session.commit()
+    return redirect(url_for("routes.list_shipment_details"))
+
+@routes.route("/shipmentdetails", methods=["GET"])
+@protected_view
+def list_shipment_details():
+    shipment_details_list = db.session.query(ShipmentDetails).all()
+    return render_template("list_shipment_details.html", shipment_details_list=shipment_details_list)

@@ -185,7 +185,7 @@ class ShipmentDetails(db.Model):
     shipment_method = db.Column(db.String(20), nullable=False)
     address = db.Column(db.String(100), nullable=False)
 
-    order_id = db.Column(UUID(as_uuid=True), db.ForeignKey("orders.id"))
+    order_id = db.Column(UUID(as_uuid=True), db.ForeignKey("orders.id"), nullable=False)
     order = db.relationship("Orders", backref="shipment_details")
 
     def __repr__(self):

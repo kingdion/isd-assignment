@@ -1,0 +1,45 @@
+  {% import 'utilities.html' as util %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Shipment Details - Online Movie Store Application</title>
+        {{ util.head() }}
+    </head>
+    <body>
+        {{ util.navbar() }}
+
+        <div class="container">
+            <h1>Shipment Details</h1>
+
+            <br />
+
+            <table class="table">
+                <tr>
+                    <td>Order ID</td>
+                    <td>{{shipment_details.order_id}}</td>
+                </tr>
+                <tr>
+                    <td>ID</td>
+                    <td>{{shipment_details.id}}</td>
+                </tr>
+                <tr>
+                    <td>Date</td>
+                    <td>{{shipment_details.date}}</td>
+                </tr>
+                <tr>
+                    <td>Shipment Method</td>
+                    <td>{{shipment_details.shipment_method}}</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>{{shipment_details.address}}</td>
+                </tr>
+            </table>
+
+            <a class="btn btn-info" href="{{ url_for('routes.edit_shipment_details', id=shipment_details.id) }}">Edit</a>
+            <a class="btn btn-danger" href="{{ url_for('routes.delete_shipment_details', id=shipment_details.id) }}">Delete</a>
+        </div>
+    </body>
+
+    {{ util.scripts() }}
+</html>
