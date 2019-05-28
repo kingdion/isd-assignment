@@ -1,0 +1,99 @@
+{% import 'utilities.html' as util %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Payment Information - Online Movie Store Application</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/payment.css') }}"/>
+        {{ util.head() }}
+    </head>
+    <body>
+        {{ util.navbar() }}
+
+            <div id="page-head" class="container text-center">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 col-xs-12">
+                        <p class="greyed"><b>YOUR ACCOUNT INFORMATION IS SECURE</b></p>
+                        <h1 class="display-4 font-weight-normal">Enter Payment Information</h1>
+                        <p class="lead font-weight-normal">Please review the details below before entering payment information  </p>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <form id="payment-form" action="{{ url_for('auth.do_register') }}" method=POST>
+                            <div>
+                                <img src="pic_trulli.jpg" alt="Italian Trulli">
+                                <img src="pic_trulli.jpg" alt="Italian Trulli">
+                                <img src="pic_trulli.jpg" alt="Italian Trulli">
+                                <img src="pic_trulli.jpg" alt="Italian Trulli">
+                            </div>
+                            <div class="input-group-lg"> <!--  enhances input by adding help test -->
+                                <input type="text" class="form-control input-lg" placeholder="First Name" name="first-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="text" class="form-control input-lg" placeholder="Last Name" name="last-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <br/>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="email" class="form-control input-lg" placeholder="Email" name="email" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="form-check indented">
+                                <input type="checkbox" class="form-check-input" name="email-check">
+                                <label class="form-check-label greyed" for="email_check">Send me emails about new movies and deals I might like.</label>
+                            </div>
+                            <br/>
+
+                            <div class="input-group-lg">
+                                <input type="password" class="form-control input-lg" placeholder="Password*" name="password" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="password" class="form-control input-lg" placeholder="Repeat Password" name="repeat-password" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <label class="indented greyed" for="password">*Must be at least 8 characters long with no spaces, and at least one non-alphanumeric character.</label>
+                            <br/>
+
+                            
+
+                            <div class="input-group-lg">
+                                <input type="text" class="form-control input-lg" placeholder="Street Address" name="street-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="number" class="form-control input-lg" placeholder="Postcode" name="postcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="number"
+                                       class="form-control input-lg"
+                                       placeholder="Phone Number (xxxx xxx xxx)"
+                                       oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                       maxlength = "10"
+                                       name="phone-number"
+                                       data-toggle="tooltip" data-trigger="manual" data-placement="right"
+                                       title="">
+                            </div>
+
+                            <br/>
+
+                            <button id="submit-btn" type="submit" class="btn btn-secondary btn-lg">Sign Up</button>
+
+                            <br/><br/>
+                            <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
+                        </form>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+    </body>
+
+    {{ util.scripts() }}
+
+    <script src="static/js/register.js"></script>
+</html>
