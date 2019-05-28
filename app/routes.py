@@ -269,3 +269,8 @@ def delete_shipment_details(id):
 def list_shipment_details():
     shipment_details_list = db.session.query(ShipmentDetails).all()
     return render_template("list_shipment_details.html", shipment_details_list=shipment_details_list)
+
+@routes.route("/createuser")
+@protected_view_staff
+def admin_create_user():
+    return render_template("create_user.html")
