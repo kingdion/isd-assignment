@@ -24,18 +24,22 @@
 <h4>Delivery Address</h4>
 <p class="lead font-weight-normal"> Please review if Delivery Address is different to Registration Address</p>
 <div class="spacer"></div>
+<div class="row">
 <div class="col-md-4">
 <h5>First Name:</h5>
 </div>
-<div class="input-group-lg col-md-6"> <!-- enhances input by adding help test -->
-<input type="text" class="form-control input-lg" value="{{g.logged_in_user.first_name}}" name="dfirst-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+<div class="input-group-lg"> <!-- enhances input by adding help test -->
+<input type="text" class="form-control input-lg col-md-8" value="{{g.logged_in_user.first_name}}" name="dfirst-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
 </div>
-<div class="spacer"></div>
+</div>
+<div class="spacer">
+<div class="row">
 <div class="col-md-4">
 <h5>Last Name:</h5>
 </div>
-<div class="input-group-lg col-md-6">
+<div class="input-group-lg col-md-8">
 <input type="text" class="form-control input-lg" value="{{g.logged_in_user.last_name}}" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+</div>
 </div>
 <div class="spacer">
 <div class="row">
@@ -65,12 +69,14 @@
 <img class="icon" src="../static/images/bank_icons/amex.jpg" alt="American Express">
 </div>
 <div class="spacer"></div>
+<div class="row">
 <div class="input-group-lg col-md-6"> <!-- enhances input by adding help test -->
 <input type="text" class="form-control input-lg" placeholder="Cardholder's First Name" name="first-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
 </div>
 <div class="spacer"></div>
 <div class="input-group-lg col-md-6">
 <input type="text" class="form-control input-lg" placeholder="Cardholder's Last Name" name="last-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+</div>
 </div>
 <div class="spacer"></div>
 <div class="row">
@@ -127,7 +133,7 @@ title="">
 <p class="lead font-weight-normal"> Please enter Billing Details</p>
 <div class="spacer"></div>
 <div class="row">
-<div class="input-group-lg col-md-6">
+<div class="input-group-lg">
 <input type="text" class="form-control input-lg" placeholder="Street Address" name="bstreet-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
 </div> 
 </div>
