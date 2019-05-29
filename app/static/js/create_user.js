@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
     $('#createuser-form').submit(function(event) {
         event.preventDefault();
@@ -195,4 +194,3 @@ function check_password(pword) {
 
     return result;
 }
-
