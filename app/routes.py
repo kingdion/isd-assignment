@@ -1,7 +1,4 @@
 import jwt
-import uuid
-import math
-import os
 from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request, jsonify, current_app, session
 from functools import partial
@@ -10,7 +7,9 @@ from .models import *
 from sqlalchemy import extract
 from operator import itemgetter
 from werkzeug.utils import secure_filename
+import uuid
 from datetime import date
+
 routes = Blueprint("routes", __name__)
 
 protected_view_staff = partial(protected_view, staff_required=True)
@@ -92,11 +91,9 @@ def do_get_movies_grid_html():
                      </a>\
                    </div>'
 
-    pageLength = int(request.form["amount"])
-    numPages = math.ceil(len(scoredMovies) / pageLength) #if it's an integer, ceil does nothing, otherwise rounds up for the last page with less movies
-
-    index = int(request.form["page"]) * pageLength
-    for movie, score, title in scoredMovies[index : index + pageLength]:
+    startIndex = int(request.form["page"]) * int(request.form["amount"])
+    endIndex = startIndex + int(request.form["amount"])
+    for movie, score, title in scoredMovies[startIndex : endIndex]:
         result += '<div class="movie-cell" id="' + str(movie.id) + '"><img src="' + movie.thumbnail_src + '" alt="' + movie.title + '">'
         if (isStaff):
             result += '<div class="movie-buttons">\
@@ -114,7 +111,7 @@ def do_get_movies_grid_html():
                        </div>'
         result += '<div class="movie-description">' + movie.title + '<br>(' + str(movie.release_date.year) + ')</div></div>'
 
-    return jsonify({ "success": True, "gridHtml": result + "</div>", "numPages": numPages})
+    return jsonify({ "success": True, "gridHtml": result + "</div>" })
 
 def score_movie_title(title, searchTitle):
     if title == searchTitle:
@@ -138,13 +135,6 @@ def score_movie_title(title, searchTitle):
 
     return score if score < 1 else 0.99
 
-UPLOAD_FOLDER = 'app/static/images/thumbnails'
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'tiff', 'gif', 'apng', 'svg', 'bmp'])
-
-def filename_allowed(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 @routes.route("/add-movie")
 @protected_view_staff
 def add_movie():
@@ -153,42 +143,25 @@ def add_movie():
 @routes.route("/do-add-movie", methods=["POST"])
 @protected_view_staff
 def do_add_movie():
-    try:
-        current_app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-        if db.session.query(Movie.id).filter_by(title=request.form["title"], release_date=request.form["release-date"]).scalar() is not None:
-            return jsonify({"success": False, "reason": "movie exists"})
+    if db.session.query(Movie.id).filter_by(title=request.form["title"], release_date=request.form["release-date"]).scalar() is not None:
+        return jsonify({"success": False, "reason": "movie exists"})
 
-        if (request.form["title"] == ""\
-        or request.form["release-date"] == ""\
-        or "image" not in request.files\
-        or request.files["image"].filename == ""\
-        or request.form["runtime"] == ""\
-        or request.form["maturity-rating"] == ""):
-            return jsonify({"success": False, "reason": "incomplete form"})
+    movie = Movie(\
+        title = request.form["title"],\
+        release_date = request.form["release-date"],\
+        thumbnail_src = "static/images/image.png",\
+        runtime = request.form["runtime"],\
+        maturity_rating = request.form["maturity-rating"]
+    )
 
-        file = request.files["image"]
-        filename = request.form["title"] + "_" + request.form["release-date"] + "_" + secure_filename("_".join(file.filename.split()))
-        movie = Movie(\
-            title = request.form["title"],\
-            release_date = request.form["release-date"],\
-            thumbnail_src = "/static/images/thumbnails/" + filename,\
-            runtime = request.form["runtime"],\
-            maturity_rating = request.form["maturity-rating"]
-        )
+    for id in request.form.getlist("genres[]"):
+        genre = db.session.query(Genre).filter_by(id=id).one()
+        movie.genres.append(genre)
 
-        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+    db.session.add(movie)
+    db.session.commit()
 
-        for id in request.form.getlist("genres[]"):
-            genre = db.session.query(Genre).filter_by(id=id).one()
-            movie.genres.append(genre)
-
-        db.session.add(movie)
-        db.session.commit()
-
-        return jsonify({ "success": True })
-    except Exception as e:
-        print(e)
-        return jsonify({ "success": False, "reason": "Failed to add movie. An internal server error has occurred." })
+    return jsonify({ "success": True })
 
 @routes.route("/edit-movie/<movieID>")
 @protected_view_staff
@@ -204,38 +177,20 @@ def edit_movie(movieID):
 @protected_view_staff
 def do_edit_movie():
     try:
-        if (request.form["title"] == ""\
-        or request.form["release-date"] == ""\
-        or request.form["runtime"] == ""\
-        or request.form["maturity-rating"] == ""):
-            return jsonify({ "success": False, "reason": "incomplete form" })
-
         movie = Movie.query.filter_by(id=request.form["id"]).one()
         movie.title = request.form["title"]
         movie.release_date = request.form["release-date"]
         movie.runtime = request.form["runtime"]
         movie.maturity_rating = request.form["maturity-rating"]
-
-        if request.files["image"].filename != "":
-            current_app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-
-            os.remove("app" + movie.thumbnail_src)
-
-            file = request.files["image"]
-            filename = movie.title + "_" + movie.release_date + "_" + secure_filename("_".join(file.filename.split()))
-            movie.thumbnail_src = "/static/images/thumbnails/" + filename
-
-            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-
         movie.genres = [];
         for id in request.form.getlist("genres[]"):
             genre = db.session.query(Genre).filter_by(id=id).one()
             movie.genres.append(genre)
         db.session.commit()
 
-        return jsonify({ "success": True })
+        return render_template("edit_movie.html", movie=movie, genres=db.session.query(Genre).all(), maturityRatings=db.session.query(MaturityRating).all())
     except Exception as e:
-        print("Excpetion:", e)
+        print(e)
         return 'Something went wrong trying submit edits to this movie.', 400
 
 @routes.route("/edit-movie-copies/<movieID>")
@@ -252,7 +207,6 @@ def add_movie_copy(movieID):
 def delete_movie():
     try:
         movie = Movie.query.filter_by(id=request.form["id"]).one()
-        os.remove("app" + movie.thumbnail_src)
         db.session.delete(movie)
         db.session.commit()
         return jsonify( {"success": True} )
@@ -327,21 +281,3 @@ def list_shipment_details():
 
     shipment_details_list = db.session.query(ShipmentDetails).filter((ShipmentDetails.date > min_date) & (ShipmentDetails.date < max_date)).order_by(ShipmentDetails.date.desc())
     return render_template("list_shipment_details.html", shipment_details_list=shipment_details_list)
-
-@routes.route("/createuser", methods=["GET"])
-@protected_view_staff
-def create_user():
-        return render_template("create_user.html")
-
-@routes.route("/order")
-def view_order():
-    orderlist = db.session.query(MovieOrderLine).all()
-    return render_template("orders.html", orderlist = orderlist)
-
-@routes.route("/order/add")
-def add_order():
-    return redirect(url_for("routes.browse"))
-
-@routes.route("/orderhistory")
-def order_history():
-    return render_template("orderhistory.html")
