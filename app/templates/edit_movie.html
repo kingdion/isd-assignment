@@ -67,6 +67,22 @@
                     </select>
                 </div>
 
+
+                <div class="spacer"></div>
+
+                <div class="row input-group-lg">
+
+                    <img id="curr-image-preview" src="{{ movie.thumbnail_src }}"/>
+                    <div class="spacer-h"></div>
+                    <label id="image-file-label" for="image-file">
+                        <div id="file-name-container">
+                            <img id="image-preview" src=""/>
+                            <p id="file-name">Drop an image file here (or click to choose one)</p>
+                        </div>
+                        <input id="image-file" name="image" type="file" accept="image/*">
+                    </label>
+                </div>
+
                 <br/>
                 <div class="row">
                     <button id="submit-btn" type="submit" class="btn btn-success btn-lg">Save Changes</button>

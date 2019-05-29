@@ -6,8 +6,16 @@ $(document).ready(function() {
 
     $('#filters-form').submit(function(event) {
         event.preventDefault();
-        window.catalogue.currentPage = 0;
-        update_movies_grid();
+        // window.catalogue.currentPage = 0;
+        // update_movies_grid();
+        window.catalogue.set_page(0);
+    });
+
+    $('#first-page-btn').click(function(event) {
+        window.catalogue.set_page(0);
+    });
+    $('#last-page-btn').click(function(event) {
+        window.catalogue.set_page(window.catalogue.numPages == 0 ? 0 : window.catalogue.numPages);
     });
     $('#prev-page-btn').click(() => window.catalogue.prev_page());
     $('#next-page-btn').click(() => window.catalogue.next_page());
@@ -16,7 +24,8 @@ $(document).ready(function() {
 //Only one catalogue object should ever be created, and it should be attached to the window
 function catalogue() {
     this.maxLoadedMovies = 40; //the maximum number of movies to load when querying the db
-    this.currentPage = 0; //the current "page" in the db (page is a group of n records, where n = maxLoadedMovies)
+    this.numPages = 1;
+    this.currentPage = 0; //the current 0-indexed "page" in the db (page is a group of n records, where n = maxLoadedMovies)
     this.moviesCache = []; //will possibly implement caching later
 
     this.prev_page = function() {
