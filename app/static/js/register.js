@@ -43,14 +43,19 @@ function registration_callback(data) {
 
 function validate_form() {
     return !(
-             !validate_email()
-              | !validate_password()
-              | !validate_repeat_password()
-              | !validate_fname()
-              | !validate_lname()
-              | !validate_street()
-              | !validate_postcode()
-              | !validate_phone()
+             !validate_dfirst()
+              | !validate_dlast()
+              | !validate_daddress()
+              | !validate_dpostcode()
+              | !validate_creditname()
+              | !validate_creditno()
+              | !validate_cvc()
+              | !validate_month()
+              | !validate_year()
+              | !validate_bfirst()
+              | !validate_blast()
+              | !validate_billaddress()
+              | !validate_billpostcode()
             );
 }
 
