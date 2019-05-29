@@ -88,7 +88,7 @@ def do_create_user():
 
     username = request.form["username"]
     password = request.form["password"]
-
+    
     account = Account(\
         first_name=request.form["first-name"],\
         last_name=request.form["last-name"],\

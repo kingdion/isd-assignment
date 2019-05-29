@@ -1,4 +1,15 @@
 $(document).ready(function(){
+
+$('input[type="checkbox"]').click(function(){
+            if($(this).is(":checked")){
+               var status;
+            }
+            else if($(this).is(":not(:checked)")){
+                alert("Checkbox is unchecked.");
+            }
+        });
+
+
     $('#createuser-form').submit(function(event) {
         event.preventDefault();
 
@@ -24,7 +35,6 @@ $(document).ready(function(){
   $('[name=postcode]').focusout(validate_postcode);
   $('[name=phone-number]').focusout(validate_phone);
 });
-
 
 function createuser_callback(data) {
     console.log(data); //debugging
