@@ -15,7 +15,7 @@ $(document).ready(function() {
         window.catalogue.set_page(0);
     });
     $('#last-page-btn').click(function(event) {
-        window.catalogue.set_page(window.catalogue.numPages == 0 ? 0 : window.catalogue.numPages);
+        window.catalogue.set_page(window.catalogue.numPages - 1);
     });
     $('#prev-page-btn').click(() => window.catalogue.prev_page());
     $('#next-page-btn').click(() => window.catalogue.next_page());
@@ -24,7 +24,7 @@ $(document).ready(function() {
 //Only one catalogue object should ever be created, and it should be attached to the window
 function catalogue() {
     this.maxLoadedMovies = 40; //the maximum number of movies to load when querying the db
-    this.numPages = 1;
+    this.numPages = 0;
     this.currentPage = 0; //the current 0-indexed "page" in the db (page is a group of n records, where n = maxLoadedMovies)
     this.moviesCache = []; //will possibly implement caching later
 
