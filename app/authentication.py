@@ -27,7 +27,11 @@ def protected_view(f, staff_required=False):
         try:
             token_payload = jwt.decode(token, current_app.config['SECRET_KEY'])
             account = Account.query.filter_by(id = token_payload['id']).first()
-            if (staff_required and not account.is_staff):
+
+            if account == None:
+                return redirect(url_for('auth.login_page'))
+
+            if (account and staff_required and not account.is_staff):
                 return "Only staff members can view this page.", 403
         except:
             return redirect(url_for('auth.login_page'))

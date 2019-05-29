@@ -16,7 +16,7 @@ if (answer == "Y"):
             db.drop_all()
             db.create_all()
 
-            for current_id in range(21):
+            for current_id in range(1, 21):
                 acc = Account(
                     f"Test-{current_id}", 
                     f"User-{current_id}", 
@@ -25,7 +25,7 @@ if (answer == "Y"):
                     generate_password_hash(f"TestUser{current_id}", method='sha256'),
                     "Fake Address at Fake Street",
                     "2020",
-                    "0400 000 000",
+                    "0400000000",
                     False,
                     True,
                     datetime.datetime.utcnow()
@@ -34,8 +34,8 @@ if (answer == "Y"):
                 print("Created: ", acc)
                 db.session.add(acc)
 
-            for current_id in range(21):
-                staff = Staff(
+            for current_id in range(1, 21):
+                staff = Account(
                     f"StaffTest-{current_id}", 
                     f"User-{current_id}", 
                     f"stafftestuser{current_id}@gmail.com",
@@ -43,14 +43,14 @@ if (answer == "Y"):
                     generate_password_hash(f"StaffTestUser{current_id}", method='sha256'),
                     "Fake Address at Fake Street",
                     "2020",
-                    "0400 000 000",
+                    "0400000000",
                     True,
                     True,
                     datetime.datetime.utcnow()
                 )
 
-                print("Created: ", acc)
-                db.session.add(acc)
+                print("Created: ", staff)
+                db.session.add(staff)
 
             print("20 accounts created")
             print("20 staff created")
