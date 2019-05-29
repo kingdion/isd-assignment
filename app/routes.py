@@ -267,5 +267,17 @@ def delete_shipment_details(id):
 @routes.route("/shipmentdetails", methods=["GET"])
 @protected_view
 def list_shipment_details():
-    shipment_details_list = db.session.query(ShipmentDetails).all()
+    order_id = request.args.get("order_id", None)
+    if order_id:
+        shipment_details = db.session.query(ShipmentDetails).filter(ShipmentDetails.order_id == uuid.UUID(order_id)).one_or_none()
+        if shipment_details:
+            return redirect(url_for("routes.view_shipment_details", id=shipment_details.id))
+        else:
+            pass
+            # TODO: error if no shipment details
+
+    min_date = date.fromisoformat(request.args.get("min_date", "1970-01-01"))
+    max_date = date.fromisoformat(request.args.get("max_date", "9999-12-31"))
+
+    shipment_details_list = db.session.query(ShipmentDetails).filter((ShipmentDetails.date > min_date) & (ShipmentDetails.date < max_date)).order_by(ShipmentDetails.date.desc())
     return render_template("list_shipment_details.html", shipment_details_list=shipment_details_list)
