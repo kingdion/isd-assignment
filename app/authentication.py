@@ -78,6 +78,7 @@ def do_register():
 
 
 
+
 @auth.route("/do-create-user", methods=["POST"])
 def do_create_user():
     email_exists = db.session.query(Account.email).filter_by(email=request.form["email"]).scalar() is not None
@@ -108,7 +109,6 @@ def do_create_user():
     db.session.commit()
 
     return jsonify({"success": True})
-
 
 @auth.route("/update-registration-details", methods=["POST", "PUT"])
 @protected_view
