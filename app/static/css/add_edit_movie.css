@@ -78,3 +78,9 @@ input[type="file"] {
     padding: 10px;
     transition: all 250ms linear;
 }
+
+#curr-image-preview {
+    height: 300px;
+    width: 200px;
+    border-radius: 5px;
+}
