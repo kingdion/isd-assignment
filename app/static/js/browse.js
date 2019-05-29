@@ -6,6 +6,8 @@ $(document).ready(function() {
 
     $('#filters-form').submit(function(event) {
         event.preventDefault();
+        // window.catalogue.currentPage = 0;
+        // update_movies_grid();
         window.catalogue.set_page(0);
     });
 
@@ -13,7 +15,7 @@ $(document).ready(function() {
         window.catalogue.set_page(0);
     });
     $('#last-page-btn').click(function(event) {
-        window.catalogue.set_page(window.catalogue.numPages == 0 ? 0 : window.catalogue.numPages - 1);
+        window.catalogue.set_page(window.catalogue.numPages == 0 ? 0 : window.catalogue.numPages);
     });
     $('#prev-page-btn').click(() => window.catalogue.prev_page());
     $('#next-page-btn').click(() => window.catalogue.next_page());
