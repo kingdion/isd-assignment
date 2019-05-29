@@ -76,7 +76,6 @@ def do_register():
 
     return login(username, password)
 
-
 @auth.route("/update-registration-details", methods=["POST", "PUT"])
 @protected_view
 def update_registration_details():
