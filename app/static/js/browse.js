@@ -9,6 +9,8 @@ $(document).ready(function() {
         window.catalogue.currentPage = 0;
         update_movies_grid();
     });
+    $('#prev-page-btn').click(() => window.catalogue.prev_page());
+    $('#next-page-btn').click(() => window.catalogue.next_page());
 });
 
 //Only one catalogue object should ever be created, and it should be attached to the window
@@ -16,6 +18,26 @@ function catalogue() {
     this.maxLoadedMovies = 40; //the maximum number of movies to load when querying the db
     this.currentPage = 0; //the current "page" in the db (page is a group of n records, where n = maxLoadedMovies)
     this.moviesCache = []; //will possibly implement caching later
+
+    this.prev_page = function() {
+        if (this.currentPage > 0) {
+            update_movies_grid(--this.currentPage);
+        }
+    }
+
+    this.next_page = function() {
+        if (this.currentPage < this.numPages - 1) {
+            update_movies_grid(++this.currentPage);
+        }
+        else {
+            console.log(this.currentPage, this.numPages)
+        }
+    }
+
+    this.set_page = function(page) {
+        this.currentPage = page;
+        update_movies_grid();
+    }
 }
 
 function update_movies_grid() {
@@ -26,8 +48,14 @@ function update_movies_grid() {
 }
 
 function update_movies_grid_callback(data) {
-    console.log('y num');
     if (data.success) {
+        window.catalogue.numPages = data.numPages;
+
+        $('#prev-page-btn').attr('disabled', window.catalogue.currentPage <= 0);
+        $('#next-page-btn').attr('disabled', window.catalogue.currentPage >= window.catalogue.numPages - 1);
+
+        $('#page-num-btn').text(window.catalogue.currentPage + 1);
+
         $('#movies-container').html(data.gridHtml);
 
         $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
