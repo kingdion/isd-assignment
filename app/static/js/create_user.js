@@ -1,15 +1,5 @@
 $(document).ready(function(){
 
-$('input[type="checkbox"]').click(function(){
-            if($(this).is(":checked")){
-               var status;
-            }
-            else if($(this).is(":not(:checked)")){
-                alert("Checkbox is unchecked.");
-            }
-        });
-
-
     $('#createuser-form').submit(function(event) {
         event.preventDefault();
 

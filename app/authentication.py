@@ -88,6 +88,14 @@ def do_create_user():
 
     username = request.form["username"]
     password = request.form["password"]
+
+    value = ""
+    if request.method =='POST':
+        value = request.form.get('isStaff')
+        if value == "Staff":
+            value = True
+        else:
+            value = False
     
     account = Account(\
         first_name=request.form["first-name"],\
@@ -98,7 +106,7 @@ def do_create_user():
         street_address=request.form["street-address"],\
         postcode=request.form["postcode"],\
         phone_number=request.form["phone-number"],\
-        is_staff=False,\
+        is_staff=value,\
         is_active=True,\
         join_date=datetime.datetime.utcnow()\
     )
