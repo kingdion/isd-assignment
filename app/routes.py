@@ -10,7 +10,6 @@ from .models import *
 from sqlalchemy import extract
 from operator import itemgetter
 from werkzeug.utils import secure_filename
-import uuid
 from datetime import date
 
 routes = Blueprint("routes", __name__)
