@@ -1,6 +1,4 @@
 import jwt
-import uuid
-import math
 from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request, jsonify, current_app, session
 from functools import partial
@@ -9,7 +7,9 @@ from .models import *
 from sqlalchemy import extract
 from operator import itemgetter
 from werkzeug.utils import secure_filename
+import uuid
 from datetime import date
+
 routes = Blueprint("routes", __name__)
 
 protected_view_staff = partial(protected_view, staff_required=True)
@@ -91,11 +91,9 @@ def do_get_movies_grid_html():
                      </a>\
                    </div>'
 
-    pageLength = int(request.form["amount"])
-    numPages = math.ceil(len(scoredMovies) / pageLength) #if it's an integer, ceil does nothing, otherwise rounds up for the last page with less movies
-
-    index = int(request.form["page"]) * pageLength
-    for movie, score, title in scoredMovies[index : index + pageLength]:
+    startIndex = int(request.form["page"]) * int(request.form["amount"])
+    endIndex = startIndex + int(request.form["amount"])
+    for movie, score, title in scoredMovies[startIndex : endIndex]:
         result += '<div class="movie-cell" id="' + str(movie.id) + '"><img src="' + movie.thumbnail_src + '" alt="' + movie.title + '">'
         if (isStaff):
             result += '<div class="movie-buttons">\
@@ -113,7 +111,7 @@ def do_get_movies_grid_html():
                        </div>'
         result += '<div class="movie-description">' + movie.title + '<br>(' + str(movie.release_date.year) + ')</div></div>'
 
-    return jsonify({ "success": True, "gridHtml": result + "</div>", "numPages": numPages})
+    return jsonify({ "success": True, "gridHtml": result + "</div>" })
 
 def score_movie_title(title, searchTitle):
     if title == searchTitle:
