@@ -180,6 +180,21 @@ def delete_account():
 
     return jsonify({"success": True, "message": "Your account has been successfully deleted"})
 
+@auth.route("/delete-user", methods=["POST", "DELETE"])
+def delete_user():
+    #Removes selected user from staff viewport
+
+    #try:
+        user = Account.query.filter_by(id = request.form.get["account_id"]).one()
+        db.session.delete(user)
+        db.session.commit()
+        console.log(error.responseText)
+    #except:
+        return jsonify({"success": True})
+        #return jsonify({'success': False, 'message' : 'Something went wrong trying to delete this user.'})
+
+        #return jsonify({'success': False, 'message' : 'The user has been deleted.'})
+
 '''
 
 User Login

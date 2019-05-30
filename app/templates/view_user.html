@@ -33,6 +33,7 @@
                             <th>Last Name</th>
                             <th>Email</th>
                             <th>Phone Number</th>
+                            <th>Modify User</th>
                             <th>Delete User?</th>
                         </tr>
                     </thead>
@@ -44,6 +45,7 @@
                             <td>{{account.last_name}}</td>
                             <td>{{account.email}}</td>
                             <td>{{account.phone_number}}</td>
+                            <td><button id="{{account.id}}" class ="btn-info btn-sm">Modify User</button></td>
                             <td><button id="{{account.id}}" class="delete-account btn btn-danger btn-sm">Delete User</button></td>
                         </tr>
                         {% endfor %}

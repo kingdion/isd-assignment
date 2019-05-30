@@ -7,30 +7,25 @@ $(document).ready(function()
     // html of the log row so we can pull it
     // out here and use it as an argument.
 
-    // $('.delete-account').click(function(event)
-    // {
-    //     event.preventDefault();
-    //
-    //     var ids = $(this).attr("id");
-    //
-    //     $.ajax({
-    //         type: "DELETE",
-    //         url: "/delete-account",
-    //         data: {account_id : ids},
-    //         success: (data) => { $(this).parent().parent().fadeOut('slow') },
-    //         error: (error) => { $("#error-message").text(JSON.parse(error.responseText).message) },
-    //       });
-    // });
+    $('.delete-account').click(function(event)
+    {
+        event.preventDefault();
 
-    $('#delete-account').click(() => {
-      var ids = $(this).attr("id");
+        var ids = $(this).attr("id");
+
         $.ajax({
-          type: "DELETE",
-          url: "/delete-account",
-          data: {account_id : ids},
-          success: (data) => { window.location.href = "/" },
-          fail: (error) => { $("#error-message").text(JSON.parse(error.responseText).message) },
-        });
+            type: "DELETE",
+            url: "/delete-user",
+            data: {account_id : ids},
+            success: (data) => { $(this).parent().parent().fadeOut('slow') },
+            error: (error) => { $("#error-message").text(JSON.parse(error.responseText).message) },
+          });
+    });
+
+    // $("#modify-user").click(function(event)) {
+    //   event.preventDefault();
+    //
+    // }
 
     $("#date-time-picker-button").click(function(event)
     {
