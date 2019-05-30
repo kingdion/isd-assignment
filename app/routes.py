@@ -40,6 +40,29 @@ def logs():
 def payment():
     return render_template("payment.html")
 
+@routes.route("/do-payment", methods=["POST"])
+def do_payment():
+    keys = ["dfirst", "dlast", "dstreet-address", "dpostcode", "cname", "credit-no", "cvc", "month", "year", "bfirst-name", "blast-name", "bstreet-address", "bpostcode"]
+    payment = Payment(\
+        dfirst=request.form["dfirst"],\
+        dlast=request.form["dlast"],\
+        dstreet_address=request.form["dstreet-address"],\
+        dpostcode=request.form["dpostcode"],\
+        credit_name=request.form["cname"],\
+        credit_no=request.form["credit-no"],\
+        cvc=request.form["cvc"],\
+        month=request.form["month"],\
+        year=request.form["year"],\
+        bfirst_name=request.form["bfirst-name"],\
+        blast_name=request.form["blast-name"],\
+        bstreet_address=request.form["bstreet-address"],\
+        bpostcode=request.form["bpostcode"],\
+    )
+    db.session.add(payment)
+    db.session.commit()
+
+    return jsonify({'success': True})
+
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():
     result = []
@@ -377,10 +400,15 @@ def list_shipment_details():
     shipment_details_list = db.session.query(ShipmentDetails).filter((ShipmentDetails.date >= min_date) & (ShipmentDetails.date <= max_date)).order_by(ShipmentDetails.date.desc())
     return render_template("list_shipment_details.html", shipment_details_list=shipment_details_list)
 
-@routes.route("/createuser", methods=["GET"])
+@routes.route("/create_user", methods=["GET"])
 @protected_view_staff
 def create_user():
         return render_template("create_user.html")
+
+@routes.route("/view_user")
+@protected_view_staff
+def view_user():
+    return render_template("view_user.html")
 
 @routes.route("/order")
 def view_order():

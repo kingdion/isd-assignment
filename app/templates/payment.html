@@ -20,7 +20,7 @@
       <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-        <form id="payment-form" action="{{ url_for('auth.do_register') }}" method=POST>
+        <form id="payment-form" action="{{ url_for('routes.do_payment') }}" method=POST>
         </br>
         <div class="spacer"></div>
 
@@ -112,7 +112,10 @@
                     placeholder="Month (MM)"
                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                     maxlength = "2"
+                    min = "1"
+                    max = "12"
                     name="month"
+                    value= "1"
                     data-toggle="tooltip" data-trigger="manual" data-placement="right"
                     title="">
                 </div>
@@ -122,7 +125,10 @@
                     placeholder="Year (YYYY)"
                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                     maxlength = "4"
+                    min = "2019"
+                    max = "2030"
                     name="year"
+                    value="2019"
                     data-toggle="tooltip" data-trigger="manual" data-placement="right"
                     title="">
                 </div>
@@ -149,12 +155,19 @@
                     <input type="text" class="form-control input-lg" placeholder="Street Address" name="bstreet-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div> 
                 <div class="input-group-lg col-md-4">
-                    <input type="number" class="form-control input-lg" placeholder="Postcode" name="bpostcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="number" 
+                    class="form-control input-lg"  
+                    placeholder="Postcode" 
+                    name="bpostcode" 
+                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                    maxlength = "4"
+                    data-toggle="tooltip" data-trigger="manual" data-placement="right" 
+                    title="">
                 </div>
             </div>
             <br/>
             <div class="spacer"></div>
-            <button id="submit-btn" type="submit" class="btn btn-secondary btn-lg">Pay Now</button>
+            <button id="submit-btn" type="submit" class="btn btn-secondary btn-lg">Confirm</button>
             <br/><br/>
             <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
         </form>

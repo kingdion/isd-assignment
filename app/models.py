@@ -188,12 +188,12 @@ class MovieCopy(db.Model):
 
 class Payment(db.Model):
     __tablename__ = 'payment'
-    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
     dfirst = db.Column(db.String(20), nullable=False)
     dlast = db.Column(db.String(20), nullable=False)
-    dstreet_address = db.Column(db.String(50), nullable=False)
+    dstreet_address = db.Column(db.String(100), nullable=False)
     dpostcode = db.Column(db.String(4), nullable=False)
-    cname = db.Column(db.String(20), nullable=False)
+    credit_name = db.Column(db.String(20), nullable=False)
     credit_no = db.Column(db.String(16), nullable=False)
     cvc = db.Column(db.String(3), nullable=False)
     month = db.Column(db.String(2), nullable=False)
@@ -203,7 +203,7 @@ class Payment(db.Model):
     bstreet_address = db.Column(db.String(50), nullable=False)
     bpostcode = db.Column(db.String(4), nullable=False)
     def __repr__(self):
-        return f'Payment: {self.bfirst_name}, {self.bfirst_name}'
+        return f'Payment: {self.bill_first_name}, {self.bill_last_name}'
 
 class PaymentMethod(db.Model):
     __tablename__ = 'paymentmethod'
