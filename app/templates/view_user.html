@@ -33,19 +33,18 @@
                             <th>Last Name</th>
                             <th>Email</th>
                             <th>Phone Number</th>
+                            <th>Delete User?</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for account in accounts %}
                         <tr class="log">
-                            <td>{{loop.index}}</td>
-                            <td class="timestamp">
-                                <span class="inner-date">{{account.username}}</span>
-
-                            </td>
                             <td>{{account.username}}</td>
-                            <td><button id="{{account.id}}" class="delete-log btn btn-danger btn-sm">Delete Log</button></td>
-                            <td>test</td>
+                            <td>{{account.first_name}}</td>
+                            <td>{{account.last_name}}</td>
+                            <td>{{account.email}}</td>
+                            <td>{{account.phone_number}}</td>
+                            <td><button id="{{account.id}}" class="delete-account btn btn-danger btn-sm">Delete User</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -58,5 +57,5 @@
 
     {{ util.scripts() }}
 
-    <script src="static/js/logs.js"></script>
+    <script src="static/js/view_user.js"></script>
 </html>
