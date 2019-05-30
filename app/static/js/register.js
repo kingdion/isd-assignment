@@ -26,7 +26,6 @@ $(document).ready(function(){
 });
 
 function registration_callback(data) {
-    console.log(data); //debugging
     if (!data.success) {
         if (data.reason == 'email exists') {
             set_warning($('[name=email]'), 'A user with this email already exists.');

@@ -1,5 +1,10 @@
 $(document).ready(function()
 {
+    // When updating the data, we use a PUT
+    // request so the server knows 
+    // we are merely updating records. Send in
+    // all of the inputs to change, redirect
+    // on sucess or show error.
     $('#registration-update-form').submit(function(event) 
     {
         event.preventDefault();
@@ -15,11 +20,23 @@ $(document).ready(function()
                 postcode : $("[name=postcode]").val(),
                 phone_number : $("[name=phone-number]").val(),
             },
-            success: (data) => { window.location.href = "/profile" },
+            success: (data) => 
+            {
+                if (data.success) 
+                { 
+                    window.location.href = "/profile" 
+                } 
+                else 
+                { 
+                    $(".error-message").text(data.message);
+                }
+            },
             error: (error) => { $("#error-message").text(JSON.parse(error.responseText).message) },
           });
     });
 
+    // The delete account button handler - removes 
+    // the account and redirects. 
     $('#delete-btn').click(() => {
         $.ajax({
           type: "DELETE",

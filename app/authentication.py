@@ -11,16 +11,18 @@ from enum import Enum
 
 auth = Blueprint("auth", __name__)
 
-'''
-Decorator to protect a view, wraps around a view function
-and checks the request header for x-access-token, if one is
-given and is valid, the view will be returned and the view function
-will have access to a logged in user.
-'''
+# Decorator to protect a view, wraps around a view function
+# and checks the request header for x-access-token, if one is
+# given and is valid, the view will be returned and the view function
+# will have access to a logged in user.
+
 def protected_view(f, staff_required=False):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = session.get("token")
+
+        # If no token, we don't have a user
+        
         if token == None:
             return redirect(url_for('auth.login_page'))
 
@@ -28,13 +30,21 @@ def protected_view(f, staff_required=False):
             token_payload = jwt.decode(token, current_app.config['SECRET_KEY'])
             account = Account.query.filter_by(id = token_payload['id']).first()
 
+            # If there's a valid token but no account (say it was a deleted account and token still exists)
+            # then we redirect to login.
+
             if account == None:
                 return redirect(url_for('auth.login_page'))
 
             if (account and staff_required and not account.is_staff):
                 return "Only staff members can view this page.", 403
         except:
+            # If we fail to decode the token and find a user 
+            # we need the user to login
+
             return redirect(url_for('auth.login_page'))
+
+        # return function that we are wrapping
 
         return f(*args, **kwargs)
     return decorated
@@ -47,10 +57,16 @@ User Registration
 
 @auth.route("/register", methods=["GET"])
 def register():
+    # Get the register form page 
+
     return render_template("register.html")
 
 @auth.route("/do-register", methods=["POST"])
 def do_register():
+    # Submit the register request from the form
+    # Perform server-side validation and then create the account
+    # and add it to the database (then log the user in with it)
+
     email_exists = db.session.query(Account.email).filter_by(email=request.form["email"]).scalar() is not None
 
     if email_exists:
@@ -58,6 +74,8 @@ def do_register():
 
     username = request.form["username"]
     password = request.form["password"]
+
+    # TODO: Add server-side validation (since clients can just alter the javascript to bypass client-side validation)
 
     account = Account(\
         first_name=request.form["first-name"],\
@@ -72,8 +90,6 @@ def do_register():
         is_active=True,\
         join_date=datetime.datetime.utcnow()\
     )
-
-    # TODO: Add server-side validation (since clients can just alter the javascript to bypass client-side validation)
 
     db.session.add(account)
     db.session.commit()
@@ -102,7 +118,9 @@ def update_registration_details():
 @auth.route("/delete-account", methods=["POST", "DELETE"])
 @protected_view
 def delete_account():
-    # Remove and logout the user from the session
+    # Remove and logout the user from the session,
+    # return a success response.
+
     db.session.delete(g.logged_in_user)
     session.pop('token', None)
     db.session.commit()
@@ -117,15 +135,17 @@ User Login
 
 @auth.route("/login")
 def login_page():
+    # First check if the user is logged in
+    # and return them to the dashboard 
+    # if they are already logged in
+
     token = session.get("token")
     if token:
         token_payload = jwt.decode(token, current_app.config['SECRET_KEY'])
         account = Account.query.filter_by(id = token_payload['id']).first()
 
-        if account == None:
-            return render_template("login.html")
-
-        return redirect(url_for("routes.dashboard"))
+        if account != None:
+            return redirect(url_for("routes.dashboard"))
 
     return render_template("login.html")
 
@@ -139,10 +159,10 @@ def do_login():
 
     login_attempt = login(username, password)
 
-    if (login_attempt.get_json())["success"] == True:
-        return redirect(url_for("routes.dashboard"))
-    else:
-        return redirect(url_for("auth.login_page"))
+    # On success, we send the user to the dashboard
+    # otherwise just ask them to login again.
+
+    return login_attempt
 
 def login(username, password):
     # See if a login is successful and return
@@ -170,10 +190,13 @@ def get_login_token(username, password):
 
     if check_password_hash(account.password, password):
         now = datetime.datetime.utcnow()
+
+        # Create a new JWT token
         token = jwt.encode({'id' : str(account.id),
                             'exp' : now + datetime.timedelta(minutes=60)}, # expires in 60 minutes
                             current_app.config['SECRET_KEY'])
 
+        # Add access log
         log = UserAccessLog(account.id, now, AccessLogTypes.login.value)
         db.session.add(log)
         db.session.commit()
@@ -185,6 +208,11 @@ def get_login_token(username, password):
 @auth.route("/delete-log", methods=["POST", "DELETE"])
 @protected_view
 def delete_log():
+    # On a delete log request,
+    # remove the log from the database
+    # and return a message so that javascript knows what
+    # to remove.
+
     try:
         log = UserAccessLog.query.filter_by(id = request.form["log_id"]).first()
         db.session.delete(log)
@@ -200,6 +228,7 @@ def logout():
     # Since we validate our user based on the token
     # stored in the HTTPonly secure session cookie
     # All we do is remove it to log a user out
+     
     log = UserAccessLog(g.logged_in_user.id, datetime.datetime.utcnow(), AccessLogTypes.logout.value)
     db.session.add(log)
     db.session.commit()
@@ -208,6 +237,7 @@ def logout():
 
     return redirect(url_for("routes.index"))
 
+# An enumeration of the different types of logs we can have
 class AccessLogTypes(Enum):
     login = "Login"
     logout = "Logout"

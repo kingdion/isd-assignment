@@ -24,6 +24,10 @@ def create_app(debugMode = True):
     from .models import db, Account
     db.init_app(app)
 
+    # Before each request, inject
+    # the user object into the global flask 
+    # 'g' object so that we can pass it down
+    # to every template.
     @app.before_request
     def load_user():
         token = session.get("token")
@@ -38,10 +42,6 @@ def create_app(debugMode = True):
                 session.pop("token")
 
         g.logged_in_user = account
-
-    @app.context_processor
-    def context_processor():
-        return dict(logged_in_user={"username":"penis"})
 
     from .routes import routes
     from .authentication import auth
