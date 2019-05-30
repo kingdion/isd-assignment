@@ -14,7 +14,6 @@
 <div class="col-md-6 col-xs-12">
 <p class="greyed"><b>YOUR PAYMENT INFORMATION IS SECURE</b></p>
 <h1 class="display-4 font-weight-normal">Enter Payment Details</h1>
-<p class="lead font-weight-normal">Please review the details below before entering payment information </p>
 </div>
 <div class="col-md-3"></div>
 </div>
@@ -22,14 +21,16 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
         <form id="payment-form" action="{{ url_for('auth.do_register') }}" method=POST>
+        </br>
+        <div class="spacer"></div>
 
 <!--start of delivery -->
             <h4>Delivery Address</h4>
-            <p class="lead font-weight-normal"> Please review if Delivery Address is different to Registration Address</p>
+            <p class="lead font-weight-normal"> Please review if  different to Registration Address</p>
             <div class="spacer"></div>
             <div class="row">
                 <div class="col-md-4">
-                <h5>First Name:</h5>
+                <h5 class="dtext">First Name:</h5>
                 </div>
                 <div class="input-group-lg col-md-8"> <!-- enhances input by adding help test -->
                     <input type="text" class="form-control input-lg" value="{{g.logged_in_user.first_name}}" name="dfirst" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
@@ -38,7 +39,7 @@
             <div class="spacer">
             <div class="row">
                 <div class="col-md-4">
-                <h5>Last Name:</h5>
+                <h5 class="dtext">Last Name:</h5>
                 </div>
                 <div class="input-group-lg col-md-8">
                     <input type="text" class="form-control input-lg" value="{{g.logged_in_user.last_name}}" name="dlast" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
@@ -47,7 +48,7 @@
             <div class="spacer">
             <div class="row">
                 <div class="col-md-4">
-                    <h5>Street Address:</h5>
+                    <h5 class="dtext">Street Address:</h5>
                 </div>
                 <div class="input-group-lg col-md-8">
                     <input type="text" class="form-control input-lg" value="{{g.logged_in_user.street_address}}" name="dstreet-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
@@ -56,12 +57,14 @@
             <div class="spacer"></div>
             <div class="row">
                 <div class="col-md-4">
-                <h5>Postcode:</h5>
+                <h5 class="dtext">Postcode:</h5>
                 </div>
                 <div class="input-group-lg col-md-3">
                     <input type="number" class="form-control input-lg" value="{{g.logged_in_user.postcode}}" name="dpostcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
             </div>
+            </br>
+            <div class="spacer"></div>
 
 <!-- start of credit card-->
             <h4>Credit Card Details</h4>
@@ -102,7 +105,7 @@
             <div class="spacer"></div>
             <div class="row">
                 <div class="col-md-4">
-                    <h5>Expiration Date:</h5>
+                    <h5 class="dtext">Expiration Date:</h5>
                 </div>
                 <div class="input-group-lg col-md-4">
                     <input type="number"
