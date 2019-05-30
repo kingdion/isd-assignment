@@ -249,7 +249,6 @@ def delete_movie():
 @protected_view
 def create_shipment_details():
     if request.method == "POST":
-        # TODO: validation
         shipment_details = ShipmentDetails(
             date=date.fromisoformat(request.form["date"]),
             shipment_method=request.form["shipment_method"],
@@ -276,7 +275,6 @@ def edit_shipment_details(id):
     if not shipment_details:
         return "Error. Shipment Details not found", 404
     if request.method == "POST":
-        # TODO: validation
         shipment_details.date = date.fromisoformat(request.form["date"])
         shipment_details.shipment_method = request.form["shipment_method"]
         shipment_details.address = request.form["address"]
