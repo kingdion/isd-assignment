@@ -3,6 +3,7 @@ $(document).ready(function(){
         event.preventDefault();
         if (validate_form()) {
             $('#submit-btn').attr('disabled', true);
+            $.post($(this).attr('action'), $(this).serialize());
         }
   });
 
@@ -228,7 +229,7 @@ function validate_billaddress() {
 
 function validate_billpostcode() {
     var billpostcode = $('[name=bpostcode]');
-    if (billpostcodet.val().length == 0) {
+    if (billpostcode.val().length == 0) {
         set_warning(billpostcode, 'Required field.');
         return false;
     }
