@@ -3,7 +3,7 @@ $(document).ready(function(){
         event.preventDefault();
         $.ajax({
             type: "POST",
-            url: $(this).attr('action'),
+            url: $('#payment-form').attr('action'),
             data: {dfirst : $("[name=dfirst]").val(), dlast : $("[name=dlast]").val(), dstreet_address : $("[name=dstreet-address]").val(), dpostcode : $("[name=dpostcode]").val(), cname : $("[name=cname]").val(), credit_no : $("[name=credit-no]").val(), cvc : $("[name=cvc]").val(), month : $("[name=month]").val(), year : $("[name=year]").val(), bfirst_name : $("[name=bfirst-name]").val(), blast_name : $("[name=blast-name]").val(), bstreet_address : $("[name=bstreet-address]").val(), bpostcode : $("[name=bpostcode]").val()},
             success: (data) => 
             { 
