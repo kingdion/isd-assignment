@@ -58,7 +58,7 @@ def do_payment():
         bstreet_address=request.form["bstreet-address"],\
         bpostcode=request.form["bpostcode"],\
     )
-    db.session.add(payment)
+    db.session.do(payment)
     db.session.commit()
 
     return jsonify({'success': True})
