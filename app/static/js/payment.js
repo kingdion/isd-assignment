@@ -11,10 +11,14 @@ $(document).ready(function(){
                 { 
                     window.location.href = "/browse" 
                     $('#submit-btn').attr('disabled', true);
+                    var myObj = { firsname : "John", lastname : "Doe" };
+console.log(myObj);
                 } 
                 else 
                 { 
                     $('#submit-btn').attr('disabled', true);
+                    var myObj = { firsname : "John", lastname : "Doe" };
+console.log(myObj);
                 }
             },
           });
