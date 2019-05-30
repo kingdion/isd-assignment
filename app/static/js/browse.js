@@ -85,6 +85,11 @@ function update_movies_grid_callback(data) {
                 $.post('/delete-movie', { id: $(this).parent().parent().attr('id') }, update_movies_grid);
             }
         });
+
+        $('.add-to-order-btn').click(function(event) {
+            event.preventDefault();
+            window.location.href = "/add-to-order" + $(this).parent().parent().attr('id');
+        });
     }
     else {
         alert('An unexpected error has occurred while trying to refresh the movie catalogue: ' + data.message)

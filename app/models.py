@@ -115,9 +115,10 @@ class Orders(db.Model):
 
     movies = db.relationship('MovieCopy', secondary = 'movieorderline', back_populates="orders")
 
-    def __init__(self, accountId, trackingStatus):
+    def __init__(self, accountId, trackingStatus, methodId):
         self.accountId = accountId
-        self.trackingStatus = tracking_status
+        self.tracking_status = trackingStatus
+        self.methodId = methodId
 
     def __repr__(self):
         return f'Order: {self.id} {self.accountId} {self.tracking_status}'
@@ -212,7 +213,7 @@ class ShipmentDetails(db.Model):
     def validate_address(self, key, address):
         assert len(address) > 0
         return address
-        
+
     @validates("shipment_method")
     def validate_shipment_method(self, key, shipment_method):
         assert shipment_method in ("Express","Standard")
