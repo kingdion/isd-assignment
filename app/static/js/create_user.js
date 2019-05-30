@@ -1,11 +1,12 @@
 $(document).ready(function(){
-    $('#register-form').submit(function(event) {
+
+    $('#createuser-form').submit(function(event) {
         event.preventDefault();
 
         if (validate_form()) {
             $('#submit-btn').attr('disabled', true);
 
-            $.post($(this).attr('action'), $(this).serialize(), registration_callback);
+            $.post($(this).attr('action'), $(this).serialize(), createuser_callback);
         }
   });
 
@@ -25,8 +26,9 @@ $(document).ready(function(){
   $('[name=phone-number]').focusout(validate_phone);
 });
 
-function registration_callback(data) {
-    if (!data.success) {
+function createuser_callback(data) {
+    console.log(data); //debugging
+     if (!data.success) {
         if (data.reason == 'email exists') {
             set_warning($('[name=email]'), 'A user with this email already exists.');
             $('#submit-btn').attr('disabled', false);
@@ -36,8 +38,9 @@ function registration_callback(data) {
         }
     }
     else {
-        window.location.href = "/browse"
-    }
+        alert("User has been successfully created!");
+	location.reload();
+    }     
 }
 
 function validate_form() {
