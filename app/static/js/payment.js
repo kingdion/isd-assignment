@@ -13,14 +13,13 @@ $(document).ready(function(){
                 } 
                 else 
                 { 
-                    $(".error-message").text(data.message);
+                    $('#submit-btn').attr('disabled', true);
                 }
             },
-            error: (error) => { $(".error-message").text(JSON.parse(error.responseText).message) },
           });
 
         if (validate_form()) {
-            $('#submit-btn').attr('disabled', true);
+            
             $.post($(this).attr('action'), $(this).serialize());
         }
         
