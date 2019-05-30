@@ -168,6 +168,7 @@ class MovieCopy(db.Model):
     def __repr__(self):
         return f'MovieCopy: {self.copy_information}, {self.price}, {self.sold}'
 
+
 class PaymentMethod(db.Model):
     __tablename__ = 'paymentmethod'
 
