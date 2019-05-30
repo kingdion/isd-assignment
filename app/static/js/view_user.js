@@ -22,10 +22,10 @@ $(document).ready(function()
           });
     });
 
-    // $("#modify-user").click(function(event)) {
-    //   event.preventDefault();
-    //
-    // }
+    $("#modify-user").click(function(event)
+    {
+        window.location.href = "/modify_user"
+    });
 
     $("#date-time-picker-button").click(function(event)
     {

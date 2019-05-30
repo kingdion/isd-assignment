@@ -441,6 +441,11 @@ def create_user():
 def view_user():
     return render_template("view_user.html", accounts=db.session.query(Account).all())
 
+@routes.route("/modify_user")
+@protected_view_staff
+def modify_user():
+    return render_template("modify_user.html")
+
 @routes.route("/order")
 def view_order():
     orderlist = db.session.query(MovieOrderLine).all()
