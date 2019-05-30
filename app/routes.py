@@ -249,7 +249,7 @@ def delete_movie():
     except:
         return 'Something went wrong trying to delete this movie.', 400
 
-@routes.route("/add-to-order/<movieId>"):
+@routes.route("/add-to-order/<movieId>")
 def add_to_order(movieId):
     pass
 
