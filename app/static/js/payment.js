@@ -10,6 +10,7 @@ $(document).ready(function(){
                 if (data.success) 
                 { 
                     window.location.href = "/browse" 
+                    $('#submit-btn').attr('disabled', true);
                 } 
                 else 
                 { 
