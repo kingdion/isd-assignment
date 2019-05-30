@@ -175,7 +175,7 @@ class Payment(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
     dfirst = db.Column(db.String(20), nullable=False)
     dlast = db.Column(db.String(20), nullable=False)
-    dstreet_address = db.Column(db.String(50), nullable=False)
+    dstreet_address = db.Column(db.String(100), nullable=False)
     dpostcode = db.Column(db.String(4), nullable=False)
     credit_name = db.Column(db.String(20), nullable=False)
     credit_no = db.Column(db.String(16), nullable=False)
