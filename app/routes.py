@@ -40,6 +40,29 @@ def logs():
 def payment():
     return render_template("payment.html")
 
+@routes.route("/do-payment", methods=["POST"])
+def do_payment():
+    keys = ["dfirst", "dlast", "dstreet-address", "dpostcode", "cname", "credit-no", "cvc", "month", "year", "bfirst-name", "blast-name", "bstreet-address", "bpostcode"]
+    payment = Payment(\
+        delivery_first_name=request.form["dfirst"],\
+        delivery_last_name=request.form["dlast"],\
+        dstreet_address=request.form["dstreet-address"],\
+        dpostcode=request.form["dpostcode"],\
+        cname=request.form["cname"],\
+        credit_no=request.form["credit-no"],\
+        cvc=request.form["cvc"],\
+        month=request.form["month"],\
+        year=request.form["year"],\
+        bfirst_name=request.form["bfirst-name"],\
+        blast_name=request.form["blast-name"],\
+        bstreet_address=request.form["bstreet-address"],\
+        bpostcode=request.form["bpostcode"],\
+    )
+    db.session.add(payment)
+    db.session.commit()
+
+    return jsonify({'success': True})
+
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():
     result = []

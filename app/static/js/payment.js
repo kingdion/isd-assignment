@@ -1,10 +1,29 @@
 $(document).ready(function(){
     $('#payment-form').submit(function(event) {
         event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'),
+            data: {dfirst : $("[name=dfirst]").val(), dlast : $("[name=dlast]").val(), dstreet_address : $("[name=dstreet-address]").val(), dpostcode : $("[name=dpostcode]").val(), cname : $("[name=cname]").val(), credit_no : $("[name=credit-no]").val(), cvc : $("[name=cvc]").val(), month : $("[name=month]").val(), year : $("[name=year]").val(), bfirst_name : $("[name=bfirst-name]").val(), blast_name : $("[name=blast-name]").val(), bstreet_address : $("[name=bstreet-address]").val(), bpostcode : $("[name=bpostcode]").val()},
+            success: (data) => 
+            { 
+                if (data.success) 
+                { 
+                    window.location.href = "/shipment" 
+                } 
+                else 
+                { 
+                    $(".error-message").text(data.message);
+                }
+            },
+            error: (error) => { $(".error-message").text(JSON.parse(error.responseText).message) },
+          });
+
         if (validate_form()) {
             $('#submit-btn').attr('disabled', true);
             $.post($(this).attr('action'), $(this).serialize());
         }
+        
   });
 
   //when clicking off an input, calls focusout
@@ -229,12 +248,23 @@ function validate_billaddress() {
 
 function validate_billpostcode() {
     var billpostcode = $('[name=bpostcode]');
-    if (billpostcode.val().length == 0) {
-        set_warning(billpostcode, 'Required field.');
+    var bpostcheck = check_bpost(billpostcode.val());
+    if (!bpostcheck.success) {
+        set_warning(billpostcode, bpostcheck.warning);
         return false;
     }
     else {
         clear_warning(billpostcode);
         return true;
     }
+}
+
+function check_bpost(billpostcode) {
+    var result = { 'success': true, 'warning': '' };
+
+    if (billpostcode.length < 4) {
+        result.success = false;
+        result.warning += 'Postcode must be at least 4 numbers long.';
+    }
+    return result;
 }

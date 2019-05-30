@@ -20,7 +20,7 @@
       <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-        <form id="payment-form" action="{{ url_for('auth.do_register') }}" method=POST>
+        <form id="payment-form" action="{{ url_for('routes.do_payment') }}" method=POST>
         </br>
         <div class="spacer"></div>
 
@@ -154,7 +154,7 @@
             </div>
             <br/>
             <div class="spacer"></div>
-            <button id="submit-btn" type="submit" class="btn btn-secondary btn-lg">Pay Now</button>
+            <button id="submit-btn" type="submit" class="btn btn-secondary btn-lg"  href="{{ url_for('routes.add_payment') }}">Confirm</button>
             <br/><br/>
             <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
         </form>
