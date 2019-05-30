@@ -88,9 +88,10 @@ function validate_dlast() {
         return true;
     }
 }
+
 function validate_daddress() {
-    var daddress = $('[name=daddress]');
-    if (daddress.val().length == 0) {
+    var dadd = $('[name=daddress]');
+    if (dadd.val().length == 0) {
         set_warning(daddress, 'Required field.');
         return false;
     }
@@ -99,6 +100,7 @@ function validate_daddress() {
         return true;
     }
 }
+
 
 function validate_dpostcode() {
     var dpost = $('[name=dpostcode]');
