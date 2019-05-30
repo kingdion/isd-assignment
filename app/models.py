@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
 
@@ -187,6 +188,16 @@ class ShipmentDetails(db.Model):
 
     order_id = db.Column(UUID(as_uuid=True), db.ForeignKey("orders.id"), nullable=False)
     order = db.relationship("Orders", backref="shipment_details")
+
+    @validates("address")
+    def validate_address(self, key, address):
+        assert len(address) > 0
+        return address
+        
+    @validates("shipment_method")
+    def validate_shipment_method(self, key, shipment_method):
+        assert shipment_method in ("Express","Standard")
+        return shipment_method
 
     def __repr__(self):
         return f'ShipmentDetails: {self.date}, {self.address}, {self.shipment_method}'
