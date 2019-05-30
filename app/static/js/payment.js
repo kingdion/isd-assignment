@@ -92,7 +92,7 @@ function validate_dlast() {
 function validate_daddress() {
     var dadd = $('[name=daddress]');
     console.log(dadd)
-    if (dadd[0].val().length == 0) {
+    if (dadd.val().length == 0) {
         set_warning(dadd, 'Required field.');
         return false;
     }
