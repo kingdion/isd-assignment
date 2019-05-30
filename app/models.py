@@ -89,7 +89,8 @@ class Account(db.Model):
 
     logs = db.relationship('UserAccessLog')
 
-    def __init__(self, first_name, last_name, email, username, password, street_address, postcode, phone_number, is_staff, is_active, join_date):
+    def __init__(self, id, first_name, last_name, email, username, password, street_address, postcode, phone_number, is_staff, is_active, join_date):
+        self.id = account_id
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
@@ -191,7 +192,7 @@ class Payment(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
     dfirst = db.Column(db.String(20), nullable=False)
     dlast = db.Column(db.String(20), nullable=False)
-    dstreet_address = db.Column(db.String(100), nullable=False)
+    daddress = db.Column(db.String(100), nullable=False)
     dpostcode = db.Column(db.String(4), nullable=False)
     credit_name = db.Column(db.String(20), nullable=False)
     credit_no = db.Column(db.String(16), nullable=False)

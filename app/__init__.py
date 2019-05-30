@@ -7,7 +7,7 @@ def create_app(debugMode = True):
     if debugMode:
         app.config.update(
             SQLALCHEMY_DATABASE_URI = "postgresql://postgres:isd_password@localhost:5432/isd",
-            SQLALCHEMY_TRACK_MODIFICATIONS = True, 
+            SQLALCHEMY_TRACK_MODIFICATIONS = True,
             SECRET_KEY = "Change in production",
             SESSION_COOKIE_SECURE = False,
             DEBUG = True,
@@ -15,7 +15,7 @@ def create_app(debugMode = True):
     else:
         app.config.update(
             SQLALCHEMY_DATABASE_URI = "postgresql://postgres:isd_password@localhost:5432/isd",
-            SQLALCHEMY_TRACK_MODIFICATIONS = False, 
+            SQLALCHEMY_TRACK_MODIFICATIONS = False,
             SECRET_KEY = "C94222125//34/rtgtrwrubwui24984524nfejsrjbf5", # randomly generated string
             SESSION_COOKIE_SECURE = True,
             DEBUG = False,
@@ -25,7 +25,7 @@ def create_app(debugMode = True):
     db.init_app(app)
 
     # Before each request, inject
-    # the user object into the global flask 
+    # the user object into the global flask
     # 'g' object so that we can pass it down
     # to every template.
     @app.before_request

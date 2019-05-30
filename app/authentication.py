@@ -22,7 +22,7 @@ def protected_view(f, staff_required=False):
         token = session.get("token")
 
         # If no token, we don't have a user
-        
+
         if token == None:
             return redirect(url_for('auth.login_page'))
 
@@ -39,7 +39,7 @@ def protected_view(f, staff_required=False):
             if (account and staff_required and not account.is_staff):
                 return "Only staff members can view this page.", 403
         except:
-            # If we fail to decode the token and find a user 
+            # If we fail to decode the token and find a user
             # we need the user to login
 
             return redirect(url_for('auth.login_page'))
@@ -57,7 +57,7 @@ User Registration
 
 @auth.route("/register", methods=["GET"])
 def register():
-    # Get the register form page 
+    # Get the register form page
 
     return render_template("register.html")
 
@@ -68,7 +68,7 @@ def do_register():
     # and add it to the database (then log the user in with it)
 
     account_exists = db.session.query(Account).filter((Account.email==request.form["email"]) | (Account.username==request.form["username"])).first()
-        
+
     if account_exists:
         return jsonify({"success": False, "reason": "email exists"})
 
@@ -119,7 +119,7 @@ def do_create_user():
             value = True
         else:
             value = False
-    
+
     account = Account(\
         first_name=request.form["first-name"],\
         last_name=request.form["last-name"],\
@@ -166,7 +166,7 @@ def update_registration_details():
 def validate_not_empty(request, keys):
     for key in keys:
         if not request.form[key]:
-            return jsonify({"success": False, "message": f"{key.replace('_', ' ').capitalize()} cannot be empty."}) 
+            return jsonify({"success": False, "message": f"{key.replace('_', ' ').capitalize()} cannot be empty."})
 
 @auth.route("/delete-account", methods=["POST", "DELETE"])
 @protected_view
@@ -189,7 +189,7 @@ User Login
 @auth.route("/login")
 def login_page():
     # First check if the user is logged in
-    # and return them to the dashboard 
+    # and return them to the dashboard
     # if they are already logged in
 
     token = session.get("token")
@@ -284,7 +284,7 @@ def logout():
     # Since we validate our user based on the token
     # stored in the HTTPonly secure session cookie
     # All we do is remove it to log a user out
-     
+
     log = UserAccessLog(g.logged_in_user.id, datetime.datetime.utcnow(), AccessLogTypes.logout.value)
     db.session.add(log)
     db.session.commit()
