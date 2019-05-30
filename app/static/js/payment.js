@@ -1,45 +1,27 @@
 $(document).ready(function(){
     $('#payment-form').submit(function(event) {
         event.preventDefault();
-
         if (validate_form()) {
             $('#submit-btn').attr('disabled', true);
-
-            $.post($(this).attr('action'), $(this).serialize(), payment_callback);
         }
   });
 
-  $('[name=email]').focusout(validate_email);
-  $('[name=password]').focusout(function () {
-      validate_password();
-      validate_repeat_password();
-  });
-  $('[name=repeat-password]').focusout(function () {
-      validate_repeat_password();
-      validate_password();
-  });
-  $('[name=first-name]').focusout(validate_fname);
-  $('[name=last-name]').focusout(validate_lname);
-  $('[name=street-address]').focusout(validate_street);
-  $('[name=postcode]').focusout(validate_postcode);
-  $('[name=phone-number]').focusout(validate_phone);
+  //when clicking off an input, calls focusout
+  $('[name=dfirst]').focusout(validate_dfirst);
+  $('[name=dlast]').focusout(validate_dlast);
+  $('[name=dstreet-address]').focusout(validate_daddress);
+  $('[name=dpostcode]').focusout(validate_dpostcode);
+  $('[name=cname]').focusout(validate_creditname);
+  $('[name=credit-no]').focusout(validate_creditno);
+  $('[name=cvc]').focusout(validate_cvc);
+  $('[name=month]').focusout(validate_month);
+  $('[name=year]').focusout(validate_year); 
+  $('[name=bfirst-name]').focusout(validate_bfirst);
+  $('[name=blast-name]').focusout(validate_blast);
+  $('[name=bstreet-address]').focusout(validate_billaddress);
+  $('[name=bpostcode]').focusout(validate_billpostcode);
+
 });
-
-function payment_callback(data) {
-    console.log(data); //debugging
-    if (!data.success) {
-        if (data.reason == 'email exists') {
-            set_warning($('[name=email]'), 'A user with this email already exists.');
-            $('#submit-btn').attr('disabled', false);
-        }
-        else {
-            alert("Error, failed to create account: " + data.reason);
-        }
-    }
-    else {
-        window.location.href = "/dashboard"
-    }
-}
 
 function validate_form() {
     return !(
