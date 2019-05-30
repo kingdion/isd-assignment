@@ -134,8 +134,6 @@ def do_create_user():
         join_date=datetime.datetime.utcnow()\
     )
 
-    # TODO: Add server-side validation (since clients can just alter the javascript to bypass client-side validation)
-
     db.session.add(account)
     db.session.commit()
 
