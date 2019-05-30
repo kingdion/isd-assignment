@@ -17,7 +17,7 @@
             <form method="GET" action="{{ url_for('routes.list_shipment_details') }}">
                 <div class="form-row">
                     <div class="col-5">
-                        <input type="text" class="form-control" pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}  -[0-9a-fA-F]{12}" required id="order_id" name="order_id" placeholder="Order ID (eg. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+                        <input type="text" class="form-control" required pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" required id="order_id" name="order_id" placeholder="Order ID (eg. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
 ">
                     </div>
                     <div class="col-2">
@@ -48,7 +48,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Shipment ID</th>
                         <th>Date</th>
                         <th>Shipment Method</th>
                         <th></th>
@@ -65,7 +65,9 @@
                     {% endfor %}
                 </tbody>
             </table>
-
+            {% if not_found_id is defined %}
+            <div class="alert alert-warning">Could not find Shipment Details with Order ID: {{not_found_id}}</div>
+            {% endif %}
             <a class="btn btn-primary" href="{{ url_for('routes.create_shipment_details') }}">Create new</a>
         </div>
     </body>

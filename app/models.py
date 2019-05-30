@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
 
@@ -168,6 +169,24 @@ class MovieCopy(db.Model):
     def __repr__(self):
         return f'MovieCopy: {self.copy_information}, {self.price}, {self.sold}'
 
+class Payment(db.Model):
+    __tablename__ = 'payment'
+    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    dfirst = db.Column(db.String(20), nullable=False)
+    dlast = db.Column(db.String(20), nullable=False)
+    dstreet_address = db.Column(db.String(50), nullable=False)
+    dpostcode = db.Column(db.String(4), nullable=False)
+    cname = db.Column(db.String(20), nullable=False)
+    credit_no = db.Column(db.String(16), nullable=False)
+    cvc = db.Column(db.String(3), nullable=False)
+    month = db.Column(db.String(2), nullable=False)
+    year = db.Column(db.String(4), nullable=False)
+    bfirst_name = db.Column(db.String(20), nullable=False)
+    blast_name = db.Column(db.String(20), nullable=False)
+    bstreet_address = db.Column(db.String(50), nullable=False)
+    bpostcode = db.Column(db.String(4), nullable=False)
+    def __repr__(self):
+        return f'Payment: {self.bfirst_name}, {self.bfirst_name}'
 
 class PaymentMethod(db.Model):
     __tablename__ = 'paymentmethod'
@@ -188,6 +207,16 @@ class ShipmentDetails(db.Model):
 
     order_id = db.Column(UUID(as_uuid=True), db.ForeignKey("orders.id"), nullable=False)
     order = db.relationship("Orders", backref="shipment_details")
+
+    @validates("address")
+    def validate_address(self, key, address):
+        assert len(address) > 0
+        return address
+        
+    @validates("shipment_method")
+    def validate_shipment_method(self, key, shipment_method):
+        assert shipment_method in ("Express","Standard")
+        return shipment_method
 
     def __repr__(self):
         return f'ShipmentDetails: {self.date}, {self.address}, {self.shipment_method}'

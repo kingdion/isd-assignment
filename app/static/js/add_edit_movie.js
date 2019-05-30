@@ -29,18 +29,31 @@ $(document).ready(function() {
 
 $('#movie-form').submit(function(event) {
     event.preventDefault();
-    $.post($(this).attr('action'), $(this).serialize(), add_edit_movie_callback);
+    $.ajax({
+        url: $('#movie-form').attr('action'),
+        type: 'POST',
+        data: new FormData($('#movie-form')[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: add_edit_movie_callback
+    });
 });
 
 function add_edit_movie_callback(data) {
     if (data.success) {
-        alert("Movie successfully added!");
-        $('#movie-form')[0].reset();
-        $('select').trigger('change');
+        alert("Save successful!");
+        location.reload();
     }
     else {
         if (data.reason == 'movie exists') {
             set_warning($('[name="title"]'), "A movie with that title and release date already exists");
+        }
+        else if (data.reason == 'incomplete form') {
+            alert("The save failed due to the form being incomplete. Please fill all fields.");
+        }
+        else {
+            alert("Undefined server error: " + data.reason);
         }
     }
 }
