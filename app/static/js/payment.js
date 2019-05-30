@@ -32,7 +32,7 @@ $(document).ready(function(){
   //when clicking off an input, calls focusout
   $('[name=dfirst]').focusout(validate_dfirst);
   $('[name=dlast]').focusout(validate_dlast);
-  $('[name=dstreet-address]').focusout(validate_daddress);
+  $('[name=daddress]').focusout(validate_daddress);
   $('[name=dpostcode]').focusout(validate_dpostcode);
   $('[name=cname]').focusout(validate_creditname);
   $('[name=credit-no]').focusout(validate_creditno);
@@ -89,7 +89,7 @@ function validate_dlast() {
     }
 }
 function validate_daddress() {
-    var daddress = $('[name=dstreet-address]');
+    var daddress = $('[name=daddress]');
     if (daddress.val().length == 0) {
         set_warning(daddress, 'Required field.');
         return false;
