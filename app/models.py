@@ -172,7 +172,7 @@ class MovieCopy(db.Model):
 
 class Payment(db.Model):
     __tablename__ = 'payment'
-    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
     dfirst = db.Column(db.String(20), nullable=False)
     dlast = db.Column(db.String(20), nullable=False)
     dstreet_address = db.Column(db.String(50), nullable=False)
