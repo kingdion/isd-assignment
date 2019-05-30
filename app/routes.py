@@ -316,4 +316,4 @@ def list_shipment_details():
 @routes.route("/createuser", methods=["GET"])
 @protected_view_staff
 def create_user():
-        return render_template("create_user.html")
+    return render_template("create_user.html")
