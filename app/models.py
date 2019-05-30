@@ -183,6 +183,8 @@ class Payment(db.Model):
     blast_name = db.Column(db.String(20), nullable=False)
     bstreet_address = db.Column(db.String(50), nullable=False)
     bpostcode = db.Column(db.Integer(4), nullable=False)
+    def __repr__(self):
+        return f'MovieCopy: {self.copy_information}, {self.price}, {self.sold}'
 
 class PaymentMethod(db.Model):
     __tablename__ = 'paymentmethod'
