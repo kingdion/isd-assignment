@@ -257,7 +257,7 @@ def do_edit_movie():
 
         return jsonify({ "success": True })
     except Exception as e:
-        return 'Something went wrong trying submit edits to this movie.', 400
+        return jsonify({ "success": False, "reason": str(e) })
 
 @routes.route("/edit-movie-copies/<movieID>")
 @protected_view_staff
@@ -267,6 +267,18 @@ def edit_movie_copies(movieID):
         return render_template("edit_movie_copies.html", movie=movie)
     except:
         return 'Something went wrong trying to edit copies of this movie.', 400
+
+@routes.route("/do-get-movie-copies/<movieID>", methods=["GET"])
+def do_get_movie_copies(movieID):
+    try:
+        copies = []
+        movie = Movie.query.filter_by(id=movieID).one()
+        for copy in movie.copies:
+            copies.append(copy.to_dict())
+
+        return jsonify({ "success": True, "copies": copies })
+    except Exception as e:
+        return jsonify({ "success": False, "reason": str(e) })
 
 @routes.route("/do-add-movie-copy/<movieID>", methods=["POST"])
 @protected_view_staff
@@ -285,7 +297,7 @@ def do_add_movie_copy(movieID):
     except Exception as e:
         return jsonify({ "success": False, "reason": str(e) })
 
-@routes.route("/delete-movie-copy", methods=["POST"])
+@routes.route("/do-delete-movie-copy", methods=["POST"])
 @protected_view_staff
 def delete_movie_copy():
     try:
@@ -296,7 +308,26 @@ def delete_movie_copy():
     except Exception as e:
         return jsonify({ "success": False, "reason": str(e) })
 
-@routes.route("/delete-movie", methods=["POST"])
+@routes.route("/do-edit-movie-copy", methods=["POST"])
+@protected_view_staff
+def do_edit_movie_copy():
+    try:
+        if (request.form["copy-id"] == ""\
+        or request.form["copy-price"] == ""\
+        or request.form["copy-description"] == ""):
+            return jsonify({ "success": False, "reason": "incomplete form" })
+
+        copy = MovieCopy.query.filter_by(id=request.form["copy-id"]).one()
+        copy.price = request.form["copy-price"]
+        copy.copy_information = request.form["copy-description"]
+
+        db.session.commit()
+
+        return jsonify({ "success": True })
+    except Exception as e:
+        return jsonify({ "success": False, "reason": str(e) })
+
+@routes.route("/do-delete-movie", methods=["POST"])
 @protected_view_staff
 def delete_movie():
     try:

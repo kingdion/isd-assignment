@@ -77,3 +77,16 @@
 {
     color: red;
 }
+
+@keyframes highlight {
+    0% {
+        background: #7aff87;
+    }
+    100% {
+        background: none;
+    }
+}
+
+.highlight {
+    animation: highlight 2s;
+}

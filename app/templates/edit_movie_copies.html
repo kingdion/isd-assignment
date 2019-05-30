@@ -19,7 +19,7 @@
             <hr/>
 
             <div class="table-responsive">
-                <table class="table">
+                <table id="movie-copies-table" class="table">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -76,7 +76,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">$</span>
                                         </div>
-                                        <input type="number" class="form-control" name="copy-price" placeholder="Price">
+                                        <input type="number" class="form-control" name="copy-price" placeholder="Price" step="any" min="0">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -87,6 +87,41 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             <button id="submit-add-copy-form" type="submit" form="add-copy-form" class="btn btn-primary">Save Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="edit-copy-modal" tabindex="-1" role="dialog" aria-labelledby="edit-copy-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="edit-copy-title">Edit Copy</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="edit-copy-form" action="{{ url_for('routes.do_edit_movie_copy') }}" method=POST>
+                                <div class="form-group">
+                                    <input id="copy-id-input" type="text" class="form-control" name="copy-id" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input id="copy-price-input" type="number" class="form-control" name="copy-price" placeholder="Price" step="any" min="0">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="copy-description-input" class="form-control" name="copy-description" placeholder="Description"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button id="submit-edit-copy-form" type="submit" form="edit-copy-form" class="btn btn-primary">Save Copy</button>
                         </div>
                     </div>
                 </div>
