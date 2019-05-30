@@ -44,19 +44,19 @@ def payment():
 def do_payment():
     keys = ["dfirst", "dlast", "dstreet-address", "dpostcode", "cname", "credit-no", "cvc", "month", "year", "bfirst-name", "blast-name", "bstreet-address", "bpostcode"]
     payment = Payment(\
-        delivery_first_name=request.form["dfirst"],\
-        delivery_last_name=request.form["dlast"],\
-        delivery_street_address=request.form["dstreet-address"],\
-        delivery_postcode=request.form["dpostcode"],\
+        dfirst=request.form["dfirst"],\
+        dlast=request.form["dlast"],\
+        dstreet_address=request.form["dstreet-address"],\
+        dpostcode=request.form["dpostcode"],\
         credit_name=request.form["cname"],\
         credit_no=request.form["credit-no"],\
         cvc=request.form["cvc"],\
         month=request.form["month"],\
         year=request.form["year"],\
-        bill_first_name=request.form["bfirst-name"],\
-        bill_last_name=request.form["blast-name"],\
-        bill_street_address=request.form["bstreet-address"],\
-        bill_postcode=request.form["bpostcode"],\
+        bfirst_name=request.form["bfirst-name"],\
+        blast_name=request.form["blast-name"],\
+        bstreet_address=request.form["bstreet-address"],\
+        bpostcode=request.form["bpostcode"],\
     )
     db.session.do(payment)
     db.session.commit()
