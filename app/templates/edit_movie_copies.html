@@ -29,20 +29,20 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="movie-copies-table-body">
                         {% for copy in movie.copies %}
                         <tr class="copy">
                             <td>{{ loop.index }}</td>
                             <td>{{ copy.copy_information }}</td>
-                            <td>{{ copy.price }}</td>
+                            <td>${{ copy.price }}</td>
                             <td>{{ copy.sold }}</td>
                             <!-- later, do if copy.sold, show orderid (and maybe link to order), otherwise show "not sold" -->
                             <td>
-                                <button id="edit-btn" name="{{ copy.id }}" class="btn btn-primary btn-sm copy-btn">
+                                <button name="{{ copy.id }}" class="btn btn-primary btn-sm copy-btn edit-btn">
                                     <i class="far fa-edit"></i>
                                 </button>
 
-                                <button id="delet-btn" name="{{ copy.id }}" class="btn btn-danger btn-sm copy-btn">
+                                <button name="{{ copy.id }}" class="btn btn-danger btn-sm copy-btn delete-btn">
                                     <i class="far fa-trash-alt"></i>
                                 </button>
                             </td>
@@ -56,7 +56,39 @@
 
             <div class="row">
                 <div class="col-sm" align="center">
-                    <button id="new-btn" name="{{ movie.id }}" class="btn btn-success btn-sm">New Movie Copy</button>
+                    <button id="new-btn" name="{{ movie.id }}" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add-copy-modal">New Movie Copy</button>
+                </div>
+            </div>
+
+            <div class="modal fade" id="add-copy-modal" tabindex="-1" role="dialog" aria-labelledby="add-copy-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="add-copy-title">Add a New Copy</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="add-copy-form" action="{{ url_for('routes.do_add_movie_copy', movieID=movie.id) }}" method=POST>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input type="number" class="form-control" name="copy-price" placeholder="Price">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" name="copy-description" placeholder="Description"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button id="submit-add-copy-form" type="submit" form="add-copy-form" class="btn btn-primary">Save Copy</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
