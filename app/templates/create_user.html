@@ -1,0 +1,93 @@
+{% import 'utilities.html' as util %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Create User - Staff View</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/register.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css"/>
+        {{ util.head() }}
+    </head>
+    <body>
+        {{ util.navbar() }}
+
+        <div id="body-content" class="container">
+            <h4 id="error-message" class="error-message"></h4>
+
+            <h1>Create a New User</h1>
+
+            <hr/>
+
+            <h5>User Details</h5>
+
+            <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <form id="createuser-form" action="{{ url_for('auth.do_create_user') }}" method=POST>
+                            <div class="input-group-lg">
+                                <input type="username" class="form-control input-lg" placeholder="Username" name="username" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="email" class="form-control input-lg" placeholder="Email" name="email" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <br/>
+
+                            <div class="input-group-lg">
+                                <input type="password" class="form-control input-lg" placeholder="Password*" name="password" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="password" class="form-control input-lg" placeholder="Repeat Password" name="repeat-password" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <label class="indented greyed" for="password">*Must be at least 8 characters long with no spaces, and at least one non-alphanumeric character.</label>
+                            <br/>
+
+                            <div class="input-group-lg">
+                                <input type="text" class="form-control input-lg" placeholder="First Name" name="first-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="text" class="form-control input-lg" placeholder="Last Name" name="last-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <br/>
+
+                            <div class="input-group-lg">
+                                <input type="text" class="form-control input-lg" placeholder="Street Address" name="street-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="number" class="form-control input-lg" placeholder="Postcode" name="postcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="input-group-lg">
+                                <input type="number"
+                                       class="form-control input-lg"
+                                       placeholder="Phone Number (xxxx xxx xxx)"
+                                       oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                       maxlength = "10"
+                                       name="phone-number"
+                                       data-toggle="tooltip" data-trigger="manual" data-placement="right"
+                                       title="">
+                            </div>
+
+                            <br/>
+			    <div class="form-check indented">
+			    <div class="input-group-lg">
+                                	<input type="checkbox" name="isStaff" class="form-check-input" data-toggle="tooltip" data-trigger="manual" title="" value="Staff">
+                                <label class="form-check-label greyed" for="email_check">Is this user a staff member?</label>
+                            </div>
+			    </div>
+                            <br/>
+			    <br/>
+                            <button id="submit-btn" type="submit" class="btn btn-secondary btn-lg">Create Account</button>
+                            <br/><br/>
+                            <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
+                        </form>
+    </body>
+
+    {{ util.scripts() }}
+
+    <script src="/static/js/create_user.js"></script>
+</html>

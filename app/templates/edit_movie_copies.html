@@ -4,6 +4,8 @@
 <html lang="en">
     <head>
         <title>Edit Movie Copies - Staff View</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_movie_copies.css') }}">
         {{ util.head() }}
     </head>
     <body>
@@ -24,21 +26,40 @@
                             <th>Information</th>
                             <th>Price</th>
                             <th>Sold</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for copy in movie.copies %}
                         <tr class="copy">
-                            <td>{{loop.index}}</td>
-                            <td>{{copy.copy_information}}</td>
-                            <td>{{copy.sold}}</td>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ copy.copy_information }}</td>
+                            <td>{{ copy.price }}</td>
+                            <td>{{ copy.sold }}</td>
                             <!-- later, do if copy.sold, show orderid (and maybe link to order), otherwise show "not sold" -->
-                            <td><button id="{{log.id}}" class="delete-log btn btn-danger btn-sm">Delete Log</button>
+                            <td>
+                                <button id="edit-btn" name="{{ copy.id }}" class="btn btn-primary btn-sm copy-btn">
+                                    <i class="far fa-edit"></i>
+                                </button>
+
+                                <button id="delet-btn" name="{{ copy.id }}" class="btn btn-danger btn-sm copy-btn">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+
+            <div class="spacer5"></div>
+
+            <div class="row">
+                <div class="col-sm" align="center">
+                    <button id="new-btn" name="{{ movie.id }}" class="btn btn-success btn-sm">New Movie Copy</button>
+                </div>
+            </div>
+
             <br/><br/>
             <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
         </div>
@@ -46,5 +67,5 @@
 
     {{ util.scripts() }}
 
-    <script src="static/js/edit_movie_copies.js"></script>
+    <script src="{{ url_for('static', filename='js/edit_movie_copies.js') }}"></script>
 </html>

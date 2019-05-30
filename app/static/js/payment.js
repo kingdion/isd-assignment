@@ -1,160 +1,180 @@
 $(document).ready(function(){
-    $('#register-form').submit(function(event) {
+    $('#payment-form').submit(function(event) {
         event.preventDefault();
-
         if (validate_form()) {
             $('#submit-btn').attr('disabled', true);
-
-            $.post($(this).attr('action'), $(this).serialize(), registration_callback);
+            $.post($(this).attr('action'), $(this).serialize());
         }
   });
 
-  $('[name=email]').focusout(validate_email);
-  $('[name=password]').focusout(function () {
-      validate_password();
-      validate_repeat_password();
-  });
-  $('[name=repeat-password]').focusout(function () {
-      validate_repeat_password();
-      validate_password();
-  });
-  $('[name=first-name]').focusout(validate_fname);
-  $('[name=last-name]').focusout(validate_lname);
-  $('[name=street-address]').focusout(validate_street);
-  $('[name=postcode]').focusout(validate_postcode);
-  $('[name=phone-number]').focusout(validate_phone);
+  //when clicking off an input, calls focusout
+  $('[name=dfirst]').focusout(validate_dfirst);
+  $('[name=dlast]').focusout(validate_dlast);
+  $('[name=dstreet-address]').focusout(validate_daddress);
+  $('[name=dpostcode]').focusout(validate_dpostcode);
+  $('[name=cname]').focusout(validate_creditname);
+  $('[name=credit-no]').focusout(validate_creditno);
+  $('[name=cvc]').focusout(validate_cvc);
+  $('[name=month]').focusout(validate_month);
+  $('[name=year]').focusout(validate_year); 
+  $('[name=bfirst-name]').focusout(validate_bfirst);
+  $('[name=blast-name]').focusout(validate_blast);
+  $('[name=bstreet-address]').focusout(validate_billaddress);
+  $('[name=bpostcode]').focusout(validate_billpostcode);
+
 });
-
-function registration_callback(data) {
-    console.log(data); //debugging
-    if (!data.success) {
-        if (data.reason == 'email exists') {
-            set_warning($('[name=email]'), 'A user with this email already exists.');
-            $('#submit-btn').attr('disabled', false);
-        }
-        else {
-            alert("Error, failed to create account: " + data.reason);
-        }
-    }
-    else {
-        window.location.href = "/dashboard"
-    }
-}
 
 function validate_form() {
     return !(
-             !validate_email()
-              | !validate_password()
-              | !validate_repeat_password()
-              | !validate_fname()
-              | !validate_lname()
-              | !validate_street()
-              | !validate_postcode()
-              | !validate_phone()
+        !validate_dfirst()
+        | !validate_dlast()
+        | !validate_daddress()
+        | !validate_dpostcode()
+        | !validate_creditname()
+        | !validate_creditno()
+        | !validate_cvc()
+        | !validate_month()
+        | !validate_year()
+        | !validate_bfirst()
+        | !validate_blast()
+        | !validate_billaddress()
+        | !validate_billpostcode()
             );
 }
 
-function validate_email() {
-    var email = $('[name=email]');
-    if (email.val().length == 0) {
-        set_warning(email, 'Required field.');
+//delivery form validation
+
+function validate_dfirst() {
+    var dfirst = $('[name=dfirst]');
+    if (dfirst.val().length == 0) {
+        set_warning(dfirst, 'Required field.');
+            return false;
+    }
+    else {
+        clear_warning(dfirst);
+        return true;
+    }
+}
+function validate_dlast() {
+    var dlast = $('[name=dlast]');
+    if (dlast.val().length == 0) {
+        set_warning(dlast, 'Required field.');
         return false;
     }
     else {
-        clear_warning(email);
+        clear_warning(dlast);
+        return true;
+    }
+}
+function validate_daddress() {
+    var daddress = $('[name=dstreet-address]');
+    if (daddress.val().length == 0) {
+        set_warning(daddress, 'Required field.');
+        return false;
+    }
+    else {
+        clear_warning(daddress);
         return true;
     }
 }
 
-function validate_password() {
-    var pword = $('[name=password]');
-    var pword_check = check_password(pword.val());
-    if (!pword_check.success) {
-        set_warning(pword, pword_check.warning);
+function validate_dpostcode() {
+    var dpost = $('[name=dpostcode]');
+    if (dpost.val().length == 0) {
+        set_warning(dpost, 'Required field.');
         return false;
     }
     else {
-        clear_warning(pword);
+        clear_warning(dpost);
         return true;
     }
 }
 
-function validate_repeat_password() {
-    var repeat_pword = $('[name=repeat-password]');
-    if (repeat_pword.val().length == 0) {
-        set_warning(repeat_pword, 'Required field.');
-        return false;
-    }
-    else if (repeat_pword.val() != $('[name=password]').val()) {
-        set_warning(repeat_pword, 'Passwords do not match.');
+//credit card form validation
+function validate_creditname() {
+    var creditname = $('[name=cname]');
+    if (creditname.val().length == 0) {
+        set_warning(creditname, 'Required field.');
         return false;
     }
     else {
-        clear_warning(repeat_pword);
+        clear_warning(creditname);
         return true;
     }
 }
 
-function validate_fname() {
-    var fname = $('[name=first-name]');
-    if (fname.val().length == 0) {
-        set_warning(fname, 'Required field.');
+function validate_creditno() {
+    var creditno = $('[name=credit-no]');
+    var creditcheck = check_creditcard(creditno.val());
+    if (!creditcheck.success) {
+        set_warning(creditno, creditcheck.warning);
         return false;
     }
     else {
-        clear_warning(fname);
+        clear_warning(creditno);
         return true;
     }
 }
 
-function validate_lname() {
-    var lname = $('[name=last-name]');
-    if (lname.val().length == 0) {
-        set_warning(lname, 'Required field.');
+function check_creditcard(creditno) {
+    var result = { 'success': true, 'warning': '' };
+
+    if (creditno.length < 16) {
+        result.success = false;
+        result.warning += 'Must be at least 16 numbers long.';
+    }
+    return result;
+}
+
+
+function validate_cvc() {
+    var cvcno = $('[name=cvc]');
+    var cvccheck = check_cvc(cvcno.val());
+    if (!cvccheck.success) {
+        set_warning(cvcno, cvccheck.warning);
         return false;
     }
     else {
-        clear_warning(lname);
+        clear_warning(cvcno);
         return true;
     }
 }
 
-function validate_street() {
-    var street = $('[name=street-address]');
-    if (street.val().length == 0) {
-        set_warning(street, 'Required field.');
+function check_cvc(cvcno) {
+    var result = { 'success': true, 'warning': '' };
+
+    if (cvcno.length < 3) {
+        result.success = false;
+        result.warning += 'CVC must be at least 3 characters long.';
+    }
+    return result;
+}
+
+function validate_month() {
+    var creditmonth = $('[name=month]');
+    if (creditmonth.val().length == 0) {
+        set_warning(creditmonth, 'Required field.');
         return false;
     }
     else {
-        clear_warning(street);
+        clear_warning(creditmonth);
         return true;
     }
 }
 
-function validate_postcode() {
-    var postcode = $('[name=postcode]');
-    if (postcode.val().length == 0) {
-        set_warning(postcode, 'Required field.');
+function validate_year() {
+    var credityear = $('[name=year]');
+    if (credityear.val().length == 0) {
+        set_warning(credityear, 'Required field.');
         return false;
     }
     else {
-        clear_warning(postcode);
+        clear_warning(credityear);
         return true;
     }
 }
 
-function validate_phone() {
-    var phone = $('[name=phone-number]');
-    if (phone.val().length == 0) {
-        set_warning(phone, 'Required field.');
-        return false;
-    }
-    else {
-        clear_warning(phone);
-        return true;
-    }
-}
-
+//warnings for credit card checks
 function set_warning(el, warning) {
     el.tooltip('hide')
       .css('border', '1px solid red')
@@ -170,25 +190,51 @@ function clear_warning(el) {
       .tooltip('hide');
 }
 
-function check_password(pword) {
-    var result = { 'success': true, 'warning': '' };
-
-    if (pword.length < 8) {
-        result.success = false;
-        result.warning += 'Must be at least 8 characters long.';
+//billing form validation
+function validate_bfirst() {
+    var billfirst = $('[name=bfirst-name]');
+    if (billfirst.val().length == 0) {
+        set_warning(billfirst, 'Required field.');
+        return false;
     }
-
-    if (pword.includes(' ')) {
-        result.success = false;
-        if (result.warning.length > 0) result.warning += '\n';
-        result.warning += 'Cannot contain any spaces.';
+    else {
+        clear_warning(billfirst);
+        return true;
     }
+}
 
-    if (!pword.match(/[^\w ]/)) {
-        result.success = false;
-        if (result.warning.length > 0) result.warning += '\n';
-        result.warning += 'Must contain at least 1 special character.';
+function validate_blast() {
+    var billlast = $('[name=blast-name]');
+    if (billlast.val().length == 0) {
+        set_warning(billlast, 'Required field.');
+        return false;
     }
+    else {
+        clear_warning(billlast);
+        return true;
+    }
+}
 
-    return result;
+function validate_billaddress() {
+    var billaddress = $('[name=bstreet-address]');
+    if (billaddress.val().length == 0) {
+        set_warning(billaddress, 'Required field.');
+        return false;
+    }
+    else {
+        clear_warning(billaddress);
+        return true;
+    }
+}
+
+function validate_billpostcode() {
+    var billpostcode = $('[name=bpostcode]');
+    if (billpostcode.val().length == 0) {
+        set_warning(billpostcode, 'Required field.');
+        return false;
+    }
+    else {
+        clear_warning(billpostcode);
+        return true;
+    }
 }

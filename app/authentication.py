@@ -102,6 +102,45 @@ def do_register():
 
     return login(username, password)
 
+@auth.route("/do-create-user", methods=["POST"])
+def do_create_user():
+    email_exists = db.session.query(Account.email).filter_by(email=request.form["email"]).scalar() is not None
+
+    if email_exists:
+        return jsonify({"success": False, "reason": "email exists"})
+
+    username = request.form["username"]
+    password = request.form["password"]
+
+    value = ""
+    if request.method =='POST':
+        value = request.form.get('isStaff')
+        if value == "Staff":
+            value = True
+        else:
+            value = False
+    
+    account = Account(\
+        first_name=request.form["first-name"],\
+        last_name=request.form["last-name"],\
+        email=request.form["email"],\
+        username=username,\
+        password=generate_password_hash(password, method='sha256'),\
+        street_address=request.form["street-address"],\
+        postcode=request.form["postcode"],\
+        phone_number=request.form["phone-number"],\
+        is_staff=value,\
+        is_active=True,\
+        join_date=datetime.datetime.utcnow()\
+    )
+
+    # TODO: Add server-side validation (since clients can just alter the javascript to bypass client-side validation)
+
+    db.session.add(account)
+    db.session.commit()
+
+    return jsonify({"success": True})
+
 @auth.route("/update-registration-details", methods=["POST", "PUT"])
 @protected_view
 def update_registration_details():
@@ -161,7 +200,7 @@ def login_page():
         account = Account.query.filter_by(id = token_payload['id']).first()
 
         if account != None:
-            return redirect(url_for("routes.dashboard"))
+            return redirect(url_for("routes.browse"))
 
     return render_template("login.html")
 
