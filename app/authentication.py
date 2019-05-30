@@ -161,7 +161,7 @@ def login_page():
         account = Account.query.filter_by(id = token_payload['id']).first()
 
         if account != None:
-            return redirect(url_for("routes.dashboard"))
+            return redirect(url_for("routes.browse"))
 
     return render_template("login.html")
 

@@ -16,7 +16,7 @@ $(document).ready(function()
             { 
                 if (data.success) 
                 { 
-                    window.location.href = "/dashboard" 
+                    window.location.href = "/browse" 
                 } 
                 else 
                 { 

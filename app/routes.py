@@ -18,11 +18,6 @@ protected_view_staff = partial(protected_view, staff_required=True)
 def index():
     return render_template("index.html")
 
-@routes.route("/dashboard")
-@protected_view
-def dashboard():
-    return render_template("dashboard.html")
-
 @routes.route("/browse")
 def browse():
     return render_template("browse.html", genres=db.session.query(Genre).all())

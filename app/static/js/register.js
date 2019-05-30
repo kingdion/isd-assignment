@@ -36,7 +36,7 @@ function registration_callback(data) {
         }
     }
     else {
-        window.location.href = "/dashboard"
+        window.location.href = "/browse"
     }
 }
 
