@@ -42,11 +42,11 @@ def payment():
 
 @routes.route("/do-payment", methods=["POST"])
 def do_payment():
-    keys = ["dfirst", "dlast", "daddress", "dpostcode", "cname", "credit-no", "cvc", "month", "year", "bfirst-name", "blast-name", "bstreet-address", "bpostcode"]
+    keys = ["dfirst", "dlast", "dstreet-address", "dpostcode", "cname", "credit-no", "cvc", "month", "year", "bfirst-name", "blast-name", "bstreet-address", "bpostcode"]
     payment = Payment(\
         dfirst=request.form["dfirst"],\
         dlast=request.form["dlast"],\
-        daddress=request.form["daddress"],\
+        dstreet_address=request.form["dstreet-address"],\
         dpostcode=request.form["dpostcode"],\
         credit_name=request.form["cname"],\
         credit_no=request.form["credit-no"],\
