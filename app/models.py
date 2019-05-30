@@ -168,6 +168,23 @@ class MovieCopy(db.Model):
     def __repr__(self):
         return f'MovieCopy: {self.copy_information}, {self.price}, {self.sold}'
 
+class Payment(db.Model):
+    __tablename__ = 'payment'
+    dfirst = db.Column(db.String(20), nullable=False)
+    dlast = db.Column(db.String(20), nullable=False)
+    dstreet_address = db.Column(db.String(50), nullable=False)
+    dpostcode = db.Column(db.Integer(4), nullable=False)
+    cname = db.Column(db.String(20), nullable=False)
+    credit_no = db.Column(db.Integer(16), nullable=False)
+    cvc = db.Column(db.Integer(3), nullable=False)
+    month = db.Column(db.Integer(2), nullable=False)
+    year = db.Column(db.Integer(4), nullable=False)
+    bfirst_name = db.Column(db.String(20), nullable=False)
+    blast_name = db.Column(db.String(20), nullable=False)
+    bstreet_address = db.Column(db.String(50), nullable=False)
+    bpostcode = db.Column(db.Integer(4), nullable=False)
+    def __repr__(self):
+        return f'Payment: {self.bfirst_name}, {self.bfirst_name}'
 
 class PaymentMethod(db.Model):
     __tablename__ = 'paymentmethod'
