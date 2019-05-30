@@ -9,6 +9,7 @@ $(document).ready(function(){
             { 
                 if (data.success) 
                 { 
+                    $('#submit-btn').attr('disabled', false);
                     window.location.href = "/shipment" 
                 } 
                 else 

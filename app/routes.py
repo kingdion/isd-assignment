@@ -46,17 +46,17 @@ def do_payment():
     payment = Payment(\
         delivery_first_name=request.form["dfirst"],\
         delivery_last_name=request.form["dlast"],\
-        dstreet_address=request.form["dstreet-address"],\
-        dpostcode=request.form["dpostcode"],\
-        cname=request.form["cname"],\
+        delivery_street_address=request.form["dstreet-address"],\
+        delivery_postcode=request.form["dpostcode"],\
+        credit_name=request.form["cname"],\
         credit_no=request.form["credit-no"],\
         cvc=request.form["cvc"],\
         month=request.form["month"],\
         year=request.form["year"],\
-        bfirst_name=request.form["bfirst-name"],\
-        blast_name=request.form["blast-name"],\
-        bstreet_address=request.form["bstreet-address"],\
-        bpostcode=request.form["bpostcode"],\
+        bill_first_name=request.form["bfirst-name"],\
+        bill_last_name=request.form["blast-name"],\
+        bill_street_address=request.form["bstreet-address"],\
+        bill_postcode=request.form["bpostcode"],\
     )
     db.session.do(payment)
     db.session.commit()
