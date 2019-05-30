@@ -1,5 +1,5 @@
 import datetime
-from random import randint
+import random
 from app import create_app
 from app.models import *
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -38,7 +38,7 @@ if (answer == "Y"):
                 db.session.commit()
 
                 for log in range(1, 21):
-                    randomDate = datetime.datetime.now() - datetime.timedelta(days=randint(1, 9))
+                    randomDate = datetime.datetime.now() - datetime.timedelta(days=random.randint(1, 9))
                     randomLogoutTime = randomDate + datetime.timedelta(minutes=10)
                     loginLog = UserAccessLog(acc.id, randomDate, "Login") 
                     logoutLog = UserAccessLog(acc.id, randomLogoutTime, "Logout") 
@@ -67,7 +67,7 @@ if (answer == "Y"):
                 db.session.commit()
 
                 for log in range(1, 21):
-                    randomDate = datetime.datetime.now() - datetime.timedelta(days=randint(1, 9))
+                    randomDate = datetime.datetime.now() - datetime.timedelta(days=random.randint(1, 9))
                     randomLogoutTime = randomDate + datetime.timedelta(minutes=10)
                     loginLog = UserAccessLog(acc.id, randomDate, "Login") 
                     logoutLog = UserAccessLog(acc.id, randomLogoutTime, "Logout") 
@@ -78,17 +78,49 @@ if (answer == "Y"):
             print("20 accounts created")
             print("20 staff created")
 
-            genres = [
-                Genre("G"), 
-                Genre("PG"),
-                Genre("M"), 
-                Genre("MA"), 
-                Genre("R")
+            maturity_ratings = [
+                MaturityRating("G"), 
+                MaturityRating("PG"),
+                MaturityRating("M"), 
+                MaturityRating("MA"), 
+                MaturityRating("R")
             ]
 
-            print("5 genres created")
+            genres = [
+                Genre("Fantasy"), 
+                Genre("Comedy"),
+                Genre("Horror"), 
+                Genre("Romance"), 
+                Genre("Thriller"),
+                Genre("Anime"),
+                Genre("Family"),
+                Genre("Classic"),
+                Genre("Drama"),
+            ]
 
+            print(f"{len(maturity_ratings)} genres created")
+            print(f"{len(genres)} maturity ratings created")
+
+            for rating in maturity_ratings:
+                db.session.add(rating)
+                
             for genre in genres:
                 db.session.add(genre)
+
+            db.session.commit()
+
+            for movie_id in range(1, 50):
+                randomDate = datetime.datetime.now() - datetime.timedelta(days=random.randint(1, 9)) - datetime.timedelta(days=random.randint(1, 9)*365)
+                movie = Movie(
+                    f"Movie {movie_id}",
+                    randomDate,
+                    "static/images/thumbnails/sharknado.png",
+                    random.randint(1,59),
+                    random.choice(maturity_ratings).id
+                )
+
+                movie.release_year = randomDate.year
+
+                movie.genres.append(genres[0])
 
             db.session.commit()
