@@ -382,7 +382,7 @@ def create_user():
 @routes.route("/view_user")
 @protected_view_staff
 def view_user():
-    return render_template("view_user.html")
+    return render_template("view_user.html", genres=db.session.query(Account).all())
 
 @routes.route("/order")
 def view_order():

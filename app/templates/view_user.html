@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Logs - Online Movie Store Application</title>
+        <title>View User List - Online Movie Store Application</title>
         {{ util.head() }}
     </head>
     <body>
@@ -12,11 +12,11 @@
         <div class="container">
             <h4 id="error-message" class="error-message"></h4>
 
-            <h1>User Access Logs </h1>
+            <h1>User List - Staff View </h1>
             <h4 class="greyed"> {{ g.logged_in_user.username }} ({{ g.logged_in_user.first_name }} {{ g.logged_in_user.last_name }}) </h4>
 
             <br/>
-            
+
             <div class="input-group mb-3">
                 <input class="form-control" type="date" id="date-time-picker"/>
                 <div class="input-group-append">
@@ -24,26 +24,28 @@
                 </div>
             </div>
 
-            <div class="table-responsive">          
+            <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Timestamp</th>
-                            <th>Access Type</th>
-                            <th>Action</th>
+                            <th>Username</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for log in g.logged_in_user.logs|sort(attribute='timestamp', reverse=True) %}
+                        {% for account in accounts %}
                         <tr class="log">
                             <td>{{loop.index}}</td>
                             <td class="timestamp">
-                                <span class="inner-date">{{log.timestamp.strftime('%Y-%m-%d')}}</span>
-                                {{log.timestamp.strftime('at %H:%M:%S')}}
+                                <span class="inner-date">{{account.username}}</span>
+
                             </td>
-                            <td>{{log.log_type}}</td>
-                            <td><button id="{{log.id}}" class="delete-log btn btn-danger btn-sm">Delete Log</button>
+                            <td>{{account.username}}</td>
+                            <td><button id="{{account.id}}" class="delete-log btn btn-danger btn-sm">Delete Log</button></td>
+                            <td>test</td>
                         </tr>
                         {% endfor %}
                     </tbody>
