@@ -1,0 +1,39 @@
+{% import 'utilities.html' as util %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>My Order - Online Movie Store Application</title>
+        {{ util.head() }}
+    </head>
+    <body>
+        {{ util.navbar() }}
+
+        <div class="container">
+            <h1>My Order History</h1>
+
+            <br />
+	<div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Order Date</th>
+                        <th>Price</th>
+			<th>Status</th>
+            
+                    </tr>
+                </thead>
+                <tbody>
+              
+                </tbody>
+            </table>
+	</div>
+		<br/><br/>
+
+        </div>
+    </body>
+
+    {{ util.scripts() }}
+    <script src = "static/js/logs.js"></script>
+</html>
