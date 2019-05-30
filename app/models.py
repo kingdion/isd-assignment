@@ -167,6 +167,22 @@ class MovieCopy(db.Model):
 
     orders = db.relationship('Orders', secondary='movieorderline', back_populates="movies")
 
+    def to_dict(self):
+        dict = { 'id': self.id,\
+                 'movieId': self.movieId,\
+                 'copy_information': self.copy_information,\
+                 'price': self.price,\
+                 'sold': self.sold\
+               }
+
+        return dict
+
+    def __init__(self, movieId, copyInformation, price):
+        self.movieId = movieId
+        self.copy_information = copyInformation
+        self.price = price
+        self.sold = False
+
     def __repr__(self):
         return f'MovieCopy: {self.copy_information}, {self.price}, {self.sold}'
 
