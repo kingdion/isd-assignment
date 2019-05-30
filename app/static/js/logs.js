@@ -21,14 +21,14 @@ $(document).ready(function()
 
         $('.log > .timestamp > .inner-date').each(function(i, obj) 
         {
-            var rowParent = $(this).parent().parent().parent();
-            if (!$(this).text().includes(dateToFilterBy))
+            var rowParent = $(this).parent().parent();
+            if ($(this).text().includes(dateToFilterBy))
             {
-                rowParent.fadeOut();
+                rowParent.fadeIn();
             }
             else 
             {
-                rowParent.fadeIn();
+                rowParent.fadeOut();
             }
         });
     });

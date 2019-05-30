@@ -117,7 +117,14 @@ User Login
 
 @auth.route("/login")
 def login_page():
-    if session.get("token"):
+    token = session.get("token")
+    if token:
+        token_payload = jwt.decode(token, current_app.config['SECRET_KEY'])
+        account = Account.query.filter_by(id = token_payload['id']).first()
+
+        if account == None:
+            return render_template("login.html")
+
         return redirect(url_for("routes.dashboard"))
 
     return render_template("login.html")

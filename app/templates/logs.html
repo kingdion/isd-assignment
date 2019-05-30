@@ -35,7 +35,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for log in g.logged_in_user.logs %}
+                        {% for log in g.logged_in_user.logs|sort(attribute='timestamp', reverse=True) %}
                         <tr class="log">
                             <td>{{loop.index}}</td>
                             <td class="timestamp">

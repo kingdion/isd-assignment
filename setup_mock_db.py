@@ -1,4 +1,5 @@
 import datetime
+from random import randint
 from app import create_app
 from app.models import *
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -16,6 +17,7 @@ if (answer == "Y"):
             db.drop_all()
             db.create_all()
 
+            # Test Users
             for current_id in range(1, 21):
                 acc = Account(
                     f"Test-{current_id}", 
@@ -33,7 +35,18 @@ if (answer == "Y"):
 
                 print("Created: ", acc)
                 db.session.add(acc)
+                db.session.commit()
 
+                for log in range(1, 21):
+                    randomDate = datetime.datetime.now() - datetime.timedelta(days=randint(1, 9))
+                    randomLogoutTime = randomDate + datetime.timedelta(minutes=10)
+                    loginLog = UserAccessLog(acc.id, randomDate, "Login") 
+                    logoutLog = UserAccessLog(acc.id, randomLogoutTime, "Logout") 
+                    db.session.add(loginLog)
+                    db.session.add(logoutLog)
+
+
+            # Test Staff
             for current_id in range(1, 21):
                 staff = Account(
                     f"StaffTest-{current_id}", 
@@ -51,7 +64,31 @@ if (answer == "Y"):
 
                 print("Created: ", staff)
                 db.session.add(staff)
+                db.session.commit()
+
+                for log in range(1, 21):
+                    randomDate = datetime.datetime.now() - datetime.timedelta(days=randint(1, 9))
+                    randomLogoutTime = randomDate + datetime.timedelta(minutes=10)
+                    loginLog = UserAccessLog(acc.id, randomDate, "Login") 
+                    logoutLog = UserAccessLog(acc.id, randomLogoutTime, "Logout") 
+                    db.session.add(loginLog)
+                    db.session.add(logoutLog)
+
 
             print("20 accounts created")
             print("20 staff created")
+
+            genres = [
+                Genre("G"), 
+                Genre("PG"),
+                Genre("M"), 
+                Genre("MA"), 
+                Genre("R")
+            ]
+
+            print("5 genres created")
+
+            for genre in genres:
+                db.session.add(genre)
+
             db.session.commit()
