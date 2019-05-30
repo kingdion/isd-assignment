@@ -72,6 +72,12 @@ def do_register():
     if email_exists:
         return jsonify({"success": False, "reason": "email exists"})
 
+    keys = ["first-name", "last-name", "email", "username", "password", "street-address", "postcode", "phone-number"]
+
+    empty_validation = validate_not_empty(request, keys)
+    if (empty_validation != None):
+        return empty_validation
+
     username = request.form["username"]
     password = request.form["password"]
 
@@ -101,24 +107,29 @@ def do_register():
 def update_registration_details():
     try:
         # Try access the global logged in user and update it
-        # according to the users' changes.
+        # according to the users' changes. Verify no data is empty.
+        keys = ["first_name", "last_name", "postcode", "phone_number", "street_address"]
 
-        if (request.form["first_name"] and request.form["last_name"] and
-            request.form["postcode"] and request.form["phone_number"] and
-            request.form["street_address"]):
-            g.logged_in_user.first_name = request.form["first_name"]
-            g.logged_in_user.last_name = request.form["last_name"]
-            g.logged_in_user.postcode = request.form["postcode"]
-            g.logged_in_user.phone_number = request.form["phone_number"]
-            g.logged_in_user.street_address = request.form["street_address"]
-        else:
-           return jsonify({"success": False, "message": "One of your fields are empty."}) 
+        empty_validation = validate_not_empty(request, keys)
+        if (empty_validation != None):
+            return empty_validation
+
+        g.logged_in_user.first_name = request.form["first_name"]
+        g.logged_in_user.last_name = request.form["last_name"]
+        g.logged_in_user.postcode = request.form["postcode"]
+        g.logged_in_user.phone_number = request.form["phone_number"]
+        g.logged_in_user.street_address = request.form["street_address"]
 
         db.session.commit()
     except:
         return jsonify({"success": False, "message": "Something went wrong trying to save your changes."})
 
     return jsonify({"success": True, "message": "Your details have been successfully changed!"})
+
+def validate_not_empty(request, keys):
+    for key in keys:
+        if not request.form[key]:
+            return jsonify({"success": False, "message": f"{key.replace('_', ' ').capitalize()} cannot be empty."}) 
 
 @auth.route("/delete-account", methods=["POST", "DELETE"])
 @protected_view
@@ -159,6 +170,12 @@ def do_login():
     # Get data from the form input, check if they are valid
     # and send login data to the login function
 
+    keys = ["username", "password"]
+
+    empty_validation = validate_not_empty(request, keys)
+    if (empty_validation != None):
+        return empty_validation
+
     username = request.form.get("username")
     password = request.form.get("password")
 
@@ -172,9 +189,6 @@ def do_login():
 def login(username, password):
     # See if a login is successful and return
     # a valid JSON response
-    if not username and not password:
-        return jsonify({'success': False, 'message' : 'Invalid login request data'})
-
     login_token = get_login_token(username, password)
 
     if login_token == None:
