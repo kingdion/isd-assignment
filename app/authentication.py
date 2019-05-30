@@ -67,9 +67,9 @@ def do_register():
     # Perform server-side validation and then create the account
     # and add it to the database (then log the user in with it)
 
-    email_exists = db.session.query(Account.email).filter_by(email=request.form["email"]).scalar() is not None
-
-    if email_exists:
+    account_exists = db.session.query(Account).filter((Account.email==request.form["email"]) | (Account.username==request.form["username"])).first()
+        
+    if account_exists:
         return jsonify({"success": False, "reason": "email exists"})
 
     keys = ["first-name", "last-name", "email", "username", "password", "street-address", "postcode", "phone-number"]
@@ -133,8 +133,6 @@ def do_create_user():
         is_active=True,\
         join_date=datetime.datetime.utcnow()\
     )
-
-    # TODO: Add server-side validation (since clients can just alter the javascript to bypass client-side validation)
 
     db.session.add(account)
     db.session.commit()

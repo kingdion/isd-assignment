@@ -15,7 +15,7 @@ $(document).ready(function() {
         window.catalogue.set_page(0);
     });
     $('#last-page-btn').click(function(event) {
-        window.catalogue.set_page(window.catalogue.numPages == 0 ? 0 : window.catalogue.numPages);
+        window.catalogue.set_page(window.catalogue.numPages == 0 ? 0 : window.catalogue.numPages - 1);
     });
     $('#prev-page-btn').click(() => window.catalogue.prev_page());
     $('#next-page-btn').click(() => window.catalogue.next_page());
@@ -84,6 +84,11 @@ function update_movies_grid_callback(data) {
             if (confirm('Are you sure you wish to delete this movie? This cannot be undone.')) {
                 $.post('/delete-movie', { id: $(this).parent().parent().attr('id') }, update_movies_grid);
             }
+        });
+
+        $('.add-to-order-btn').click(function(event) {
+            event.preventDefault();
+            window.location.href = "/add-to-order" + $(this).parent().parent().attr('id');
         });
     }
     else {
