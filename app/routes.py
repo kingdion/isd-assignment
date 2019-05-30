@@ -3,7 +3,7 @@ import uuid
 import math
 import os
 from flask import Blueprint
-from flask import render_template, flash, redirect, url_for, request, jsonify, current_app, session
+from flask import render_template, flash, redirect, url_for, request, jsonify, current_app, session, g
 from functools import partial
 from .authentication import protected_view
 from .models import *
@@ -94,10 +94,10 @@ def do_get_movies_grid_html():
 
     index = int(request.form["page"]) * pageLength
     for movie, score, title in scoredMovies[index : index + pageLength]:
-        result += '<div class="movie-cell" id="' + str(movie.id) + '"><img src="' + movie.thumbnail_src + '" alt="' + movie.title + '">'
+        result += '<div class="movie-cell" id="' + str(movie.id) + '"><img src="' + movie.thumbnail_src + '" alt="' + movie.title + '">\
+                   <div class="movie-buttons">'
         if (isStaff):
-            result += '<div class="movie-buttons">\
-                         <button type="button" class="btn btn-dark edit-movie-btn" data-toggle="tooltip" data-placement="top" title="Edit movie details">\
+            result += '<button type="button" class="btn btn-dark edit-movie-btn" data-toggle="tooltip" data-placement="top" title="Edit movie details">\
                            <i class="far fa-edit"></i>\
                          </button>\
                          <div class="spacer-h"></div>\
@@ -107,9 +107,13 @@ def do_get_movies_grid_html():
                          <div class="spacer-h"></div>\
                          <button type="button" class="btn btn-dark delete-movie-btn" data-toggle="tooltip" data-placement="top" title="Delete this movie">\
                             <i class="far fa-trash-alt"></i>\
-                         </button>\
-                       </div>'
-        result += '<div class="movie-description">' + movie.title + '<br>(' + str(movie.release_date.year) + ')</div></div>'
+                         </button>'
+        else:
+            result += '<button type="button" class="btn btn-dark add-to-order-btn" data-toggle="tooltip" data-placement="top" title="Add to order">\
+                           <i class="far fa-plus-square"></i>\
+                       </button>'
+
+        result += '</div><div class="movie-description">' + movie.title + '<br>(' + str(movie.release_date.year) + ')</div></div>'
 
     return jsonify({ "success": True, "gridHtml": result + "</div>", "numPages": numPages})
 
@@ -241,9 +245,33 @@ def delete_movie():
         os.remove("app" + movie.thumbnail_src)
         db.session.delete(movie)
         db.session.commit()
-        return jsonify( {"success": True} )
+        return jsonify({ "success": True })
     except:
         return 'Something went wrong trying to delete this movie.', 400
+
+@routes.route("/add-to-order/<movieId>")
+def add_to_order(movieId):
+    pass
+
+@routes.route("/do-add-to-order", methods=["POST"])
+def do_add_to_order():
+    # try:
+        movie = Movie.query.filter_by(id=request.form["id"]).one()
+
+        order = Orders(\
+            accountId = g.logged_in_user.id,\
+            trackingStatus = "undelivered",\
+            methodId = "01a72541-8206-47b6-8480-d32ba518243d",
+        )
+        order.movies.append(movie)
+
+        db.session.add(order)
+        db.session.commit()
+
+        return jsonify({ "success": True })
+        #add this movie to an order
+    # except Exception as e:
+    #     return jsonify({ "success": False, "reason": str(e) })
 
 @routes.route("/shipmentdetails/create", methods=["GET", "POST"])
 @protected_view

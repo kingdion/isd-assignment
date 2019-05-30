@@ -1,4 +1,4 @@
-from flask import Flask, session, g
+from flask import Flask, session, g, render_template
 import jwt
 
 def create_app(debugMode = True):
@@ -48,5 +48,10 @@ def create_app(debugMode = True):
 
     app.register_blueprint(routes)
     app.register_blueprint(auth)
+
+    def page_not_found(e):
+        return render_template('404.html'), 404
+
+    app.register_error_handler(404, page_not_found)
 
     return app
