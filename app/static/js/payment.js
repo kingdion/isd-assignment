@@ -91,12 +91,12 @@ function validate_dlast() {
 
 function validate_daddress() {
     var dadd = $('[name=daddress]');
-    if (dadd.val().length == 0) {
-        set_warning(daddress, 'Required field.');
+    if (dadd[0].val().length == 0) {
+        set_warning(dadd, 'Required field.');
         return false;
     }
     else {
-        clear_warning(daddress);
+        clear_warning(dadd);
         return true;
     }
 }
