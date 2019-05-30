@@ -9,7 +9,7 @@ $(document).ready(function(){
             { 
                 if (data.success) 
                 { 
-                    window.location.href = "/shipment" 
+                    window.location.href = "/browse" 
                 } 
                 else 
                 { 
