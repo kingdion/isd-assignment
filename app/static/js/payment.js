@@ -4,7 +4,7 @@ $(document).ready(function(){
         $.ajax({
             type: "POST",
             url: $('#payment-form').attr('action'),
-            data: {dfirst : $("[name=dfirst]").val(), dlast : $("[name=dlast]").val(), dstreet_address : $("[name=dstreet-address]").val(), dpostcode : $("[name=dpostcode]").val(), cname : $("[name=cname]").val(), credit_no : $("[name=credit-no]").val(), cvc : $("[name=cvc]").val(), month : $("[name=month]").val(), year : $("[name=year]").val(), bfirst_name : $("[name=bfirst-name]").val(), blast_name : $("[name=blast-name]").val(), bstreet_address : $("[name=bstreet-address]").val(), bpostcode : $("[name=bpostcode]").val()},
+            data: {dfirst : $("[name=dfirst]").val(), dlast : $("[name=dlast]").val(), daddress : $("[name=daddress]").val(), dpostcode : $("[name=dpostcode]").val(), cname : $("[name=cname]").val(), credit_no : $("[name=credit-no]").val(), cvc : $("[name=cvc]").val(), month : $("[name=month]").val(), year : $("[name=year]").val(), bfirst_name : $("[name=bfirst-name]").val(), blast_name : $("[name=blast-name]").val(), bstreet_address : $("[name=bstreet-address]").val(), bpostcode : $("[name=bpostcode]").val()},
             success: (data) => 
             { 
                 if (data.success) 
@@ -32,7 +32,7 @@ $(document).ready(function(){
   //when clicking off an input, calls focusout
   $('[name=dfirst]').focusout(validate_dfirst);
   $('[name=dlast]').focusout(validate_dlast);
-  $('[name=dstreet-address]').focusout(validate_daddress);
+  $('[name=daddress]').focusout(validate_daddress);
   $('[name=dpostcode]').focusout(validate_dpostcode);
   $('[name=cname]').focusout(validate_creditname);
   $('[name=credit-no]').focusout(validate_creditno);
@@ -88,17 +88,20 @@ function validate_dlast() {
         return true;
     }
 }
+
 function validate_daddress() {
-    var daddress = $('[name=dstreet-address]');
-    if (daddress.val().length == 0) {
-        set_warning(daddress, 'Required field.');
+    var dadd = $('[name=daddress]');
+    console.log(dadd)
+    if (dadd[0].val().length == 0) {
+        set_warning(dadd, 'Required field.');
         return false;
     }
     else {
-        clear_warning(daddress);
+        clear_warning(dadd);
         return true;
     }
 }
+
 
 function validate_dpostcode() {
     var dpost = $('[name=dpostcode]');
