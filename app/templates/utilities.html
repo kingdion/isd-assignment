@@ -1,4 +1,4 @@
-{% macro head() -%}
+﻿{% macro head() -%}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
@@ -45,7 +45,8 @@
                         <a class="dropdown-item" href="/profile">Account Controls</a>
                         <a class="dropdown-item" href="/logs">Access Logs</a>
                         <a class="dropdown-item" href="{{ url_for('routes.list_shipment_details') }}">Shipment Details</a>
-                        <a class="dropdown-item" href="/logout">Logout</a>
+                        <a class="dropdown-item" href="/orderhistory">Order History</a>
+			<a class="dropdown-item" href="/logout">Logout</a>
                     </div>
                 </li>
 
@@ -65,6 +66,10 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/browse">Browse Movies</a>
                 </li>
+		
+		<li class="nav-item-active">
+			<a class="nav-link" href="/order">Order Movies</a>
+		</li>
 
                 {% endif %}
 

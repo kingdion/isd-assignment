@@ -12,6 +12,7 @@ from operator import itemgetter
 from werkzeug.utils import secure_filename
 from datetime import date
 
+
 routes = Blueprint("routes", __name__)
 
 protected_view_staff = partial(protected_view, staff_required=True)
@@ -304,16 +305,30 @@ def list_shipment_details():
         if shipment_details:
             return redirect(url_for("routes.view_shipment_details", id=shipment_details.id))
         else:
-            pass
-            # TODO: error if no shipment details
+            shipment_details_list = db.session.query(ShipmentDetails).order_by(ShipmentDetails.date.desc())
+            return render_template("list_shipment_details.html", shipment_details_list=shipment_details_list, not_found_id=order_id)
+
 
     min_date = date.fromisoformat(request.args.get("min_date", "1970-01-01"))
     max_date = date.fromisoformat(request.args.get("max_date", "9999-12-31"))
 
-    shipment_details_list = db.session.query(ShipmentDetails).filter((ShipmentDetails.date > min_date) & (ShipmentDetails.date < max_date)).order_by(ShipmentDetails.date.desc())
+    shipment_details_list = db.session.query(ShipmentDetails).filter((ShipmentDetails.date >= min_date) & (ShipmentDetails.date <= max_date)).order_by(ShipmentDetails.date.desc())
     return render_template("list_shipment_details.html", shipment_details_list=shipment_details_list)
 
 @routes.route("/createuser", methods=["GET"])
 @protected_view_staff
 def create_user():
-    return render_template("create_user.html")
+        return render_template("create_user.html")
+
+@routes.route("/order")
+def view_order():
+    orderlist = db.session.query(MovieOrderLine).all()
+    return render_template("orders.html", orderlist = orderlist)
+
+@routes.route("/order/add")
+def add_order():
+    return redirect(url_for("routes.browse"))
+
+@routes.route("/orderhistory")
+def order_history():
+    return render_template("orderhistory.html")

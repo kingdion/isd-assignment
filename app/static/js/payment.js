@@ -3,26 +3,9 @@ $(document).ready(function(){
         event.preventDefault();
         if (validate_form()) {
             $('#submit-btn').attr('disabled', true);
-            $.post($(this).attr('action'), $(this).serialize());
         }
   });
 
-  //when clicking off an input, calls focusout
-  $('[name=dfirst]').focusout(validate_dfirst);
-  $('[name=dlast]').focusout(validate_dlast);
-  $('[name=dstreet-address]').focusout(validate_daddress);
-  $('[name=dpostcode]').focusout(validate_dpostcode);
-  $('[name=cname]').focusout(validate_creditname);
-  $('[name=credit-no]').focusout(validate_creditno);
-  $('[name=cvc]').focusout(validate_cvc);
-  $('[name=month]').focusout(validate_month);
-  $('[name=year]').focusout(validate_year); 
-  $('[name=bfirst-name]').focusout(validate_bfirst);
-  $('[name=blast-name]').focusout(validate_blast);
-  $('[name=bstreet-address]').focusout(validate_billaddress);
-  $('[name=bpostcode]').focusout(validate_billpostcode);
-
-});
 
 function validate_form() {
     return !(
