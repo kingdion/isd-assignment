@@ -220,7 +220,6 @@ def edit_movie(movieID):
         movie = Movie.query.filter_by(id=movieID).one()
         return render_template("edit_movie.html", movie=movie, genres=db.session.query(Genre).all(), maturityRatings=db.session.query(MaturityRating).all())
     except Exception as e:
-        print(e)
         return 'Something went wrong trying to edit this movie.', 400
 
 @routes.route("/do-edit-movie", methods=["POST"])
@@ -258,17 +257,44 @@ def do_edit_movie():
 
         return jsonify({ "success": True })
     except Exception as e:
-        print("Excpetion:", e)
         return 'Something went wrong trying submit edits to this movie.', 400
 
 @routes.route("/edit-movie-copies/<movieID>")
 @protected_view_staff
-def add_movie_copy(movieID):
+def edit_movie_copies(movieID):
     try:
         movie = Movie.query.filter_by(id=movieID).one()
         return render_template("edit_movie_copies.html", movie=movie)
     except:
         return 'Something went wrong trying to edit copies of this movie.', 400
+
+@routes.route("/do-add-movie-copy/<movieID>", methods=["POST"])
+@protected_view_staff
+def do_add_movie_copy(movieID):
+    try:
+        copy = MovieCopy(movieID, request.form["copy-description"], request.form["copy-price"])
+        db.session.add(copy)
+        db.session.commit()
+
+        newCopies = []
+        movie = Movie.query.filter_by(id=movieID).one()
+        for copy in movie.copies:
+            newCopies.append(copy.to_dict())
+
+        return jsonify({ "success": True, "copies": newCopies })
+    except Exception as e:
+        return jsonify({ "success": False, "reason": str(e) })
+
+@routes.route("/delete-movie-copy", methods=["POST"])
+@protected_view_staff
+def delete_movie_copy():
+    try:
+        movieCopy = MovieCopy.query.filter_by(id=request.form["id"]).one()
+        db.session.delete(movieCopy)
+        db.session.commit()
+        return jsonify({ "success": True, "id": request.form["id"] })
+    except Exception as e:
+        return jsonify({ "success": False, "reason": str(e) })
 
 @routes.route("/delete-movie", methods=["POST"])
 @protected_view_staff

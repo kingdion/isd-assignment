@@ -10,15 +10,14 @@ $(document).ready(function(){
                 if (data.success) 
                 { 
                     window.location.href = "/browse" 
-                    $('#submit-btn').attr('disabled', true);
                     var myObj = { firsname : "John", lastname : "Doe" };
-console.log(myObj);
+                    console.log(myObj);
                 } 
                 else 
                 { 
-                    $('#submit-btn').attr('disabled', true);
-                    var myObj = { firsname : "John", lastname : "Doe" };
-console.log(myObj);
+                    window.location.href = "/login"
+                    var myObj = { firsname : "No", lastname : "work" };
+                    console.log(myObj);
                 }
             },
           });
