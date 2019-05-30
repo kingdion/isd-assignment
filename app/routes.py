@@ -190,6 +190,16 @@ def do_add_movie():
         print(e)
         return jsonify({ "success": False, "reason": "Failed to add movie. An internal server error has occurred." })
 
+@routes.route("/edit-movie/<movieID>")
+@protected_view_staff
+def edit_movie(movieID):
+    try:
+        movie = Movie.query.filter_by(id=movieID).one()
+        return render_template("edit_movie.html", movie=movie, genres=db.session.query(Genre).all(), maturityRatings=db.session.query(MaturityRating).all())
+    except Exception as e:
+        print(e)
+        return 'Something went wrong trying to edit this movie.', 400
+
 @routes.route("/do-edit-movie", methods=["POST"])
 @protected_view_staff
 def do_edit_movie():
