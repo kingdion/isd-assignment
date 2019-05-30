@@ -103,11 +103,16 @@ def update_registration_details():
         # Try access the global logged in user and update it
         # according to the users' changes.
 
-        g.logged_in_user.first_name = request.form["first_name"]
-        g.logged_in_user.last_name = request.form["last_name"]
-        g.logged_in_user.postcode = request.form["postcode"]
-        g.logged_in_user.phone_number = request.form["phone_number"]
-        g.logged_in_user.street_address = request.form["street_address"]
+        if (request.form["first_name"] and request.form["last_name"] and
+            request.form["postcode"] and request.form["phone_number"] and
+            request.form["street_address"]):
+            g.logged_in_user.first_name = request.form["first_name"]
+            g.logged_in_user.last_name = request.form["last_name"]
+            g.logged_in_user.postcode = request.form["postcode"]
+            g.logged_in_user.phone_number = request.form["phone_number"]
+            g.logged_in_user.street_address = request.form["street_address"]
+        else:
+           return jsonify({"success": False, "message": "One of your fields are empty."}) 
 
         db.session.commit()
     except:
