@@ -173,19 +173,19 @@ class MovieCopy(db.Model):
 class Payment(db.Model):
     __tablename__ = 'payment'
     id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
-    delivery_first_name = db.Column(db.String(20), nullable=False)
-    delivery_last_name = db.Column(db.String(20), nullable=False)
-    delivery_street_address = db.Column(db.String(50), nullable=False)
-    delivery_postcode = db.Column(db.String(4), nullable=False)
+    dfirst = db.Column(db.String(20), nullable=False)
+    dlast = db.Column(db.String(20), nullable=False)
+    dstreet_address = db.Column(db.String(50), nullable=False)
+    dpostcode = db.Column(db.String(4), nullable=False)
     credit_name = db.Column(db.String(20), nullable=False)
     credit_no = db.Column(db.String(16), nullable=False)
     cvc = db.Column(db.String(3), nullable=False)
     month = db.Column(db.String(2), nullable=False)
     year = db.Column(db.String(4), nullable=False)
-    bill_first_name = db.Column(db.String(20), nullable=False)
-    bill_last_name = db.Column(db.String(20), nullable=False)
-    bill_street_address = db.Column(db.String(50), nullable=False)
-    bill_postcode = db.Column(db.String(4), nullable=False)
+    bfirst_name = db.Column(db.String(20), nullable=False)
+    blast_name = db.Column(db.String(20), nullable=False)
+    bstreet_address = db.Column(db.String(50), nullable=False)
+    bpostcode = db.Column(db.String(4), nullable=False)
     def __repr__(self):
         return f'Payment: {self.bill_first_name}, {self.bill_last_name}'
 
