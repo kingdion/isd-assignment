@@ -15,7 +15,7 @@ $(document).ready(function() {
         window.catalogue.set_page(0);
     });
     $('#last-page-btn').click(function(event) {
-        window.catalogue.set_page(window.catalogue.numPages == 0 ? 0 : window.catalogue.numPages);
+        window.catalogue.set_page(window.catalogue.numPages == 0 ? 0 : window.catalogue.numPages - 1);
     });
     $('#prev-page-btn').click(() => window.catalogue.prev_page());
     $('#next-page-btn').click(() => window.catalogue.next_page());
