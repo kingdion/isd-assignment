@@ -12,7 +12,11 @@ $('#update-payment-form').submit(function(event) {
 
 function bind_buttons() {
   $('.edit-btn').click(function(event) {
+    
+    
       $('#payment-id-input').val($(this).attr('name'));
+      $('#creditname-input').val($(this).parent().parent().children('td')[3].textContent.slice(1))
+      $('#creditno-input').val($(this).parent().parent().children('td')[4].textContent.slice(1))
       $('#update-payment-modal').modal('show');
   });
 
@@ -27,7 +31,10 @@ function bind_buttons() {
           });
       }
   );
+  $('.use-btn').click(function(event) {
+      window.location.href = "/shipmentdetails/create"      
+    });
 }
-
+;
 
 
