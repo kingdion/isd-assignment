@@ -41,9 +41,10 @@ def logs():
 def payment():
     return render_template("payment.html")
 
+
 @routes.route("/payment_confirm")
 def confirm():
-    return render_template("payment_confirm.html")
+    return render_template("payment_confirm.html", payments=db.session.query(Payment).all())
 
 @routes.route("/do-payment", methods=["POST"])
 def do_payment():

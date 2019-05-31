@@ -14,157 +14,57 @@
 <div class="col-md-6 col-xs-12">
 <p class="greyed"><b>YOUR PAYMENT INFORMATION IS SECURE</b></p>
 <h1 class="display-4 font-weight-normal">Confirm Payment Details</h1>
-<p class="lead font-weight-normal"> Please review your details before continuing</p>
+<p class="lead font-weight-normal"> Please review your Payment History</p>
 </div>
 <div class="col-md-3"></div>
 </div>
       <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+
+        <div class="table-responsive">
+                <table id="payment-table" class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Time Created</th>
+                            <th>Card Holder Name</th>
+                            <th>Credit Number</th>
+                        </tr>
+                    </thead>
+                    <tbody id="movie-copies-table-body">
+                        {% for payment in payments %}
+                        <tr class="copy">
+                            <td>{{ payment.id }}</td>
+                            <td>{{ payment.join_date }}</td>
+                            <td>{{ payment.credit_name }}</td>
+                            <td>{{ payment.creditno }}</td>
+                            <td>
+                             
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+                   
         <form id="payconf-form" action="{{ url_for('routes.payment_confirmation') }}" method=POST>
         </br>
         <div class="spacer"></div>
-        <div class="row">
-                <div class="col-md-4 dtext">
-                <h6>Payment Time:</h6>
-                </div>
-                <div class="col-md-3">
-                    <h5> {{bpostcode}} </h5>
-                </div>
-            </div>
 
-<!--listing out delivery-->
-<h4>Delivery Address</h4>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>First Name:</h5>
-                </div>
-                <div class="col-md-8"> <!-- enhances input by adding help test -->
-                    <h5> {{dfirst}} </h5>
-                </div>
-            </div>
-            <div class="spacer">
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Last Name:</h5>
-                </div>
-                <div class="col-md-8">
-                    <h5> {{dlast}} </h5>
-                </div>
-            </div>
-            <div class="spacer">
-            <div class="row">
-                <div class="col-md-4 dtext">
-                    <h5>Street Address:</h5>
-                </div>
-                <div class="col-md-8">
-                    <h5> {{daddress}} </h5>
-                </div> 
-            </div>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Postcode:</h5>
-                </div>
-                <div class="col-md-3">
-                    <h5> {{dpostcode}} </h5>
-                </div>
-            </div>
-            </br>
-            </hr>
-            <div class="spacer"></div>
-
-<!-- start of credit card-->
-            <h4>Credit Card Details</h4>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-5 dtext">
-                <h5>Card Holder Name:</h5>
-                </div>
-                <div class="col-md-7">
-                    <h5> {{credit_name}} </h5>
-                </div>
-            </div>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Credit Card Number:</h5>
-                </div>
-                <div class="col-md-8">
-                    <h5> {{creditno}} </h5>
-                </div>
-            </div>
-            <div class="spacer">
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>CVC:</h5>
-                </div>
-                <div class="col-md-3">
-                    <h5> {{cvc}} </h5>
-                </div>
-            </div>            
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Expiration Date:</h5>
-                </div>
-                <div class="col-md-4">
-                    <h5> {{month}} </h5>
-                </div>
-                <div class="col-md-4">
-                    <h5> {{year}} </h5>
-                </div>
-            </div>
-            <br/>
-            <hr/>
-
-<!--start of billing details-->
-
-            <div class="spacer"></div>
-            <h4>Billing Details</h4>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Expiration Date:</h5>
-                </div>
-                <div class="col-md-4">
-                    <h5> {{bfirst}} </h5>
-                </div>
-                <div class="col-md-4">
-                    <h5> {{blast}} </h5>
-                </div>
-            </div>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Billing Address:</h5>
-                </div>
-                <div class="col-md-3">
-                    <h5> {{baddress}} </h5>
-                </div>
-            </div>
-            <div class="spacer">
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Billing Postcode:</h5>
-                </div>
-                <div class="col-md-3">
-                    <h5> {{bpostcode}} </h5>
-                </div>
-            </div>
-            <br/>
             <div class="spacer"></div>
             <button id="submit-btn" type="submit"  class="btn btn-secondary btn-lg">Confirm Details</button>
-            <br/><br/>
-            <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
+            <br/>
         </form>
 
         <br/>
         <p class="error-message"><b>WARNING: Delete details and return to previous page</b></p>
         <button id="delete-btn" type="submit" class="btn btn-danger btn-lg">Delete Payment Details</button>
+        <br/>
+        <br/>
+        <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
+
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-1"></div>
     </div>
 </div>
 </body>
