@@ -17,6 +17,7 @@ $(document).ready(function(){
                 }
             },
           });
+          
 
         if (validate_form()) {
             
@@ -25,6 +26,7 @@ $(document).ready(function(){
         
   });
 
+  
   //when clicking off an input, calls focusout
   $('[name=dfirst]').focusout(validate_dfirst);
   $('[name=dlast]').focusout(validate_dlast);
@@ -270,3 +272,4 @@ function check_bpost(billpostcode) {
     }
     return result;
 }
+
