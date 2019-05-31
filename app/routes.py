@@ -494,10 +494,11 @@ def create_user():
 def view_user():
     return render_template("view_user.html", accounts=db.session.query(Account).all())
 
-@routes.route("/modify_user")
+@routes.route("/modify_user/<username>")
 @protected_view_staff
-def modify_user():
-    return render_template("modify_user.html")
+def modify_user(username):
+    account = Account.query.filter_by(id=request.form["account_id"]).one()
+    return render_template("modify_user.html", account = account)
 
 @routes.route("/order")
 def view_order():
