@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <title>Payment Information - Online Movie Store Application</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/payment.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/payments.css') }}"/>
 {{ util.head() }}
 </head>
 <body>
@@ -88,51 +88,88 @@
                                     <input id="payment-id-input" type="text" class="form-control" name="payment-id" readonly>
                                 </div>
                     <div class="form-group">
-                        <input id="dfirst-input" type="text" class="form-control" name="dfirst" value="{{ payment.dfirst }}">
+                        <input id="dfirst-input" type="text" class="form-control" name="dfirst" value="{{ payments.dfirst }}">
                     </div>
                      <div class="form-group">
-                        <input id="dlast-input" type="text" class="form-control" name="dlast"value="{{ payment.dlast }}">
+                        <input id="dlast-input" type="text" class="form-control" name="dlast"value="{{ payments.dlast }}">
                     </div>
                     <div class="form-group">
-                        <input id="daddress-input" type="text" class="form-control" name="daddress"value="{{ paymentd.daddress }}">
+                        <input id="daddress-input" type="text" class="form-control" name="daddress"value="{{ payments.daddress }}">
                     </div>
                     <div class="form-group">
-                        <input id="dpostcode-input" type="text" class="form-control" name="dpostcode"value="{{ payment.dpostcode }}">
+                        <input id="dpostcode-input" type="number" class="form-control" name="dpostcode"value="{{ payments.dpostcode }}">
                     </div>
 
                     <h5>Credit Card Details</h5>
                     <div class="form-group">
-                        <input id="creditname-input" type="text" class="form-control" name="creditname"value="{{ payment.credit_name }}">
+                        <input id="creditname-input" type="text" class="form-control" name="creditname"value="{{ payments.credit_name }}">
                     </div>
                     <div class="row">
                     <div class="form-group col-md-9">
-                        <input id="creditno-input" type="text" class="form-control" name="creditno"value="{{ payment.creditno }}">
+                        <input id="creditno-input" 
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength = "16"
+                        type="number" 
+                        class="form-control" 
+                        name="creditno"
+                        value="{{ payments.creditno }}">
                     </div>
                     <div class="form-group col-md-3">
-                        <input id="cvc-input" type="text" class="form-control" name="cvc"value="{{ payment.cvc }}">
+                        <input id="cvc-input"
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength = "3" 
+                        type="number" 
+                        class="form-control" 
+                        name="cvc"
+                        value="{{ payments.cvc }}">
                     </div>
                     </div>
                     <div class="row">
                     <div class="form-group col-md-4">
-                        <input id="month-input" type="text" class="form-control" name="month"value="{{ payment.month }}">
+                        <input 
+                        id="month-input" 
+                        type="number" 
+                        class="form-control" 
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength = "2"
+                        min = "1"
+                        max = "12"
+                        name="month"
+                        value="{{ payments.month }}">
                     </div>
                     <div class="form-group col-md-4">
-                        <input id="year-input" type="text" class="form-control" name="year"value="{{ payment.year }}">
+                        <input 
+                        id="year-input" 
+                        type="number" 
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength = "4"
+                        min = "2019"
+                        max = "2030"
+                        class="form-control" 
+                        name="year"
+                        value="{{ payments.year }}">
                     </div>
                     </div>
 
                     <h5>Billing Address</h5>
                     <div class="form-group">
-                        <input id="bfirst-input" type="text" class="form-control" name="bfirst"value="{{ payment.bfirst }}">
+                        <input id="bfirst-input" type="text" class="form-control" name="bfirst"value="{{ payments.bfirst }}">
                     </div>
                     <div class="form-group">
-                        <input id="blast-input" type="text" class="form-control" name="b-ast"value="{{ payment.blast }}">
+                        <input id="blast-input" type="text" class="form-control" name="b-ast"value="{{ payments.blast }}">
                     </div>
                     <div class="form-group">
-                        <input id="baddress-input" type="text" class="form-control" name="baddress"value="{{ payment.baddress }}">
+                        <input id="baddress-input" type="text" class="form-control" name="baddress"value="{{ payments.baddress }}">
                     </div>
                     <div class="form-group">
-                        <input id="bpostcode-input" type="text" class="form-control" name="bpostcode"value="{{ payment.bpostcode }}">
+                        <input 
+                        id="bpostcode-input" 
+                        type="text" 
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength = "4"
+                        class="form-control" 
+                        name="bpostcode"
+                        value="{{ payments.bpostcode }}">
                     </div>
                     
                 </form>
@@ -146,7 +183,6 @@
 </div>
 {% endif %}
                    
-        <form id="payconf-form" action="{{ url_for('routes.payment_confirmation') }}" method=POST>
         </br>
         <div class="spacer"></div>
 
