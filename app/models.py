@@ -195,16 +195,17 @@ class Payment(db.Model):
     daddress = db.Column(db.String(100), nullable=False)
     dpostcode = db.Column(db.String(4), nullable=False)
     credit_name = db.Column(db.String(20), nullable=False)
-    credit_no = db.Column(db.String(16), nullable=False)
+    creditno = db.Column(db.String(16), nullable=False)
     cvc = db.Column(db.String(3), nullable=False)
     month = db.Column(db.String(2), nullable=False)
     year = db.Column(db.String(4), nullable=False)
-    bfirst_name = db.Column(db.String(20), nullable=False)
-    blast_name = db.Column(db.String(20), nullable=False)
-    bstreet_address = db.Column(db.String(50), nullable=False)
+    bfirst = db.Column(db.String(20), nullable=False)
+    blast = db.Column(db.String(20), nullable=False)
+    baddress = db.Column(db.String(50), nullable=False)
     bpostcode = db.Column(db.String(4), nullable=False)
+    
     def __repr__(self):
-        return f'Payment: {self.bill_first_name}, {self.bill_last_name}'
+        return f'Payment: {self.bfirst}, {self.blast}'
 
 class PaymentMethod(db.Model):
     __tablename__ = 'paymentmethod'

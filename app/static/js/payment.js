@@ -4,7 +4,7 @@ $(document).ready(function(){
         $.ajax({
             type: "POST",
             url: $('#payment-form').attr('action'),
-            data: {dfirst : $("[name=dfirst]").val(), dlast : $("[name=dlast]").val(), daddress : $("[name=daddress]").val(), dpostcode : $("[name=dpostcode]").val(), cname : $("[name=cname]").val(), credit_no : $("[name=credit-no]").val(), cvc : $("[name=cvc]").val(), month : $("[name=month]").val(), year : $("[name=year]").val(), bfirst_name : $("[name=bfirst-name]").val(), blast_name : $("[name=blast-name]").val(), bstreet_address : $("[name=bstreet-address]").val(), bpostcode : $("[name=bpostcode]").val()},
+            data: {dfirst : $("[name=dfirst]").val(), dlast : $("[name=dlast]").val(), daddress : $("[name=daddress]").val(), dpostcode : $("[name=dpostcode]").val(), cname : $("[name=cname]").val(), creditno : $("[name=creditno]").val(), cvc : $("[name=cvc]").val(), month : $("[name=month]").val(), year : $("[name=year]").val(), bfirst : $("[name=bfirst]").val(), blast : $("[name=blast]").val(), baddress : $("[name=baddress]").val(), bpostcode : $("[name=bpostcode]").val()},
             success: (data) => 
             { 
                 if (data.success) 
@@ -35,13 +35,13 @@ $(document).ready(function(){
   $('[name=daddress]').focusout(validate_daddress);
   $('[name=dpostcode]').focusout(validate_dpostcode);
   $('[name=cname]').focusout(validate_creditname);
-  $('[name=credit-no]').focusout(validate_creditno);
+  $('[name=creditno]').focusout(validate_creditno);
   $('[name=cvc]').focusout(validate_cvc);
   $('[name=month]').focusout(validate_month);
   $('[name=year]').focusout(validate_year); 
-  $('[name=bfirst-name]').focusout(validate_bfirst);
-  $('[name=blast-name]').focusout(validate_blast);
-  $('[name=bstreet-address]').focusout(validate_billaddress);
+  $('[name=bfirst]').focusout(validate_bfirst);
+  $('[name=blast]').focusout(validate_blast);
+  $('[name=baddress]').focusout(validate_billaddress);
   $('[name=bpostcode]').focusout(validate_billpostcode);
 
 });
@@ -129,7 +129,7 @@ function validate_creditname() {
 }
 
 function validate_creditno() {
-    var creditno = $('[name=credit-no]');
+    var creditno = $('[name=creditno]');
     var creditcheck = check_creditcard(creditno.val());
     if (!creditcheck.success) {
         set_warning(creditno, creditcheck.warning);
@@ -217,7 +217,7 @@ function clear_warning(el) {
 
 //billing form validation
 function validate_bfirst() {
-    var billfirst = $('[name=bfirst-name]');
+    var billfirst = $('[name=bfirst]');
     if (billfirst.val().length == 0) {
         set_warning(billfirst, 'Required field.');
         return false;
@@ -229,7 +229,7 @@ function validate_bfirst() {
 }
 
 function validate_blast() {
-    var billlast = $('[name=blast-name]');
+    var billlast = $('[name=blast]');
     if (billlast.val().length == 0) {
         set_warning(billlast, 'Required field.');
         return false;
@@ -241,7 +241,7 @@ function validate_blast() {
 }
 
 function validate_billaddress() {
-    var billaddress = $('[name=bstreet-address]');
+    var billaddress = $('[name=baddress]');
     if (billaddress.val().length == 0) {
         set_warning(billaddress, 'Required field.');
         return false;

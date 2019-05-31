@@ -13,19 +13,20 @@
 <div class="col-md-3"></div>
 <div class="col-md-6 col-xs-12">
 <p class="greyed"><b>YOUR PAYMENT INFORMATION IS SECURE</b></p>
-<h1 class="display-4 font-weight-normal">Enter Payment Details</h1>
+<h1 class="display-4 font-weight-normal">Confirm Payment Details</h1>
+<h5> Please review your details before continuing</h5>
 </div>
 <div class="col-md-3"></div>
 </div>
       <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-        <form id="payment-form" action="{{ url_for('routes.do_payment') }}" method=POST>
+        <form id="paymconf-form" action="{{ url_for('routes.do_payment') }}" method=POST>
         </br>
         <div class="spacer"></div>
 
-<!--start of delivery -->
-            <h4>Delivery Address</h4>
+<!--listing out delivery-->
+<h4>Delivery Address</h4>
             <p class="lead font-weight-normal"> Please review if  different to Registration Address</p>
             <div class="spacer"></div>
             <div class="row">
@@ -33,7 +34,7 @@
                 <h5>First Name:</h5>
                 </div>
                 <div class="input-group-lg col-md-8"> <!-- enhances input by adding help test -->
-                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.first_name}}" name="dfirst" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="text" class="form-control input-lg" value="{{dfirst}}" name="dfirst" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
             </div>
             <div class="spacer">
@@ -42,7 +43,7 @@
                 <h5>Last Name:</h5>
                 </div>
                 <div class="input-group-lg col-md-8">
-                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.last_name}}" name="dlast" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="text" class="form-control input-lg" value="{{dlast}}" name="dlast" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
             </div>
             <div class="spacer">
@@ -51,7 +52,7 @@
                     <h5>Street Address:</h5>
                 </div>
                 <div class="input-group-lg col-md-8">
-                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.street_address}}" name="daddress" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="text" class="form-control input-lg" value="{{daddress}}" name="daddress" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div> 
             </div>
             <div class="spacer"></div>
@@ -60,7 +61,7 @@
                 <h5>Postcode:</h5>
                 </div>
                 <div class="input-group-lg col-md-3">
-                    <input type="number" class="form-control input-lg" value="{{g.logged_in_user.postcode}}" name="dpostcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="number" class="form-control input-lg" value="{{dpostcode}}" name="dpostcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
             </div>
             </br>
@@ -76,13 +77,14 @@
             </div>
             <div class="spacer"></div>
              <div class="input-group-lg"> <!-- enhances input by adding help test -->
-                <input type="text" class="form-control input-lg" placeholder="Cardholder's Full Name" name="cname" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                <input type="text" class="form-control input-lg" value="{{credit_name}}" placeholder="Cardholder's Full Name" name="cname" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
             </div>
             <div class="spacer"></div>
             <div class="row">
                 <div class="input-group-lg col-md-9">
                     <input type="number"
                     class="form-control input-lg"
+                    value="{{creditno}}"
                     placeholder="Credit Card No. (xxxx xxxx xxxx xxxx)"
                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                     maxlength = "16"
@@ -93,6 +95,7 @@
                 <div class="input-group-lg col-md-3">
                     <input type="number"
                     class="form-control input-lg"
+                    value="{{cvc}}"
                     placeholder="CVC"
                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                     maxlength = "3"
@@ -109,6 +112,7 @@
                 <div class="input-group-lg col-md-4">
                     <input type="number"
                     class="form-control input-lg"
+                    value="{{month}}"
                     placeholder="Month (MM)"
                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                     maxlength = "2"
@@ -122,6 +126,7 @@
                 <div class="input-group-lg col-md-4">
                     <input type="number"
                     class="form-control input-lg"
+                    value="{{year}}"
                     placeholder="Year (YYYY)"
                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                     maxlength = "4"
@@ -143,20 +148,21 @@
             <div class="spacer"></div>
             <div class="row">
                 <div class="input-group-lg col-md-6"> <!-- enhances input by adding help test -->
-                    <input type="text" class="form-control input-lg" placeholder="Biller's First Name" name="bfirst" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="text" class="form-control input-lg" value="{{bfirst}}" placeholder="Biller's First Name" name="bfirst" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
                 <div class="input-group-lg col-md-6">
-                    <input type="text" class="form-control input-lg" placeholder="Biller's Last Name" name="blast" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="text" class="form-control input-lg" value="{{blast}}" placeholder="Biller's Last Name" name="blast" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
             </div>
             <div class="spacer"></div>
             <div class="row">
                 <div class="input-group-lg col-md-8">
-                    <input type="text" class="form-control input-lg" placeholder="Street Address" name="baddress" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="text" class="form-control input-lg" value="{{baddress}}" placeholder="Street Address" name="baddress" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div> 
                 <div class="input-group-lg col-md-4">
                     <input type="number" 
                     class="form-control input-lg"  
+                    value="{{bpostcode}}"
                     placeholder="Postcode" 
                     name="bpostcode" 
                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -167,7 +173,7 @@
             </div>
             <br/>
             <div class="spacer"></div>
-            <button id="submit-btn" type="submit" class="btn btn-secondary btn-lg">Confirm</button>
+            <button id="submit-btn" type="submit"  class="btn btn-secondary btn-lg">Confirm</button>
             <br/><br/>
             <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
         </form>
@@ -177,5 +183,5 @@
 </div>
 </body>
 {{ util.scripts() }}
-<script src="static/js/payment.js"></script>
+<script src="static/js/payconf.js"></script>
 </html>
