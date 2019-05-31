@@ -107,7 +107,7 @@ def delete_payment():
         return jsonify({ "success": False, "reason": str(e) })
 
 @routes.route("/use-payment")
-def add_movie():
+def use_payment():
     return render_template("create_shipment_details", payments=db.session.query(Payment).all())
     
 
