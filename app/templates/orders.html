@@ -20,15 +20,21 @@
                         <th>ID</th>
                         <th>Title</th>
                         <th>Price</th>
-            
+
                     </tr>
                 </thead>
                 <tbody>
-                    {% for movies in orderlist %}
+                    {% for orders in movieorder%}
                     <tr>
-                        <td>{{movies.copyID}}</td>
-                        <td>{{movies.title}}</td>
-                        <td>{{movies.price}}</td>
+                        {% for movieorder in orderlist%}
+                        {% for moviecopy in moviecopylist%}
+                        {% for movie in movielist%}
+                        <td>{{loop.index}}</td>
+                        <td>{{movie.title}}</td>
+                        <td>{{moviecopy.price}}</td>
+                        {% endfor %}
+                        {% endfor %}
+                        {% endfor %}
                     </tr>
                     {% endfor %}
                 </tbody>

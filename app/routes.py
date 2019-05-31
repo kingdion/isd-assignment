@@ -449,7 +449,10 @@ def modify_user():
 @routes.route("/order")
 def view_order():
     orderlist = db.session.query(MovieOrderLine).all()
-    return render_template("orders.html", orderlist = orderlist)
+    moviecopylist = db.session.query(MovieCopy).all()
+    movielist = db.session.query(Movie).all()
+    movieorder = db.session.query(Orders).all()
+    return render_template("orders.html", orderlist = orderlist, moviecopylist = moviecopylist, movielist = movielist, movieorder = movieorder)
 
 @routes.route("/order/add")
 def add_order():
