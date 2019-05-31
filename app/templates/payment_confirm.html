@@ -24,6 +24,14 @@
         <form id="payconf-form" action="{{ url_for('routes.payment_confirmation') }}" method=POST>
         </br>
         <div class="spacer"></div>
+        <div class="row">
+                <div class="col-md-4 dtext">
+                <h6>Payment Time:</h6>
+                </div>
+                <div class="col-md-3">
+                    <h5> {{bpostcode}} </h5>
+                </div>
+            </div>
 
 <!--listing out delivery-->
 <h4>Delivery Address</h4>
@@ -32,7 +40,7 @@
                 <div class="col-md-4 dtext">
                 <h5>First Name:</h5>
                 </div>
-                <div class="input-group-lg col-md-8"> <!-- enhances input by adding help test -->
+                <div class="col-md-8"> <!-- enhances input by adding help test -->
                     <h5> {{dfirst}} </h5>
                 </div>
             </div>
@@ -41,7 +49,7 @@
                 <div class="col-md-4 dtext">
                 <h5>Last Name:</h5>
                 </div>
-                <div class="input-group-lg col-md-8">
+                <div class="col-md-8">
                     <h5> {{dlast}} </h5>
                 </div>
             </div>
@@ -50,7 +58,7 @@
                 <div class="col-md-4 dtext">
                     <h5>Street Address:</h5>
                 </div>
-                <div class="input-group-lg col-md-8">
+                <div class="col-md-8">
                     <h5> {{daddress}} </h5>
                 </div> 
             </div>
@@ -59,7 +67,7 @@
                 <div class="col-md-4 dtext">
                 <h5>Postcode:</h5>
                 </div>
-                <div class="input-group-lg col-md-3">
+                <div class="col-md-3">
                     <h5> {{dpostcode}} </h5>
                 </div>
             </div>
@@ -70,15 +78,20 @@
 <!-- start of credit card-->
             <h4>Credit Card Details</h4>
             <div class="spacer"></div>
-             <div class="input-group-lg"> <!-- enhances input by adding help test -->
-                <input type="text" class="form-control input-lg" value="{{credit_name}}" placeholder="Cardholder's Full Name" name="cname" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+            <div class="row">
+                <div class="col-md-5 dtext">
+                <h5>Credit Card Holder Name:</h5>
+                </div>
+                <div class="col-md-7">
+                    <h5> {{credit_name}} </h5>
+                </div>
             </div>
             <div class="spacer"></div>
             <div class="row">
                 <div class="col-md-4 dtext">
                 <h5>Credit Card Number:</h5>
                 </div>
-                <div class="input-group-lg col-md-8">
+                <div class="col-md-8">
                     <h5> {{creditno}} </h5>
                 </div>
             </div>
@@ -86,7 +99,7 @@
                 <div class="col-md-4 dtext">
                 <h5>CVC:</h5>
                 </div>
-                <div class="input-group-lg col-md-3">
+                <div class="col-md-3">
                     <h5> {{cvc}} </h5>
                 </div>
             </div>            
@@ -95,10 +108,10 @@
                 <div class="col-md-4 dtext">
                 <h5>Expiration Date:</h5>
                 </div>
-                <div class="input-group-lg col-md-4">
+                <div class="col-md-4">
                     <h5> {{month}} </h5>
                 </div>
-                <div class="input-group-lg col-md-4">
+                <div class="col-md-4">
                     <h5> {{year}} </h5>
                 </div>
             </div>
@@ -114,10 +127,10 @@
                 <div class="col-md-4 dtext">
                 <h5>Expiration Date:</h5>
                 </div>
-                <div class="input-group-lg col-md-4">
+                <div class="col-md-4">
                     <h5> {{bfirst}} </h5>
                 </div>
-                <div class="input-group-lg col-md-4">
+                <div class="col-md-4">
                     <h5> {{blast}} </h5>
                 </div>
             </div>
@@ -126,7 +139,7 @@
                 <div class="col-md-4 dtext">
                 <h5>Billing Address:</h5>
                 </div>
-                <div class="input-group-lg col-md-3">
+                <div class="col-md-3">
                     <h5> {{baddress}} </h5>
                 </div>
             </div>
@@ -134,7 +147,7 @@
                 <div class="col-md-4 dtext">
                 <h5>Billing Postcode:</h5>
                 </div>
-                <div class="input-group-lg col-md-3">
+                <div class="col-md-3">
                     <h5> {{bpostcode}} </h5>
                 </div>
             </div>

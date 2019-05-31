@@ -2,6 +2,7 @@ import jwt
 import uuid
 import math
 import os
+import datetime
 from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request, jsonify, current_app, session, g
 from functools import partial
@@ -10,7 +11,7 @@ from .models import *
 from sqlalchemy import extract
 from operator import itemgetter
 from werkzeug.utils import secure_filename
-from datetime import date
+
 
 
 routes = Blueprint("routes", __name__)
@@ -57,6 +58,7 @@ def do_payment():
         blast=request.form["blast"],\
         baddress=request.form["baddress"],\
         bpostcode=request.form["bpostcode"],\
+        join_date=datetime.datetime.utcnow()\
     )
     db.session.add(payment)
     db.session.commit()

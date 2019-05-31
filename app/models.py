@@ -203,6 +203,8 @@ class Payment(db.Model):
     blast = db.Column(db.String(20), nullable=False)
     baddress = db.Column(db.String(50), nullable=False)
     bpostcode = db.Column(db.String(4), nullable=False)
+    join_date = db.Column(db.DateTime(), nullable=False)
+
     
     def __repr__(self):
         return f'Payment: {self.bfirst}, {self.blast}'
