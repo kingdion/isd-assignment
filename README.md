@@ -6,7 +6,6 @@
 * Tyrone Huang 
 * Nicholas Zay
 * Chris Tran
-
 ---
 
 # Installation 
@@ -80,6 +79,20 @@ When changes are made to the database models, run:
 `$ python run.py db migrate` - Updates schema version, creates update file in migrations/versions with changes to db
 
 `$ python run.py db upgrade` - Actually runs the upgrade on the database 
+
+
+# Generating test data (for testing)
+
+To generate our test data, we have a script that automatically sets-up
+relevant database objects for testing - run:
+
+`$ python setup_mock_db.py` 
+
+It will prompt you with a Y/N input box.
+
+WARNING: This WILL delete all rows currently in the database.
+Answer 'Y' to perform the generation.
+Answer 'N' to exit the program.
 
 
 
