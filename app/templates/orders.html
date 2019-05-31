@@ -20,6 +20,7 @@
                         <th>ID</th>
                         <th>Title</th>
                         <th>Price</th>
+                        <th>Delete</th>
 
                     </tr>
                 </thead>
@@ -32,9 +33,11 @@
                         <td>{{loop.index}}</td>
                         <td>{{movie.title}}</td>
                         <td>{{moviecopy.price}}</td>
+
                         {% endfor %}
                         {% endfor %}
                         {% endfor %}
+                        <td><button id="{{orders.id}}" class="delete-movie-order btn btn-danger btn-sm">Remove Movie</button></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -46,4 +49,5 @@
     </body>
 
     {{ util.scripts() }}
+    <script src="{{ url_for('static', filename='js/orders.js') }}"></script>
 </html>

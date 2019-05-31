@@ -20,12 +20,26 @@
                         <th>#</th>
                         <th>Order Date</th>
                         <th>Price</th>
-			<th>Status</th>
-            
+			                  <th>Status</th>
+
                     </tr>
                 </thead>
                 <tbody>
-              
+
+                      {% for orders in movieorder%}
+                      <tr>
+                          {% for movieorder in orderlist%}
+                          {% for moviecopy in moviecopylist%}
+                          {% for movie in movielist%}
+                          <td>{{loop.index}}</td>
+                          <td>{{movie.title}}</td>
+                          <td>{{moviecopy.price}}</td>
+                          {% endfor %}
+                          {% endfor %}
+                          {% endfor %}
+                      </tr>
+                      {% endfor %}
+
                 </tbody>
             </table>
 	</div>

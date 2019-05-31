@@ -461,3 +461,14 @@ def add_order():
 @routes.route("/orderhistory")
 def order_history():
     return render_template("orderhistory.html")
+
+@routes.route("/do-delete-movie-order", methods=["POST", "DELETE"])
+def delete_movie_order():
+    try:
+        movieOrder = Orders.query.filter_by(id=request.form["movie_id"]).first()
+        db.session.delete(movieOrder)
+        db.session.commit()
+    except:
+        return jsonify({'success': False, 'message' : 'Something went wrong trying to delete this log.'})
+
+    return jsonify({'success': False, 'message' : 'The log has been deleted.'})
