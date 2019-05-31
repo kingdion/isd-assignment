@@ -38,13 +38,21 @@
                             <td>{{ copy.sold }}</td>
                             <!-- later, do if copy.sold, show orderid (and maybe link to order), otherwise show "not sold" -->
                             <td>
-                                <button name="{{ copy.id }}" class="btn btn-primary btn-sm copy-btn edit-btn">
+                                {% if not copy.sold %}
+                                {% if g.logged_in_user and g.logged_in_user.is_staff %}
+                                <button name="{{ copy.id }}" class="btn btn-primary btn-sm copy-btn edit-btn" data-toggle="tooltip" data-placement="top" title="Edit copy details">
                                     <i class="far fa-edit"></i>
                                 </button>
 
-                                <button name="{{ copy.id }}" class="btn btn-danger btn-sm copy-btn delete-btn">
+                                <button name="{{ copy.id }}" class="btn btn-danger btn-sm copy-btn delete-btn" data-toggle="tooltip" data-placement="top" title="Delete copy">
                                     <i class="far fa-trash-alt"></i>
                                 </button>
+                                {% else %}
+                                <button name="{{ copy.id }}" class="btn btn-success btn-sm copy-btn add-to-order-btn" data-toggle="tooltip" data-placement="top" title="Add copy to order">
+                                    <i class="far fa-plus-square"></i>
+                                </button>
+                                {% endif %}
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
@@ -52,6 +60,7 @@
                 </table>
             </div>
 
+            {% if g.logged_in_user and g.logged_in_user.is_staff %}
             <div class="spacer5"></div>
 
             <div class="row">
@@ -126,6 +135,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
 
             <br/><br/>
             <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>

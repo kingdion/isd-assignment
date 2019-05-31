@@ -122,18 +122,18 @@ def do_get_movies_grid_html():
         if (isStaff):
             result += '<button type="button" class="btn btn-dark edit-movie-btn" data-toggle="tooltip" data-placement="top" title="Edit movie details">\
                            <i class="far fa-edit"></i>\
-                         </button>\
-                         <div class="spacer-h"></div>\
-                         <button type="button" class="btn btn-dark edit-movie-copies-btn" data-toggle="tooltip" data-placement="top" title="Edit copies of this movie">\
-                            <i class="fas fa-compact-disc"></i>\
-                         </button>\
-                         <div class="spacer-h"></div>\
-                         <button type="button" class="btn btn-dark delete-movie-btn" data-toggle="tooltip" data-placement="top" title="Delete this movie">\
-                            <i class="far fa-trash-alt"></i>\
-                         </button>'
+                       </button>\
+                       <div class="spacer-h"></div>\
+                       <button type="button" class="btn btn-dark edit-movie-copies-btn" data-toggle="tooltip" data-placement="top" title="Edit copies of this movie">\
+                           <i class="fas fa-compact-disc"></i>\
+                       </button>\
+                       <div class="spacer-h"></div>\
+                       <button type="button" class="btn btn-dark delete-movie-btn" data-toggle="tooltip" data-placement="top" title="Delete this movie">\
+                           <i class="far fa-trash-alt"></i>\
+                       </button>'
         else:
-            result += '<button type="button" class="btn btn-dark add-to-order-btn" data-toggle="tooltip" data-placement="top" title="Add to order">\
-                           <i class="far fa-plus-square"></i>\
+            result += '<button type="button" class="btn btn-dark edit-movie-copies-btn" data-toggle="tooltip" data-placement="top" title="View copies of this movie">\
+                           <i class="fas fa-compact-disc"></i>\
                        </button>'
 
         result += '</div><div class="movie-description">' + movie.title + '<br>(' + str(movie.release_date.year) + ')</div></div>'
@@ -155,7 +155,7 @@ def score_movie_title(title, searchTitle):
             tWord = titleWord.lower()
             if sWord == tWord:
                 score += 1
-            elif (sWord in tWord and len(sWord) > 2) or (tWord in sWord and len(tWord) > 2):
+            elif (sWord in tWord and (len(sWord) > 2 or len(tWord) <= 2)) or (tWord in sWord and (len(tWord) > 2 or len(sWord <= 2))):
                 score += 0.5
 
     score = score / max(len(titleWords), len(searchWords))
@@ -260,13 +260,13 @@ def do_edit_movie():
         return jsonify({ "success": False, "reason": str(e) })
 
 @routes.route("/edit-movie-copies/<movieID>")
-@protected_view_staff
+# @protected_view_staff
 def edit_movie_copies(movieID):
-    try:
+    # try:
         movie = Movie.query.filter_by(id=movieID).one()
         return render_template("edit_movie_copies.html", movie=movie)
-    except:
-        return 'Something went wrong trying to edit copies of this movie.', 400
+    # except:
+        # return 'Something went wrong trying to edit copies of this movie.', 400
 
 @routes.route("/do-get-movie-copies/<movieID>", methods=["GET"])
 def do_get_movie_copies(movieID):
@@ -276,7 +276,7 @@ def do_get_movie_copies(movieID):
         for copy in movie.copies:
             copies.append(copy.to_dict())
 
-        return jsonify({ "success": True, "copies": copies })
+        return jsonify({ "success": True, "copies": copies, "isStaff": g.logged_in_user.is_staff if g.logged_in_user else False })
     except Exception as e:
         return jsonify({ "success": False, "reason": str(e) })
 
@@ -293,7 +293,7 @@ def do_add_movie_copy(movieID):
         for copy in movie.copies:
             newCopies.append(copy.to_dict())
 
-        return jsonify({ "success": True, "copies": newCopies })
+        return jsonify({ "success": True, "copies": newCopies, "isStaff": g.logged_in_user.is_staff if g.logged_in_user else False })
     except Exception as e:
         return jsonify({ "success": False, "reason": str(e) })
 
@@ -302,6 +302,9 @@ def do_add_movie_copy(movieID):
 def delete_movie_copy():
     try:
         movieCopy = MovieCopy.query.filter_by(id=request.form["id"]).one()
+        if movieCopy.sold:
+            return jsonify({ "success": False, "reason": "This copy has already been sold and so cannot be deleted." })
+
         db.session.delete(movieCopy)
         db.session.commit()
         return jsonify({ "success": True, "id": request.form["id"] })
@@ -318,6 +321,9 @@ def do_edit_movie_copy():
             return jsonify({ "success": False, "reason": "incomplete form" })
 
         copy = MovieCopy.query.filter_by(id=request.form["copy-id"]).one()
+        if copy.sold:
+            return jsonify({ "success": False, "reason": "This copy has already been sold and so cannot be edited." })
+
         copy.price = request.form["copy-price"]
         copy.copy_information = request.form["copy-description"]
 
@@ -339,15 +345,11 @@ def delete_movie():
     except:
         return 'Something went wrong trying to delete this movie.', 400
 
-@routes.route("/add-to-order/<movieId>")
-def add_to_order(movieId):
-    pass
-
 @routes.route("/do-add-to-order", methods=["POST"])
 def do_add_to_order():
-    # try:
+    try:
         movie = Movie.query.filter_by(id=request.form["id"]).one()
-
+        #@Amara, this is going to create an order EVERY TIME you add to order, you need to change this so it looks for an existing order first
         order = Orders(\
             accountId = g.logged_in_user.id,\
             trackingStatus = "undelivered",\
@@ -359,9 +361,8 @@ def do_add_to_order():
         db.session.commit()
 
         return jsonify({ "success": True })
-        #add this movie to an order
-    # except Exception as e:
-    #     return jsonify({ "success": False, "reason": str(e) })
+    except Exception as e:
+        return jsonify({ "success": False, "reason": str(e) })
 
 @routes.route("/shipmentdetails/create", methods=["GET", "POST"])
 @protected_view

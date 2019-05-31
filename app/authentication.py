@@ -82,6 +82,18 @@ def do_register():
     password = request.form["password"]
 
     # TODO: Add server-side validation (since clients can just alter the javascript to bypass client-side validation)
+    if request.form["username"] == ""\
+    or request.form["email"] == ""\
+    or request.form["password"] == ""\
+    or request.form["repeat-password"] == ""\
+    or request.form["password"] != request.form["repeat-password"]\
+    or request.form["first-name"] == ""\
+    or request.form["last-name"] == ""\
+    or request.form["street-address"] == ""\
+    or request.form["postcode"] == ""\
+    or request.form["phone-number"] == ""\
+    or len(request.form["phone-number"]) > 10:
+        return jsonify({ "success": False, "reason": "failed validation" })
 
     account = Account(\
         first_name=request.form["first-name"],\
