@@ -3,6 +3,7 @@ import uuid
 import math
 import os
 import datetime
+from datetime import date
 from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request, jsonify, current_app, session, g
 from functools import partial
@@ -11,6 +12,8 @@ from .models import *
 from sqlalchemy import extract
 from operator import itemgetter
 from werkzeug.utils import secure_filename
+from sqlalchemy.exc import IntegrityError
+
 
 
 
@@ -41,9 +44,10 @@ def logs():
 def payment():
     return render_template("payment.html")
 
+
 @routes.route("/payment_confirm")
 def confirm():
-    return render_template("payment_confirm.html")
+    return render_template("payment_confirm.html", payments=db.session.query(Payment).all())
 
 @routes.route("/do-payment", methods=["POST"])
 def do_payment():
@@ -69,43 +73,44 @@ def do_payment():
 
     return jsonify({'success': True})
 
-@routes.route("/payment-confirmation", methods=["POST", "PUT"])
-@protected_view
-def payment_confirmation():
-    try:
-        keys = ["dfirst", "dlast", "daddress", "dpostcode", "cname", "creditno", "cvc", "month", "year", "bfirst", "blast", "baddress", "bpostcode"]
-        confirm_dfirst=request.form["dfirst"],
-        confirm_dlast=request.form["dlast"],
-        confirm_daddress=request.form["daddress"],
-        confirm_dpostcode=request.form["dpostcode"],
-        confirm_credit_name=request.form["cname"],
-        confirm_creditno=request.form["creditno"],
-        confirm_cvc=request.form["cvc"],
-        confirm_month=request.form["month"],
-        confirm_year=request.form["year"],
-        confirm_bfirst=request.form["bfirst"],
-        confirm_blast=request.form["blast"],
-        confirm_baddress=request.form["baddress"],
-        confirm_bpostcode=request.form["bpostcode"],
+@routes.route("/do-update-payment", methods=["POST"])
+def do_update_payment():
+        if (request.form["copy-id"] == ""\
+        or request.form["copy-price"] == ""\
+        or request.form["copy-description"] == ""):
+            return jsonify({ "success": False, "reason": "incomplete form" })
+
+        payment = Payment.query.filter_by(id=request.form["payment-id"]).one()
+
+        payment.dfirst = request.form["dfirst"],\
+        payment.dlast = request.form["dlast"],\
+        payment.daddress = request.form["daddress"],\
+        payment.dpostcode = request.form["dpostcode"],\
+        payment.credit_name = request.form["cname"],\
+        payment.creditno = request.form["creditno"],\
+        payment.cvc = request.form["cvc"],\
+        payment.month = request.form["month"],\
+        payment.year = request.form["year"],\
+        payment.bfirst = request.form["bfirst"],\
+        payment.blast = request.form["blast"],\
+        payment.baddress = request.form["baddress"],\
+        payment.bpostcode = request.form["bpostcode"],\
 
         db.session.commit()
-    except:
-        return jsonify({"success": False, "message": "Something went wrong in confirmation."})
 
-    return jsonify({"success": True, "message": "Your payment details are confirmed!"})
+        return jsonify({ "success": True })
 
-
-@routes.route("/delete-payment", methods=["POST", "DELETE"])
-@protected_view
+@routes.route("/do-delete-payment", methods=["POST"])
+@protected_view_staff
 def delete_payment():
-    # Remove payment and move user back to payment detail input
-    # return a success response.
+    try:
+        payment = Payment.query.filter_by(id=request.form["id"]).one()
 
-    db.session.delete(g.logged_in_user)
-    session.pop('token', None)
-    db.session.commit()
-
-    return jsonify({"success": True, "message": "Your Payment details have been successfully deleted"})
+        db.session.delete(payment)
+        db.session.commit()
+        return jsonify({ "success": True, "id": request.form["id"] })
+    except Exception as e:
+        return jsonify({ "success": False, "reason": str(e) })
 
 
 @routes.route("/do-get-genres", methods=["GET"])
@@ -416,9 +421,14 @@ def create_shipment_details():
             address=request.form["address"],
             order_id=uuid.UUID(request.form["order_id"]) if request.form["order_id"] else None
         )
-        db.session.add(shipment_details)
-        db.session.commit()
-        return redirect(url_for("routes.view_shipment_details", id=shipment_details.id))
+        try:
+            db.session.add(shipment_details)
+            db.session.commit()
+            return redirect(url_for("routes.view_shipment_details", id=shipment_details.id))
+        except IntegrityError:
+            db.session.rollback()
+            return render_template("create_shipment_details.html", not_found_id=request.form["order_id"])
+
     return render_template("create_shipment_details.html")
 
 @routes.route("/shipmentdetails/<id>", methods=["GET"])
@@ -460,7 +470,7 @@ def delete_shipment_details(id):
 def list_shipment_details():
     order_id = request.args.get("order_id", None)
     if order_id:
-        shipment_details = db.session.query(ShipmentDetails).filter(ShipmentDetails.order_id == uuid.UUID(order_id)).one_or_none()
+        shipment_details = db.session.query(ShipmentDetails).filter((ShipmentDetails.order_id == uuid.UUID(order_id)) | (ShipmentDetails.id == uuid.UUID(order_id))).one_or_none()
         if shipment_details:
             return redirect(url_for("routes.view_shipment_details", id=shipment_details.id))
         else:

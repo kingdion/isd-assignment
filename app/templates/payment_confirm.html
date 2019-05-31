@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <title>Payment Information - Online Movie Store Application</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/payment.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/payments.css') }}"/>
 {{ util.head() }}
 </head>
 <body>
@@ -14,160 +14,194 @@
 <div class="col-md-6 col-xs-12">
 <p class="greyed"><b>YOUR PAYMENT INFORMATION IS SECURE</b></p>
 <h1 class="display-4 font-weight-normal">Confirm Payment Details</h1>
-<p class="lead font-weight-normal"> Please review your details before continuing</p>
+<p class="lead font-weight-normal"> Please review your Payment History</p>
 </div>
 <div class="col-md-3"></div>
+</div>      
+
+<div class="table-responsive">
+    <table id="payment-table" class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Time Created</th>
+                <th>Card Holder Name</th>
+                <th>Credit Number</th>
+                <th>Use this Payment</th>
+                <th>Modify Payment</th>
+                <th>Delete Payment</th>
+            </tr>
+        </thead>
+        <tbody id="movie-copies-table-body">
+            {% for payment in payments %}
+            <tr class="copy">
+                <td>{{ payment.id }}</td>
+                <td>{{ payment.join_date }}</td>
+                <td>{{ payment.credit_name }}</td>
+                <td>{{ payment.creditno }}</td>
+                <td><button name="{{ payment.id }}" 
+                    class="btn btn-primary btn-sm copy-btn use-btn" 
+                    data-toggle="tooltip" 
+                    data-placement="top" 
+                    title="Use Payment Details">
+                    <i class="far fa-edit"></i>
+                    </button>
+                </td>
+                <td><button name="{{ payment.id }}" 
+                    class="btn btn-primary btn-sm copy-btn edit-btn" 
+                    data-toggle="tooltip" 
+                    data-placement="top" 
+                    title="Update Payment Details">
+                    <i class="far fa-edit"></i>
+                    </button>
+                </td>
+                <td>
+                <button name="{{ payment.id }}" 
+                class="btn btn-danger btn-sm copy-btn delete-btn" 
+                data-toggle="tooltip" 
+                data-placement="top" 
+                title="Delete Payment Detail">
+                <i class="far fa-trash-alt"></i>
+                </button>
+                </td>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-      <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-        <form id="payconf-form" action="{{ url_for('routes.payment_confirmation') }}" method=POST>
+
+<!--beginning of modal (popup stuff)-->
+{% if g.logged_in_user %}
+
+<div class="modal fade" id="update-payment-modal" tabindex="-1" role="dialog" aria-labelledby="update-payment" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="update-payment">Update Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="update-payment-form" action="{{ url_for('routes.do_update_payment') }}" method=POST>
+                    <h5>Delivery Address</h5>
+                    <div class="form-group">
+                                    <input id="payment-id-input" type="text" class="form-control" name="payment-id" readonly>
+                                </div>
+                    <div class="form-group">
+                        <input id="dfirst-input" type="text" class="form-control" name="dfirst" value="{{ payments.dfirst }}">
+                    </div>
+                     <div class="form-group">
+                        <input id="dlast-input" type="text" class="form-control" name="dlast"value="{{ payments.dlast }}">
+                    </div>
+                    <div class="form-group">
+                        <input id="daddress-input" type="text" class="form-control" name="daddress"value="{{ payments.daddress }}">
+                    </div>
+                    <div class="form-group">
+                        <input id="dpostcode-input" type="number" class="form-control" name="dpostcode"value="{{ payments.dpostcode }}">
+                    </div>
+
+                    <h5>Credit Card Details</h5>
+                    <div class="form-group">
+                        <input id="creditname-input" type="text" class="form-control" name="creditname"value="{{ payments.credit_name }}">
+                    </div>
+                    <div class="row">
+                    <div class="form-group col-md-9">
+                        <input id="creditno-input" 
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength = "16"
+                        type="number" 
+                        class="form-control" 
+                        name="creditno"
+                        value="{{ payments.creditno }}">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input id="cvc-input"
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength = "3" 
+                        type="number" 
+                        class="form-control" 
+                        name="cvc"
+                        value="{{ payments.cvc }}">
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group col-md-4">
+                        <input 
+                        id="month-input" 
+                        type="number" 
+                        class="form-control" 
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength = "2"
+                        min = "1"
+                        max = "12"
+                        name="month"
+                        value="{{ payments.month }}">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input 
+                        id="year-input" 
+                        type="number" 
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength = "4"
+                        min = "2019"
+                        max = "2030"
+                        class="form-control" 
+                        name="year"
+                        value="{{ payments.year }}">
+                    </div>
+                    </div>
+
+                    <h5>Billing Address</h5>
+                    <div class="form-group">
+                        <input id="bfirst-input" type="text" class="form-control" name="bfirst"value="{{ payments.bfirst }}">
+                    </div>
+                    <div class="form-group">
+                        <input id="blast-input" type="text" class="form-control" name="b-ast"value="{{ payments.blast }}">
+                    </div>
+                    <div class="form-group">
+                        <input id="baddress-input" type="text" class="form-control" name="baddress"value="{{ payments.baddress }}">
+                    </div>
+                    <div class="form-group">
+                        <input 
+                        id="bpostcode-input" 
+                        type="text" 
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                        maxlength = "4"
+                        class="form-control" 
+                        name="bpostcode"
+                        value="{{ payments.bpostcode }}">
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button id="submit-update-payment-form" type="submit" form="update-payment-form" class="btn btn-primary">Update Payment</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+                   
         </br>
         <div class="spacer"></div>
-        <div class="row">
-                <div class="col-md-4 dtext">
-                <h6>Payment Time:</h6>
-                </div>
-                <div class="col-md-3">
-                    <h5> {{bpostcode}} </h5>
-                </div>
-            </div>
 
-<!--listing out delivery-->
-<h4>Delivery Address</h4>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>First Name:</h5>
-                </div>
-                <div class="col-md-8"> <!-- enhances input by adding help test -->
-                    <h5> {{dfirst}} </h5>
-                </div>
-            </div>
-            <div class="spacer">
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Last Name:</h5>
-                </div>
-                <div class="col-md-8">
-                    <h5> {{dlast}} </h5>
-                </div>
-            </div>
-            <div class="spacer">
-            <div class="row">
-                <div class="col-md-4 dtext">
-                    <h5>Street Address:</h5>
-                </div>
-                <div class="col-md-8">
-                    <h5> {{daddress}} </h5>
-                </div> 
-            </div>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Postcode:</h5>
-                </div>
-                <div class="col-md-3">
-                    <h5> {{dpostcode}} </h5>
-                </div>
-            </div>
-            </br>
-            </hr>
-            <div class="spacer"></div>
-
-<!-- start of credit card-->
-            <h4>Credit Card Details</h4>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-5 dtext">
-                <h5>Card Holder Name:</h5>
-                </div>
-                <div class="col-md-7">
-                    <h5> {{credit_name}} </h5>
-                </div>
-            </div>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Credit Card Number:</h5>
-                </div>
-                <div class="col-md-8">
-                    <h5> {{creditno}} </h5>
-                </div>
-            </div>
-            <div class="spacer">
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>CVC:</h5>
-                </div>
-                <div class="col-md-3">
-                    <h5> {{cvc}} </h5>
-                </div>
-            </div>            
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Expiration Date:</h5>
-                </div>
-                <div class="col-md-4">
-                    <h5> {{month}} </h5>
-                </div>
-                <div class="col-md-4">
-                    <h5> {{year}} </h5>
-                </div>
-            </div>
-            <br/>
-            <hr/>
-
-<!--start of billing details-->
-
-            <div class="spacer"></div>
-            <h4>Billing Details</h4>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Expiration Date:</h5>
-                </div>
-                <div class="col-md-4">
-                    <h5> {{bfirst}} </h5>
-                </div>
-                <div class="col-md-4">
-                    <h5> {{blast}} </h5>
-                </div>
-            </div>
-            <div class="spacer"></div>
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Billing Address:</h5>
-                </div>
-                <div class="col-md-3">
-                    <h5> {{baddress}} </h5>
-                </div>
-            </div>
-            <div class="spacer">
-            <div class="row">
-                <div class="col-md-4 dtext">
-                <h5>Billing Postcode:</h5>
-                </div>
-                <div class="col-md-3">
-                    <h5> {{bpostcode}} </h5>
-                </div>
-            </div>
-            <br/>
             <div class="spacer"></div>
             <button id="submit-btn" type="submit"  class="btn btn-secondary btn-lg">Confirm Details</button>
-            <br/><br/>
-            <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
+            <br/>
         </form>
 
+
+        
         <br/>
-        <p class="error-message"><b>WARNING: Delete details and return to previous page</b></p>
-        <button id="delete-btn" type="submit" class="btn btn-danger btn-lg">Delete Payment Details</button>
+        <br/>
+        <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
+
         </div>
-        <div class="col-md-3"></div>
     </div>
 </div>
 </body>
+
 {{ util.scripts() }}
 <script src="static/js/pay_confirm.js"></script>
 </html>
