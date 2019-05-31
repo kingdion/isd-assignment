@@ -2,6 +2,7 @@ import jwt
 import uuid
 import math
 import os
+import datetime
 from datetime import date
 from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request, jsonify, current_app, session, g
@@ -418,8 +419,7 @@ def create_shipment_details():
             date=date.fromisoformat(request.form["date"]),
             shipment_method=request.form["shipment_method"],
             address=request.form["address"],
-            order_id=uuid.UUID(request.form["order_id"])
-            if request.form["order_id"] else None
+            order_id=uuid.UUID(request.form["order_id"]) if request.form["order_id"] else None
         )
         try:
             db.session.add(shipment_details)
