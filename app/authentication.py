@@ -186,6 +186,11 @@ def delete_account():
     # Remove and logout the user from the session,
     # return a success response.
 
+    logs = UserAccessLog.query.filter_by(accountId=g.logged_in_user.id).all()
+
+    for log in logs:
+        db.session.delete(log)
+
     db.session.delete(g.logged_in_user)
     session.pop('token', None)
     db.session.commit()
