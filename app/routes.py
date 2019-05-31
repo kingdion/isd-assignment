@@ -314,7 +314,7 @@ def do_get_movie_copies(movieID):
     try:
         copies = []
         movie = Movie.query.filter_by(id=movieID).one()
-        for copy in movie.copies.order_by(MovieCopy.sold.desc(), MovieCopy.price.desc()):
+        for copy in movie.copies:
             copies.append(copy.to_dict())
 
         return jsonify({ "success": True, "copies": copies, "isStaff": g.logged_in_user.is_staff if g.logged_in_user else False })
