@@ -13,31 +13,45 @@
             <h1>My Order History</h1>
 
             <br />
+            <div class="input-group mb-3">
+    <input class="form-control" type="date" id="date-time-picker"/>
+    <input class="form-control" type = "text" id="searchnumber"/>
+    <div class="input-group-append">
+      <button id="date-time-picker-button" class="btn btn-success" type="button">Filter by Date</button>
+        <button id="searchnumber" class="btn btn-success" type="button">Filter by ID</button>
+    </div>
+</div>
+
 	<div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Order Date</th>
-                        <th>Price</th>
 			                  <th>Status</th>
 
                     </tr>
                 </thead>
                 <tbody>
 
-                      {% for orders in movieorder%}
+
+
                       <tr>
+
                           {% for movieorder in orderlist%}
-                          {% for moviecopy in moviecopylist%}
-                          {% for movie in movielist%}
+
+
                           <td>{{loop.index}}</td>
-                          <td>{{movie.title}}</td>
-                          <td>{{moviecopy.price}}</td>
-                          {% endfor %}
-                          {% endfor %}
-                          {% endfor %}
+                          <td>Date</td>
+
+
+                          <td>Undelivered</td>
+
+
+
+
                       </tr>
+
                       {% endfor %}
 
                 </tbody>
@@ -49,5 +63,5 @@
     </body>
 
     {{ util.scripts() }}
-    <script src = "static/js/logs.js"></script>
+    <script src = "static/js/orderhistory.js"></script>
 </html>
