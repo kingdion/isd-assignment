@@ -7,7 +7,6 @@ $('#add-copy-form').submit(function(event) {
     var form = $('#add-copy-form');
     $.post(form.attr('action'), form.serialize(), function(data) {
         if (data.success) {
-            console.log("yeet");
             alert('Copy successfully added!');
             $('#add-copy-form')[0].reset();
             update_table(data.copies, data.isStaff);
@@ -29,7 +28,6 @@ $('#edit-copy-form').submit(function(event) {
                     update_table(data.copies, data.isStaff);
                     bind_buttons();
                     $('#edit-copy-modal').modal('hide');
-                    //console.log($('#copy-id-input').val());
                     $('[name=' + $('#copy-id-input').val() + ']').parent().parent().addClass('highlight');
                     setTimeout(function() {
                         $('[name=' + $('#copy-id-input').val() + ']').parent().parent().removeClass('highlight');
@@ -58,7 +56,6 @@ function bind_buttons() {
         if (confirm('Are you sure you wish to delete this movie copy? This action is irreversible.')) {
             $.post('/do-delete-movie-copy', { id: $(this).attr('name') }, function(data) {
                 if (data.success) {
-                    console.log($('[name=' + data.id + ']').parent().parent());
                     $('[name=' + data.id + ']').parent().parent().fadeOut('slow', function() {$(this).remove(); });
                 }
                 else {
