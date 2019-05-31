@@ -72,8 +72,8 @@ if (answer == "Y"):
                 for log in range(1, 21):
                     randomDate = datetime.datetime.now() - datetime.timedelta(days=random.randint(1, 9))
                     randomLogoutTime = randomDate + datetime.timedelta(minutes=10)
-                    loginLog = UserAccessLog(acc.id, randomDate, "Login")
-                    logoutLog = UserAccessLog(acc.id, randomLogoutTime, "Logout")
+                    loginLog = UserAccessLog(staff.id, randomDate, "Login")
+                    logoutLog = UserAccessLog(staff.id, randomLogoutTime, "Logout")
                     db.session.add(loginLog)
                     db.session.add(logoutLog)
 
