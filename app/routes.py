@@ -350,6 +350,8 @@ def do_add_to_order():
     try:
         movie = Movie.query.filter_by(id=request.form["id"]).one()
         #@Amara, this is going to create an order EVERY TIME you add to order, you need to change this so it looks for an existing order first
+
+
         order = Orders(\
             accountId = g.logged_in_user.id,\
             trackingStatus = "undelivered",\
@@ -359,7 +361,6 @@ def do_add_to_order():
 
         db.session.add(order)
         db.session.commit()
-
         return jsonify({ "success": True })
     except Exception as e:
         return jsonify({ "success": False, "reason": str(e) })
@@ -461,7 +462,11 @@ def add_order():
 
 @routes.route("/orderhistory")
 def order_history():
-    return render_template("orderhistory.html")
+    orderlist = db.session.query(MovieOrderLine).all()
+    moviecopylist = db.session.query(MovieCopy).all()
+    movielist = db.session.query(Movie).all()
+    movieorder = db.session.query(Orders).all()
+    return render_template("orderhistory.html", orderlist = orderlist, moviecopylist = moviecopylist, movielist = movielist, movieorder = movieorder)
 
 @routes.route("/do-delete-movie-order", methods=["POST", "DELETE"])
 def delete_movie_order():
@@ -470,6 +475,6 @@ def delete_movie_order():
         db.session.delete(movieOrder)
         db.session.commit()
     except:
-        return jsonify({'success': False, 'message' : 'Something went wrong trying to delete this log.'})
+        return jsonify({'success': False, 'message' : 'Something went wrong trying to remove this movie.'})
 
-    return jsonify({'success': False, 'message' : 'The log has been deleted.'})
+    return jsonify({'success': False, 'message' : 'The movie has been removed.'})
