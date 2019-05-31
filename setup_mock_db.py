@@ -117,7 +117,7 @@ if (answer == "Y"):
                 movie = Movie(
                     f"Movie {movie_id}",
                     randomDate,
-                    f"static/images/thumbnails/{random.choice(thumbnails)}",
+                    f"/static/images/thumbnails/{random.choice(thumbnails)}",
                     random.randint(1,59),
                     random.choice(maturity_ratings).id
                 )
@@ -178,4 +178,3 @@ if (answer == "Y"):
                 db.session.add(payment)
 
             db.session.commit()
-
