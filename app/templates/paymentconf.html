@@ -1,0 +1,187 @@
+{% import 'utilities.html' as util %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Payment Information - Online Movie Store Application</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/payment.css') }}"/>
+{{ util.head() }}
+</head>
+<body>
+{{ util.navbar() }}
+<div id="page-head" class="container text-center">
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6 col-xs-12">
+<p class="greyed"><b>YOUR PAYMENT INFORMATION IS SECURE</b></p>
+<h1 class="display-4 font-weight-normal">Confirm Payment Details</h1>
+<h5> Please review your details before continuing</h5>
+</div>
+<div class="col-md-3"></div>
+</div>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+        <form id="paymconf-form" action="{{ url_for('routes.do_payment') }}" method=POST>
+        </br>
+        <div class="spacer"></div>
+
+<!--listing out delivery-->
+<h4>Delivery Address</h4>
+            <p class="lead font-weight-normal"> Please review if  different to Registration Address</p>
+            <div class="spacer"></div>
+            <div class="row">
+                <div class="col-md-4 dtext">
+                <h5>First Name:</h5>
+                </div>
+                <div class="input-group-lg col-md-8"> <!-- enhances input by adding help test -->
+                    <input type="text" class="form-control input-lg" value="{{dfirst}}" name="dfirst" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div>
+            </div>
+            <div class="spacer">
+            <div class="row">
+                <div class="col-md-4 dtext">
+                <h5>Last Name:</h5>
+                </div>
+                <div class="input-group-lg col-md-8">
+                    <input type="text" class="form-control input-lg" value="{{dlast}}" name="dlast" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div>
+            </div>
+            <div class="spacer">
+            <div class="row">
+                <div class="col-md-4 dtext">
+                    <h5>Street Address:</h5>
+                </div>
+                <div class="input-group-lg col-md-8">
+                    <input type="text" class="form-control input-lg" value="{{daddress}}" name="daddress" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div> 
+            </div>
+            <div class="spacer"></div>
+            <div class="row">
+                <div class="col-md-4 dtext">
+                <h5>Postcode:</h5>
+                </div>
+                <div class="input-group-lg col-md-3">
+                    <input type="number" class="form-control input-lg" value="{{dpostcode}}" name="dpostcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div>
+            </div>
+            </br>
+            <div class="spacer"></div>
+
+<!-- start of credit card-->
+            <h4>Credit Card Details</h4>
+            <p class="lead font-weight-normal"> We accept the following cards: </p>
+            <div>
+            <img class="icon" src="../static/images/bank_icons/mastercard.jpg" alt="Mastercard">
+            <img class="icon" src="../static/images/bank_icons/visa.jpg" alt="Visa">
+            <img class="icon" src="../static/images/bank_icons/amex.jpg" alt="American Express">
+            </div>
+            <div class="spacer"></div>
+             <div class="input-group-lg"> <!-- enhances input by adding help test -->
+                <input type="text" class="form-control input-lg" value="{{credit_name}}" placeholder="Cardholder's Full Name" name="cname" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+            </div>
+            <div class="spacer"></div>
+            <div class="row">
+                <div class="input-group-lg col-md-9">
+                    <input type="number"
+                    class="form-control input-lg"
+                    value="{{creditno}}"
+                    placeholder="Credit Card No. (xxxx xxxx xxxx xxxx)"
+                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                    maxlength = "16"
+                    name="creditno"
+                    data-toggle="tooltip" data-trigger="manual" data-placement="right"
+                    title="">
+                </div>
+                <div class="input-group-lg col-md-3">
+                    <input type="number"
+                    class="form-control input-lg"
+                    value="{{cvc}}"
+                    placeholder="CVC"
+                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                    maxlength = "3"
+                    name="cvc"
+                    data-toggle="tooltip" data-trigger="manual" data-placement="right"
+                    title="">
+                </div>
+            </div>
+            <div class="spacer"></div>
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="dtext">Expiration Date:</h5>
+                </div>
+                <div class="input-group-lg col-md-4">
+                    <input type="number"
+                    class="form-control input-lg"
+                    value="{{month}}"
+                    placeholder="Month (MM)"
+                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                    maxlength = "2"
+                    min = "1"
+                    max = "12"
+                    name="month"
+                    value= "1"
+                    data-toggle="tooltip" data-trigger="manual" data-placement="right"
+                    title="">
+                </div>
+                <div class="input-group-lg col-md-4">
+                    <input type="number"
+                    class="form-control input-lg"
+                    value="{{year}}"
+                    placeholder="Year (YYYY)"
+                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                    maxlength = "4"
+                    min = "2019"
+                    max = "2030"
+                    name="year"
+                    value="2019"
+                    data-toggle="tooltip" data-trigger="manual" data-placement="right"
+                    title="">
+                </div>
+            </div>
+            <br/>
+
+<!--start of billing details-->
+
+            <div class="spacer"></div>
+            <h4>Billing Details</h4>
+            <p class="lead font-weight-normal"> Please enter additional Billing Details</p>
+            <div class="spacer"></div>
+            <div class="row">
+                <div class="input-group-lg col-md-6"> <!-- enhances input by adding help test -->
+                    <input type="text" class="form-control input-lg" value="{{bfirst}}" placeholder="Biller's First Name" name="bfirst" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div>
+                <div class="input-group-lg col-md-6">
+                    <input type="text" class="form-control input-lg" value="{{blast}}" placeholder="Biller's Last Name" name="blast" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div>
+            </div>
+            <div class="spacer"></div>
+            <div class="row">
+                <div class="input-group-lg col-md-8">
+                    <input type="text" class="form-control input-lg" value="{{baddress}}" placeholder="Street Address" name="baddress" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                </div> 
+                <div class="input-group-lg col-md-4">
+                    <input type="number" 
+                    class="form-control input-lg"  
+                    value="{{bpostcode}}"
+                    placeholder="Postcode" 
+                    name="bpostcode" 
+                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                    maxlength = "4"
+                    data-toggle="tooltip" data-trigger="manual" data-placement="right" 
+                    title="">
+                </div>
+            </div>
+            <br/>
+            <div class="spacer"></div>
+            <button id="submit-btn" type="submit"  class="btn btn-secondary btn-lg">Confirm</button>
+            <br/><br/>
+            <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
+        </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+</body>
+{{ util.scripts() }}
+<script src="static/js/payconf.js"></script>
+</html>

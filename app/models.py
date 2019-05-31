@@ -203,8 +203,9 @@ class Payment(db.Model):
     blast = db.Column(db.String(20), nullable=False)
     baddress = db.Column(db.String(50), nullable=False)
     bpostcode = db.Column(db.String(4), nullable=False)
+    
     def __repr__(self):
-        return f'Payment: {self.bill_first_name}, {self.bill_last_name}'
+        return f'Payment: {self.bfirst}, {self.blast}'
 
 class PaymentMethod(db.Model):
     __tablename__ = 'paymentmethod'
