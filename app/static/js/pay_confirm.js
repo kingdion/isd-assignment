@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('#payment-form').submit(function(event) {
+    $('#payconf-form').submit(function(event) {
         event.preventDefault();
         $.ajax({
             type: "POST",

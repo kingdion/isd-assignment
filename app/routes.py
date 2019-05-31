@@ -89,7 +89,7 @@ def payment_confirmation():
     return jsonify({"success": True, "message": "Your payment details are confirmed!"})
 
 
-@auth.route("/delete-payment", methods=["POST", "DELETE"])
+@routes.route("/delete-payment", methods=["POST", "DELETE"])
 @protected_view
 def delete_payment():
     # Remove payment and move user back to payment detail input
