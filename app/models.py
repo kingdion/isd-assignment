@@ -208,7 +208,7 @@ class Payment(db.Model):
 
 
     def __repr__(self):
-        return f'Payment: {self.bfirst}, {self.blast}'
+        return f'Payment: {self.dfirst}, {self.dlast}, {self.daddress}, {self.bfirst}, {self.blast}'
 
 class PaymentMethod(db.Model):
     __tablename__ = 'paymentmethod'
