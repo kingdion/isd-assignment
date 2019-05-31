@@ -7,6 +7,7 @@ $('#add-copy-form').submit(function(event) {
     var form = $('#add-copy-form');
     $.post(form.attr('action'), form.serialize(), function(data) {
         if (data.success) {
+            console.log("yeet");
             alert('Copy successfully added!');
             $('#add-copy-form')[0].reset();
             update_table(data.copies, data.isStaff);
@@ -70,13 +71,13 @@ function bind_buttons() {
     $('.add-to-order-btn').click(function(event) {
         //@Amara, fill in code here
         //It should make a post request (using $.post()) to '/do-add-to-order'
-          var orders = JSON.parse(localStorage.getItem(“orders”)) ?? [];
+          var orders = JSON.parse(localStorage.getItem('orders')) || [];
           if (orders.indexOf($(this).attr('name')) == -1) {
             orders.push($(this).attr('name'));
-            localStorage.setItem(“orders”, JSON.stringify(orders))
+            localStorage.setItem('orders', JSON.stringify(orders))
         }
         else {
-          alert("This movie has already been added to your order.");
+          alert('This movie has already been added to your order.');
         }
 
     });
