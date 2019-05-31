@@ -7,22 +7,23 @@ $(document).ready(function(){
 
             $.post($(this).attr('action'), $(this).serialize(), registration_callback);
         }
-  });
+    });
 
-  $('[name=email]').focusout(validate_email);
-  $('[name=password]').focusout(function () {
+    $('[name=username]').focusout(validate_username);
+    $('[name=email]').focusout(validate_email);
+    $('[name=password]').focusout(function () {
       validate_password();
       validate_repeat_password();
-  });
-  $('[name=repeat-password]').focusout(function () {
+    });
+    $('[name=repeat-password]').focusout(function () {
       validate_repeat_password();
       validate_password();
-  });
-  $('[name=first-name]').focusout(validate_fname);
-  $('[name=last-name]').focusout(validate_lname);
-  $('[name=street-address]').focusout(validate_street);
-  $('[name=postcode]').focusout(validate_postcode);
-  $('[name=phone-number]').focusout(validate_phone);
+    });
+    $('[name=first-name]').focusout(validate_fname);
+    $('[name=last-name]').focusout(validate_lname);
+    $('[name=street-address]').focusout(validate_street);
+    $('[name=postcode]').focusout(validate_postcode);
+    $('[name=phone-number]').focusout(validate_phone);
 });
 
 function registration_callback(data) {
@@ -30,6 +31,9 @@ function registration_callback(data) {
         if (data.reason == 'email exists') {
             set_warning($('[name=email]'), 'A user with this email already exists.');
             $('#submit-btn').attr('disabled', false);
+        }
+        else if (data.reason == 'failed validation') {
+            alert("Error, data you have entered has failed server side validation. Please refresh the page and enter your details again.");
         }
         else {
             alert("Error, failed to create account: " + data.reason);
@@ -42,7 +46,8 @@ function registration_callback(data) {
 
 function validate_form() {
     return !(
-             !validate_email()
+              !validate_username()
+              | !validate_email()
               | !validate_password()
               | !validate_repeat_password()
               | !validate_fname()
@@ -51,6 +56,18 @@ function validate_form() {
               | !validate_postcode()
               | !validate_phone()
             );
+}
+
+function validate_username() {
+    var username =  $('[name=username]');
+    if (username.val().length == 0) {
+        set_warning(username, 'Required field.');
+        return false;
+    }
+    else {
+        clear_warning(username);
+        return true;
+    }
 }
 
 function validate_email() {
