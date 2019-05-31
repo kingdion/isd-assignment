@@ -36,7 +36,7 @@ $(document).ready(function()
     });
 
     // The delete account button handler - removes
-    // the account and redirects.
+    // the payment and redirects.
     $('#delete-btn').click(() => {
         $.ajax({
           type: "DELETE",

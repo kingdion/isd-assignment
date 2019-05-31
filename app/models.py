@@ -89,8 +89,7 @@ class Account(db.Model):
 
     logs = db.relationship('UserAccessLog')
 
-    def __init__(self, id, first_name, last_name, email, username, password, street_address, postcode, phone_number, is_staff, is_active, join_date):
-        self.id = account_id
+    def __init__(self, first_name, last_name, email, username, password, street_address, postcode, phone_number, is_staff, is_active, join_date):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
@@ -203,6 +202,8 @@ class Payment(db.Model):
     blast = db.Column(db.String(20), nullable=False)
     baddress = db.Column(db.String(50), nullable=False)
     bpostcode = db.Column(db.String(4), nullable=False)
+    join_date = db.Column(db.DateTime(), nullable=False)
+
     
     def __repr__(self):
         return f'Payment: {self.bfirst}, {self.blast}'

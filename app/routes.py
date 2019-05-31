@@ -2,6 +2,7 @@ import jwt
 import uuid
 import math
 import os
+import datetime
 from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request, jsonify, current_app, session, g
 from functools import partial
@@ -10,7 +11,7 @@ from .models import *
 from sqlalchemy import extract
 from operator import itemgetter
 from werkzeug.utils import secure_filename
-from datetime import date
+
 
 
 routes = Blueprint("routes", __name__)
@@ -40,6 +41,10 @@ def logs():
 def payment():
     return render_template("payment.html")
 
+@routes.route("/payment_confirm")
+def confirm():
+    return render_template("payment_confirm.html")
+
 @routes.route("/do-payment", methods=["POST"])
 def do_payment():
     keys = ["dfirst", "dlast", "daddress", "dpostcode", "cname", "creditno", "cvc", "month", "year", "bfirst", "blast", "baddress", "bpostcode"]
@@ -57,11 +62,51 @@ def do_payment():
         blast=request.form["blast"],\
         baddress=request.form["baddress"],\
         bpostcode=request.form["bpostcode"],\
+        join_date=datetime.datetime.utcnow()\
     )
     db.session.add(payment)
     db.session.commit()
 
     return jsonify({'success': True})
+
+@routes.route("/payment-confirmation", methods=["POST", "PUT"])
+@protected_view
+def payment_confirmation():
+    try:
+        keys = ["dfirst", "dlast", "daddress", "dpostcode", "cname", "creditno", "cvc", "month", "year", "bfirst", "blast", "baddress", "bpostcode"]
+        confirm_dfirst=request.form["dfirst"],
+        confirm_dlast=request.form["dlast"],
+        confirm_daddress=request.form["daddress"],
+        confirm_dpostcode=request.form["dpostcode"],
+        confirm_credit_name=request.form["cname"],
+        confirm_creditno=request.form["creditno"],
+        confirm_cvc=request.form["cvc"],
+        confirm_month=request.form["month"],
+        confirm_year=request.form["year"],
+        confirm_bfirst=request.form["bfirst"],
+        confirm_blast=request.form["blast"],
+        confirm_baddress=request.form["baddress"],
+        confirm_bpostcode=request.form["bpostcode"],
+
+        db.session.commit()
+    except:
+        return jsonify({"success": False, "message": "Something went wrong in confirmation."})
+
+    return jsonify({"success": True, "message": "Your payment details are confirmed!"})
+
+
+@routes.route("/delete-payment", methods=["POST", "DELETE"])
+@protected_view
+def delete_payment():
+    # Remove payment and move user back to payment detail input
+    # return a success response.
+
+    db.session.delete(g.logged_in_user)
+    session.pop('token', None)
+    db.session.commit()
+
+    return jsonify({"success": True, "message": "Your Payment details have been successfully deleted"})
+
 
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():
