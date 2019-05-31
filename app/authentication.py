@@ -175,6 +175,30 @@ def update_registration_details():
 
     return jsonify({"success": True, "message": "Your details have been successfully changed!"})
 
+@auth.route("/modify-registration-details", methods=["POST", "PUT"])
+@protected_view
+def modify_registration_details():
+    try:
+        # Try access the selected user and update it
+        # according to the staff's changes. Verify no data is empty.
+        keys = ["first_name", "last_name", "postcode", "phone_number", "street_address"]
+        account = Account.query.filter_by(id=request.form["account_id"]).one()
+        empty_validation = validate_not_empty(request, keys)
+        if (empty_validation != None):
+            return empty_validation
+
+        account.first_name = request.form["first_name"]
+        account.last_name = request.form["last_name"]
+        account.postcode = request.form["postcode"]
+        account.phone_number = request.form["phone_number"]
+        account.street_address = request.form["street_address"]
+
+        db.session.commit()
+    except:
+        return jsonify({"success": False, "message": "Something went wrong trying to save your changes."})
+
+    return jsonify({"success": True, "message": "Your details have been successfully changed!"})
+
 def validate_not_empty(request, keys):
     for key in keys:
         if not request.form[key]:

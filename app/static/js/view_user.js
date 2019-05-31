@@ -4,7 +4,7 @@ $(document).ready(function()
     // to delete a log, send a DELETE request
     // to the server to remove the row.
     // The ID of the log is injected into the
-    // html of the log row so we can pull it
+    // html of the user row so we can pull it
     // out here and use it as an argument.
 
     $('.delete-account').click(function(event)
@@ -25,16 +25,16 @@ $(document).ready(function()
     $("#modify-user-btn").click(function()
     {
         event.preventDefault();
-        window.location.href = "/modify_user" + $(this).parent().parent().attr('id');;
+        window.location.href = "/modify_user/" + $(this).parent().parent().attr('id');
     });
 
     $("#user-filter-button").click(function(event)
     {
-        // Get the datepicker value
+        // Gets the value for the inputted data
         var dataToFilterBy = $("#user-filter").val();
 
-        // For each log's timestamp, check if the date of the row
-        // is equal to our filter date. Fade out the row if
+        // For each account , check if the name of the input
+        // is equal to a user's name. Fade out the row if
         // it is not equal to the filter.
         $('.account > .user > .name').each(function(i, obj)
         {
