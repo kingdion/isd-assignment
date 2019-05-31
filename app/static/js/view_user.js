@@ -22,15 +22,16 @@ $(document).ready(function()
           });
     });
 
-    $("#modify-user").click(function(event)
+    $("#modify-user-btn").click(function()
     {
-        window.location.href = "/modify_user"
+        event.preventDefault();
+        window.location.href = "/modify_user" + $(this).parent().parent().attr('id');;
     });
 
-    $("#date-time-picker-button").click(function(event)
+    $("#user-filter-button").click(function(event)
     {
         // Get the datepicker value
-        var dateToFilterBy = $("#date-time-picker").val();
+        var dataToFilterBy = $("#user-filter").val();
 
         // For each log's timestamp, check if the date of the row
         // is equal to our filter date. Fade out the row if
@@ -39,7 +40,7 @@ $(document).ready(function()
         {
             var rowParent = $(this).parent().parent();
 
-            if ($(this).text().includes(dateToFilterBy))
+            if ($(this).text().includes(dataToFilterBy))
             {
                 rowParent.fadeIn();
             }
