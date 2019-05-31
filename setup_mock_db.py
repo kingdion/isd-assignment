@@ -151,3 +151,27 @@ if (answer == "Y"):
                 db.session.add(shipment_details)
 
             db.session.commit()
+
+
+            for payment in range(1, 21):
+                payment = Payment(
+                    dfirst=f"Deliveree-{payment}",
+                    dlast=f"Last-{payment}",
+                    daddress = f"Random address {payment}",
+                    dpostcode = "2020",
+                    credit_name= f"Cardee-{payment}",
+                    creditno = random.randint(100000000000000,999999999999999),
+                    cvc = random.randint(100,999),
+                    month = random.randint(1, 12),
+                    year = random.randint(2019,2030),
+                    bfirst= f"Biller-{payment}",
+                    blast = f"Last-{payment}",
+                    baddress = f"Random address {payment}",
+                    bpostcode = random.randint(1000,9999),
+                    join_date = datetime.datetime.utcnow()
+                )
+                print(f"Created Payment {payment}")
+                db.session.add(payment)
+
+            db.session.commit()
+

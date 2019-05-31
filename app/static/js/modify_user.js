@@ -24,7 +24,7 @@ $(document).ready(function()
             {
                 if (data.success)
                 {
-                    window.location.href = "/modify_user"
+                    window.location.href = "/modify_user/"
                 }
                 else
                 {
