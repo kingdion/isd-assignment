@@ -217,6 +217,11 @@ def modify_registration_details():
     return jsonify({"success": True, "message": "Your details have been successfully changed!"})
 
 def validate_not_empty(request, keys):
+    # Given a request object and a set of 
+    # keys which you are trying to retrieve,
+    # this will either pass as None (a succesful validate)
+    # or will throw a json error.
+    
     for key in keys:
         if not request.form[key]:
             return jsonify({"success": False, "message": f"{key.replace('_', ' ').capitalize()} cannot be empty."})
@@ -225,7 +230,8 @@ def validate_not_empty(request, keys):
 @protected_view
 def delete_account():
     # Remove and logout the user from the session,
-    # return a success response.
+    # return a success response. Also delete
+    # the user access logs which are connected to it.
 
     logs = UserAccessLog.query.filter_by(accountId=g.logged_in_user.id).all()
 
