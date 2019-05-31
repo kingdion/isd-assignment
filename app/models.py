@@ -112,17 +112,18 @@ class Orders(db.Model):
     accountId = db.Column(UUID(as_uuid=True), db.ForeignKey('account.id'), nullable=False)
     tracking_status = db.Column(db.String(50), nullable=False)
     methodId = db.Column(UUID(as_uuid=True), default=uuid4)
-
+    date_ordered = db.Column(db.Date(), nullable=False) 
 
     movies = db.relationship('MovieCopy', secondary = 'movieorderline', back_populates="orders")
 
-    def __init__(self, accountId, trackingStatus, methodId):
+    def __init__(self, accountId, trackingStatus, methodId, date_ordered):
         self.accountId = accountId
         self.tracking_status = trackingStatus
         self.methodId = methodId
+        self.date_ordered = date_ordered
 
     def __repr__(self):
-        return f'Order: {self.id} {self.accountId} {self.tracking_status}'
+        return f'Order: {self.id} {self.accountId} {self.tracking_status} {self.date_ordered}'
 
 class UserAccessLog(db.Model):
     __tablename__ = 'useraccesslog'
