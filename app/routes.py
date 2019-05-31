@@ -72,10 +72,6 @@ def do_payment():
 
 @routes.route("/do-update-payment", methods=["POST"])
 def do_update_payment():
-        if (request.form["copy-id"] == ""\
-        or request.form["copy-price"] == ""\
-        or request.form["copy-description"] == ""):
-            return jsonify({ "success": False, "reason": "incomplete form" })
 
         payment = Payment.query.filter_by(id=request.form["payment-id"]).one()
 
