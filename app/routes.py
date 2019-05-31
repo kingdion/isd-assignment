@@ -72,9 +72,7 @@ def do_payment():
 
 @routes.route("/do-update-payment", methods=["POST"])
 def do_update_payment():
-
-        payment = Payment.query.filter_by(id=request.form["payment-id"]).one()
-
+        payment= Payment.query().filter_by(id=request.form["payment-id"])
         payment.dfirst = request.form["dfirst"],\
         payment.dlast = request.form["dlast"],\
         payment.daddress = request.form["daddress"],\
