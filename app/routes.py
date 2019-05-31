@@ -2,7 +2,7 @@ import jwt
 import uuid
 import math
 import os
-import datetime
+from datetime import date
 from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request, jsonify, current_app, session, g
 from functools import partial
@@ -11,6 +11,8 @@ from .models import *
 from sqlalchemy import extract
 from operator import itemgetter
 from werkzeug.utils import secure_filename
+from sqlalchemy.exc import IntegrityError
+
 
 
 
@@ -96,7 +98,7 @@ def do_update_payment():
 def delete_payment():
     try:
         payment = Payment.query.filter_by(id=request.form["id"]).one()
-       
+
         db.session.delete(payment)
         db.session.commit()
         return jsonify({ "success": True, "id": request.form["id"] })
@@ -410,11 +412,17 @@ def create_shipment_details():
             date=date.fromisoformat(request.form["date"]),
             shipment_method=request.form["shipment_method"],
             address=request.form["address"],
-            order_id=uuid.UUID(request.form["order_id"]) if request.form["order_id"] else None
+            order_id=uuid.UUID(request.form["order_id"])
+            if request.form["order_id"] else None
         )
-        db.session.add(shipment_details)
-        db.session.commit()
-        return redirect(url_for("routes.view_shipment_details", id=shipment_details.id))
+        try:
+            db.session.add(shipment_details)
+            db.session.commit()
+            return redirect(url_for("routes.view_shipment_details", id=shipment_details.id))
+        except IntegrityError:
+            db.session.rollback()
+            return render_template("create_shipment_details.html", not_found_id=request.form["order_id"])
+
     return render_template("create_shipment_details.html")
 
 @routes.route("/shipmentdetails/<id>", methods=["GET"])
@@ -456,7 +464,7 @@ def delete_shipment_details(id):
 def list_shipment_details():
     order_id = request.args.get("order_id", None)
     if order_id:
-        shipment_details = db.session.query(ShipmentDetails).filter(ShipmentDetails.order_id == uuid.UUID(order_id)).one_or_none()
+        shipment_details = db.session.query(ShipmentDetails).filter((ShipmentDetails.order_id == uuid.UUID(order_id)) | (ShipmentDetails.id == uuid.UUID(order_id))).one_or_none()
         if shipment_details:
             return redirect(url_for("routes.view_shipment_details", id=shipment_details.id))
         else:

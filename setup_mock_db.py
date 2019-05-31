@@ -3,9 +3,9 @@ import random
 from app import create_app
 from app.models import *
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import uuid
 print("----")
-print("This will drop all existing rows and replace them with test rows.") 
+print("This will drop all existing rows and replace them with test rows.")
 print("----")
 print("Are you sure you want to do this? (Y / N)")
 answer = input("> ")
@@ -20,8 +20,8 @@ if (answer == "Y"):
             # Test Users
             for current_id in range(1, 21):
                 acc = Account(
-                    f"Test-{current_id}", 
-                    f"User-{current_id}", 
+                    f"Test-{current_id}",
+                    f"User-{current_id}",
                     f"testuser{current_id}@gmail.com",
                     f"TestUser{current_id}",
                     generate_password_hash(f"TestUser{current_id}", method='sha256'),
@@ -40,8 +40,8 @@ if (answer == "Y"):
                 for log in range(1, 21):
                     randomDate = datetime.datetime.now() - datetime.timedelta(days=random.randint(1, 9))
                     randomLogoutTime = randomDate + datetime.timedelta(minutes=10)
-                    loginLog = UserAccessLog(acc.id, randomDate, "Login") 
-                    logoutLog = UserAccessLog(acc.id, randomLogoutTime, "Logout") 
+                    loginLog = UserAccessLog(acc.id, randomDate, "Login")
+                    logoutLog = UserAccessLog(acc.id, randomLogoutTime, "Logout")
                     db.session.add(loginLog)
                     db.session.add(logoutLog)
 
@@ -49,8 +49,8 @@ if (answer == "Y"):
             # Test Staff
             for current_id in range(1, 21):
                 staff = Account(
-                    f"StaffTest-{current_id}", 
-                    f"User-{current_id}", 
+                    f"StaffTest-{current_id}",
+                    f"User-{current_id}",
                     f"stafftestuser{current_id}@gmail.com",
                     f"StaffTestUser{current_id}",
                     generate_password_hash(f"StaffTestUser{current_id}", method='sha256'),
@@ -69,8 +69,8 @@ if (answer == "Y"):
                 for log in range(1, 21):
                     randomDate = datetime.datetime.now() - datetime.timedelta(days=random.randint(1, 9))
                     randomLogoutTime = randomDate + datetime.timedelta(minutes=10)
-                    loginLog = UserAccessLog(acc.id, randomDate, "Login") 
-                    logoutLog = UserAccessLog(acc.id, randomLogoutTime, "Logout") 
+                    loginLog = UserAccessLog(acc.id, randomDate, "Login")
+                    logoutLog = UserAccessLog(acc.id, randomLogoutTime, "Logout")
                     db.session.add(loginLog)
                     db.session.add(logoutLog)
 
@@ -79,18 +79,18 @@ if (answer == "Y"):
             print("20 staff created")
 
             maturity_ratings = [
-                MaturityRating("G"), 
+                MaturityRating("G"),
                 MaturityRating("PG"),
-                MaturityRating("M"), 
-                MaturityRating("MA"), 
+                MaturityRating("M"),
+                MaturityRating("MA"),
                 MaturityRating("R")
             ]
 
             genres = [
-                Genre("Fantasy"), 
+                Genre("Fantasy"),
                 Genre("Comedy"),
-                Genre("Horror"), 
-                Genre("Romance"), 
+                Genre("Horror"),
+                Genre("Romance"),
                 Genre("Thriller"),
                 Genre("Anime"),
                 Genre("Family"),
@@ -103,7 +103,7 @@ if (answer == "Y"):
 
             for rating in maturity_ratings:
                 db.session.add(rating)
-                
+
             for genre in genres:
                 db.session.add(genre)
 
@@ -122,5 +122,32 @@ if (answer == "Y"):
                 movie.release_year = randomDate.year
 
                 movie.genres.append(genres[0])
+
+            db.session.commit()
+
+            accounts = db.session.query(Account).all()
+            for order_id in range(1, 100):
+                order = Orders(
+                    random.choice(accounts).id,  # random account id
+                    "tracking status whatever this is",
+                    uuid.uuid4()
+                )
+                print(f"Created order {order}")
+                db.session.add(order)
+
+            db.session.commit()
+
+            orders = db.session.query(Orders).all()
+
+            for i, order in enumerate(orders):
+                random_date = datetime.datetime.now() - datetime.timedelta(days=random.randint(1, 9)) - datetime.timedelta(days=random.randint(1, 9)*365)
+                shipment_details = ShipmentDetails(
+                    date=random_date,
+                    shipment_method=random.choice(("Standard", "Express")),
+                    address=f"Random address {i}",
+                    order_id=order.id
+                )
+                print(f"Created shipment details {shipment_details}")
+                db.session.add(shipment_details)
 
             db.session.commit()
