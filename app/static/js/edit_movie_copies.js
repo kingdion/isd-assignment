@@ -28,7 +28,6 @@ $('#edit-copy-form').submit(function(event) {
                     update_table(data.copies, data.isStaff);
                     bind_buttons();
                     $('#edit-copy-modal').modal('hide');
-                    //console.log($('#copy-id-input').val());
                     $('[name=' + $('#copy-id-input').val() + ']').parent().parent().addClass('highlight');
                     setTimeout(function() {
                         $('[name=' + $('#copy-id-input').val() + ']').parent().parent().removeClass('highlight');

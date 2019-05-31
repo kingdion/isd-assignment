@@ -38,9 +38,6 @@ function catalogue() {
         if (this.currentPage < this.numPages - 1) {
             update_movies_grid(++this.currentPage);
         }
-        else {
-            console.log(this.currentPage, this.numPages)
-        }
     }
 
     this.set_page = function(page) {
