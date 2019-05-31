@@ -1,5 +1,6 @@
 import datetime
 import random
+import os
 from app import create_app
 from app.models import *
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -16,6 +17,8 @@ if (answer == "Y"):
     with app.app_context():
             db.drop_all()
             db.create_all()
+
+            thumbnails = os.listdir("./app/static/images/thumbnails")
 
             # Test Users
             for current_id in range(1, 21):
@@ -114,7 +117,7 @@ if (answer == "Y"):
                 movie = Movie(
                     f"Movie {movie_id}",
                     randomDate,
-                    "static/images/thumbnails/sharknado.png",
+                    f"static/images/thumbnails/{random.choice(thumbnails)}",
                     random.randint(1,59),
                     random.choice(maturity_ratings).id
                 )
