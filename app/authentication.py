@@ -200,23 +200,19 @@ def delete_account():
 @auth.route("/delete-user", methods=["POST", "DELETE"])
 def delete_user():
     #Removes selected user from staff viewport
+    # return a success response
+    logs = UserAccessLog.query.filter_by(accountId=request.form["account_id"]).all()
+    account = Account.query.filter_by(id=request.form["account_id"]).one()
+    db.session.commit()
 
-    accounts = Account.query.filter_by(accountId=request.form.get["account_id"]).first()
+    for log in logs:
+        db.session.delete(log)
 
-    for account in accounts:
-        db.session.delete(account)
-        db.session.commit()
+    db.session.delete(account)
+    db.session.commit()
+
 
     return jsonify({"success": True, "message": "Your account has been successfully deleted"})
-    # try:
-    #     account = Account.query.filter_by(accountId=request.form["account_id"]).first()
-    #     db.session.delete(account)
-    #     db.session.commit()
-    # except:
-    #     return jsonify({'success': False, 'message' : 'Something went wrong trying to remove this account.'})
-    #
-    #     return jsonify({'success': True, 'message' : 'The account has been removed.'})
-
 
 '''
 

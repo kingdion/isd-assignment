@@ -18,7 +18,7 @@ $(document).ready(function()
             url: "/delete-user",
             data: {account_id : ids},
             success: (data) => { $(this).parent().parent().fadeOut('slow') },
-            error: (error) => { $("#error-message").text(JSON.parse(error.responseText).message) },
+            fail: (error) => { $("#error-message").text(JSON.parse(error.responseText).message) },
           });
     });
 
