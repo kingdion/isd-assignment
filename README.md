@@ -6,6 +6,13 @@
 * Tyrone Huang 
 * Nicholas Zay
 * Chris Tran
+
+You can find our other parts of the assignment in the zip included in the submission box
+or you can alternatively follow these shared links.
+
+[Report](https://docs.google.com/document/d/1stKRYfcldUJbcscIWUGqexGCFly67G2kJysFcEUx9pk/edit?usp=sharing)
+[Timesheets](https://docs.google.com/spreadsheets/d/1kw3AkNkFAfnID5XA76GkzNrNQaR2gVs9HoFz92C4C0k/edit?usp=sharing)
+
 ---
 
 # Installation 
