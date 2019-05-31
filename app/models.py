@@ -113,6 +113,7 @@ class Orders(db.Model):
     tracking_status = db.Column(db.String(50), nullable=False)
     methodId = db.Column(UUID(as_uuid=True), default=uuid4)
 
+
     movies = db.relationship('MovieCopy', secondary = 'movieorderline', back_populates="orders")
 
     def __init__(self, accountId, trackingStatus, methodId):
@@ -152,6 +153,7 @@ class MovieOrderLine(db.Model):
 
     copyId = db.Column(UUID(as_uuid=True), db.ForeignKey('moviecopy.id'), primary_key=True, default=uuid4)
     orderId = db.Column(UUID(as_uuid=True), db.ForeignKey('orders.id'), primary_key=True, default=uuid4)
+
 
     def __repr__(self):
         return f'Movie LinkedTo OrderLine: {self.copyId} <-------> {self.orderId}'
@@ -204,7 +206,7 @@ class Payment(db.Model):
     bpostcode = db.Column(db.String(4), nullable=False)
     join_date = db.Column(db.DateTime(), nullable=False)
 
-    
+
     def __repr__(self):
         return f'Payment: {self.bfirst}, {self.blast}'
 
