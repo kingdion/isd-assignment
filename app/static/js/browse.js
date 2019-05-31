@@ -86,10 +86,10 @@ function update_movies_grid_callback(data) {
             }
         });
 
-        $('.add-to-order-btn').click(function(event) {
-            event.preventDefault();
-            window.location.href = "/add-to-order" + $(this).parent().parent().attr('id');
-        });
+        // $('.view-copies-btn').click(function(event) {
+        //     event.preventDefault();
+        //     window.location.href = "/add-to-order" + $(this).parent().parent().attr('id');
+        // });
     }
     else {
         alert('An unexpected error has occurred while trying to refresh the movie catalogue: ' + data.message)
