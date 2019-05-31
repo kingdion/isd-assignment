@@ -7,7 +7,9 @@ $.post('/do-add-to-order'. {'copiesIDs[]': JSON.parse(localStorage.getItem('orde
   else {
     alert('Failed to update orders. Reason:' + data.reason);
   }
-}))
+
+
+}));
   });
 
 
