@@ -89,8 +89,7 @@ class Account(db.Model):
 
     logs = db.relationship('UserAccessLog')
 
-    def __init__(self, id, first_name, last_name, email, username, password, street_address, postcode, phone_number, is_staff, is_active, join_date):
-        self.id = account_id
+    def __init__(self, first_name, last_name, email, username, password, street_address, postcode, phone_number, is_staff, is_active, join_date):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email

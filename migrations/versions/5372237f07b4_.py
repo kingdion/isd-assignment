@@ -26,7 +26,7 @@ def upgrade():
     sa.Column('daddress', sa.String(length=100), nullable=False),
     sa.Column('dpostcode', sa.String(length=4), nullable=False),
     sa.Column('credit_name', sa.String(length=20), nullable=False),
-    sa.Column('credit_no', sa.String(length=16), nullable=False),
+    sa.Column('creditno', sa.String(length=16), nullable=False),
     sa.Column('cvc', sa.String(length=3), nullable=False),
     sa.Column('month', sa.String(length=2), nullable=False),
     sa.Column('year', sa.String(length=4), nullable=False),
