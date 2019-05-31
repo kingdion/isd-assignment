@@ -81,7 +81,6 @@ def do_register():
     username = request.form["username"]
     password = request.form["password"]
 
-    # TODO: Add server-side validation (since clients can just alter the javascript to bypass client-side validation)
     if request.form["username"] == ""\
     or request.form["email"] == ""\
     or request.form["password"] == ""\
@@ -163,11 +162,30 @@ def update_registration_details():
         if (empty_validation != None):
             return empty_validation
 
-        g.logged_in_user.first_name = request.form["first_name"]
-        g.logged_in_user.last_name = request.form["last_name"]
-        g.logged_in_user.postcode = request.form["postcode"]
-        g.logged_in_user.phone_number = request.form["phone_number"]
-        g.logged_in_user.street_address = request.form["street_address"]
+        first_name = request.form["first_name"]
+        last_name = request.form["last_name"]
+        postcode = request.form["postcode"]
+        phone_number = request.form["phone_number"]
+        street_address = request.form["street_address"]
+
+        if (len(first_name) > 24):
+            return jsonify({"success": False, "message": "First Name was too long."})
+        elif (len(last_name) > 24):
+            return jsonify({"success": False, "message": "Last Name was too long."})
+        elif (len(email) > 256):
+            return jsonify({"success": False, "message": "Email was too long."})
+        elif (len(username) > 24):
+            return jsonify({"success": False, "message": "Username was too long."})
+        elif (len(password) > 255):
+            return jsonify({"success": False, "message": "Password was too long."})
+        elif (len(phone_number) > 10):
+            return jsonify({"success": False, "message": "Phone Number was too long."})
+
+        g.logged_in_user.first_name = first_name
+        g.logged_in_user.last_name = last_name
+        g.logged_in_user.postcode = postcode
+        g.logged_in_user.phone_number = phone_number 
+        g.logged_in_user.street_address = street_address 
 
         db.session.commit()
     except:
