@@ -36,7 +36,7 @@ $(document).ready(function()
         // For each log's timestamp, check if the date of the row
         // is equal to our filter date. Fade out the row if
         // it is not equal to the filter.
-        $('.log > .timestamp > .inner-date').each(function(i, obj)
+        $('.account > .user > .name').each(function(i, obj)
         {
             var rowParent = $(this).parent().parent();
 
