@@ -11,10 +11,10 @@
 
         <div class="container">
             <h4 id="error-message" class="error-message"></h4>
-
-            <h1> {{ g.logged_in_user.username }} </h1>
-            <h4 class="greyed"> {{ g.logged_in_user.first_name }} {{ g.logged_in_user.last_name }} </h4>
-            <p class="greyed">Joined OMSS on: {{ g.logged_in_user.join_date }}</p>
+            {% for account in accounts %}
+            <h1> {{ account.username }} </h1>
+            <h4 class="greyed"> {{ account.first_name }} {{ account.last_name }} </h4>
+            <p class="greyed">Joined OMSS on: {{ account.join_date }}</p>
 
             <hr/>
 
@@ -23,30 +23,30 @@
             <form id="registration-update-form" action="{{ url_for('auth.update_registration_details') }}" method=post>
                 <div class="input-group-lg">
                     <label>First Name</label>
-                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.first_name}}" name="first-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="text" class="form-control input-lg" value="{{account.first_name}}" name="first-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
                 <div class="spacer"></div>
                 <div class="input-group-lg">
                     <label>Last Name</label>
-                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.last_name}}" name="last-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="text" class="form-control input-lg" value="{{account.last_name}}" name="last-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
                 <br/>
 
                 <div class="input-group-lg">
                     <label>Street Address</label>
-                    <input type="text" class="form-control input-lg" value="{{g.logged_in_user.street_address}}" name="street-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="text" class="form-control input-lg" value="{{account.street_address}}" name="street-address" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
                 <div class="spacer"></div>
                 <div class="input-group-lg">
                     <label>Postcode</label>
-                    <input type="number" class="form-control input-lg" value="{{g.logged_in_user.postcode}}" name="postcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="number" class="form-control input-lg" value="{{account.postcode}}" name="postcode" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
                 <div class="spacer"></div>
                 <div class="input-group-lg">
                     <label>Phone Number</label>
-                    <input type="number" class="form-control input-lg" value="{{g.logged_in_user.phone_number}}" name="phone-number" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
+                    <input type="number" class="form-control input-lg" value="{{account.phone_number}}" name="phone-number" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
-
+                {% endfor %}
                 <br/>
 
                 <button id="submit-btn" type="submit" class="btn btn-success btn-lg">Save Changes</button>
