@@ -105,6 +105,10 @@ def delete_payment():
     except Exception as e:
         return jsonify({ "success": False, "reason": str(e) })
 
+@routes.route("/use-payment")
+def add_movie():
+    return render_template("create_shipment_details", payments=db.session.query(Payment).all())
+    
 
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():

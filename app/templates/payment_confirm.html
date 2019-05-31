@@ -88,25 +88,26 @@
                                     <input id="payment-id-input" type="text" class="form-control" name="payment-id" readonly>
                                 </div>
                     <div class="form-group">
-                        <input id="dfirst-input" type="text" class="form-control" name="dfirst" value="{{ payments.dfirst }}">
+                        <input id="dfirst-input" type="text" class="form-control" placeholder="Delivery Address First Name" name="dfirst" value="{{ payments.dfirst }}">
                     </div>
                      <div class="form-group">
-                        <input id="dlast-input" type="text" class="form-control" name="dlast"value="{{ payments.dlast }}">
+                        <input id="dlast-input" type="text" class="form-control" placeholder="Delivery Address Last Name" name="dlast"value="{{ payments.dlast }}">
                     </div>
                     <div class="form-group">
-                        <input id="daddress-input" type="text" class="form-control" name="daddress"value="{{ payments.daddress }}">
+                        <input id="daddress-input" type="text" class="form-control" placeholder="Delivery Address" name="daddress"value="{{ payments.daddress }}">
                     </div>
                     <div class="form-group">
-                        <input id="dpostcode-input" type="number" class="form-control" name="dpostcode"value="{{ payments.dpostcode }}">
+                        <input id="dpostcode-input" type="number" class="form-control" placeholder="Delivery Address Postcode" name="dpostcode"value="{{ payments.dpostcode }}">
                     </div>
 
                     <h5>Credit Card Details</h5>
                     <div class="form-group">
-                        <input id="creditname-input" type="text" class="form-control" name="creditname"value="{{ payments.credit_name }}">
+                        <input id="creditname-input" placeholder="Credit Cardholder Name" type="text" class="form-control" name="creditname"value="{{ payments.credit_name }}">
                     </div>
                     <div class="row">
                     <div class="form-group col-md-9">
                         <input id="creditno-input" 
+                        placeholder="Credit Card Number"
                         oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                         maxlength = "16"
                         type="number" 
@@ -119,6 +120,7 @@
                         oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                         maxlength = "3" 
                         type="number" 
+                        placeholder="CVC" 
                         class="form-control" 
                         name="cvc"
                         value="{{ payments.cvc }}">
@@ -130,6 +132,7 @@
                         id="month-input" 
                         type="number" 
                         class="form-control" 
+                        placeholder="Month" 
                         oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                         maxlength = "2"
                         min = "1"
@@ -141,6 +144,7 @@
                         <input 
                         id="year-input" 
                         type="number" 
+                        placeholder="Year" 
                         oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                         maxlength = "4"
                         min = "2019"
@@ -153,17 +157,18 @@
 
                     <h5>Billing Address</h5>
                     <div class="form-group">
-                        <input id="bfirst-input" type="text" class="form-control" name="bfirst"value="{{ payments.bfirst }}">
+                        <input id="bfirst-input" placeholder="Biller First Name" type="text" class="form-control" name="bfirst"value="{{ payments.bfirst }}">
                     </div>
                     <div class="form-group">
-                        <input id="blast-input" type="text" class="form-control" name="b-ast"value="{{ payments.blast }}">
+                        <input id="blast-input" placeholder="Biller Last Name" type="text" class="form-control" name="blast"value="{{ payments.blast }}">
                     </div>
                     <div class="form-group">
-                        <input id="baddress-input" type="text" class="form-control" name="baddress"value="{{ payments.baddress }}">
+                        <input id="baddress-input" placeholder="Biller Address" type="text" class="form-control" name="baddress"value="{{ payments.baddress }}">
                     </div>
                     <div class="form-group">
                         <input 
                         id="bpostcode-input" 
+                        placeholder="Biller Postcode"
                         type="text" 
                         oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                         maxlength = "4"
