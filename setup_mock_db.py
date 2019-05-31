@@ -130,7 +130,8 @@ if (answer == "Y"):
                 order = Orders(
                     random.choice(accounts).id,  # random account id
                     "tracking status whatever this is",
-                    uuid.uuid4()
+                    uuid.uuid4(),
+                    datetime.date.today()
                 )
                 print(f"Created order {order}")
                 db.session.add(order)
