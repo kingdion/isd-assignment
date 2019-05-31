@@ -82,7 +82,7 @@ function update_movies_grid_callback(data) {
         $('.delete-movie-btn').click(function(event) {
             event.preventDefault();
             if (confirm('Are you sure you wish to delete this movie? This cannot be undone.')) {
-                $.post('/delete-movie', { id: $(this).parent().parent().attr('id') }, update_movies_grid);
+                $.post('/do-delete-movie', { id: $(this).parent().parent().attr('id') }, update_movies_grid);
             }
         });
 
