@@ -142,11 +142,8 @@ def do_get_movies_grid_html():
         scoredMovies.sort(key=itemgetter(1), reverse=True)
 
     result = '<div class="movie-grid">'
-    isStaff = False;
-    token = session.get("token")
-    if token != None:
-        token_payload = jwt.decode(token, current_app.config['SECRET_KEY'])
-        isStaff = Account.query.filter_by(id = token_payload['id']).first().is_staff
+
+    isStaff = g.logged_in_user.is_staff if g.logged_in_user else False
 
     if (isStaff):
         result += '<div class="movie-cell">\
@@ -305,13 +302,12 @@ def do_edit_movie():
         return jsonify({ "success": False, "reason": str(e) })
 
 @routes.route("/edit-movie-copies/<movieID>")
-# @protected_view_staff
 def edit_movie_copies(movieID):
-    # try:
+    try:
         movie = Movie.query.filter_by(id=movieID).one()
         return render_template("edit_movie_copies.html", movie=movie)
-    # except:
-        # return 'Something went wrong trying to edit copies of this movie.', 400
+    except:
+        return 'Something went wrong trying to edit copies of this movie.', 400
 
 @routes.route("/do-get-movie-copies/<movieID>", methods=["GET"])
 def do_get_movie_copies(movieID):

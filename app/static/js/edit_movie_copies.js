@@ -28,7 +28,6 @@ $('#edit-copy-form').submit(function(event) {
                     update_table(data.copies, data.isStaff);
                     bind_buttons();
                     $('#edit-copy-modal').modal('hide');
-                    //console.log($('#copy-id-input').val());
                     $('[name=' + $('#copy-id-input').val() + ']').parent().parent().addClass('highlight');
                     setTimeout(function() {
                         $('[name=' + $('#copy-id-input').val() + ']').parent().parent().removeClass('highlight');
@@ -57,7 +56,6 @@ function bind_buttons() {
         if (confirm('Are you sure you wish to delete this movie copy? This action is irreversible.')) {
             $.post('/do-delete-movie-copy', { id: $(this).attr('name') }, function(data) {
                 if (data.success) {
-                    console.log($('[name=' + data.id + ']').parent().parent());
                     $('[name=' + data.id + ']').parent().parent().fadeOut('slow', function() {$(this).remove(); });
                 }
                 else {
@@ -70,13 +68,13 @@ function bind_buttons() {
     $('.add-to-order-btn').click(function(event) {
         //@Amara, fill in code here
         //It should make a post request (using $.post()) to '/do-add-to-order'
-          var orders = JSON.parse(localStorage.getItem(“orders”)) ?? [];
+          var orders = JSON.parse(localStorage.getItem('orders')) || [];
           if (orders.indexOf($(this).attr('name')) == -1) {
             orders.push($(this).attr('name'));
-            localStorage.setItem(“orders”, JSON.stringify(orders))
+            localStorage.setItem('orders', JSON.stringify(orders))
         }
         else {
-          alert("This movie has already been added to your order.");
+          alert('This movie has already been added to your order.');
         }
 
     });
