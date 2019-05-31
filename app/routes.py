@@ -70,43 +70,23 @@ def do_payment():
 
     return jsonify({'success': True})
 
-@routes.route("/payment-confirmation", methods=["POST", "PUT"])
-@protected_view
-def payment_confirmation():
+@routes.route("/do-update-payment/<movieID>", methods=["POST"])
+@protected_view_staff
+def do_add_movie_copy(movieID):
     try:
-        keys = ["dfirst", "dlast", "daddress", "dpostcode", "cname", "creditno", "cvc", "month", "year", "bfirst", "blast", "baddress", "bpostcode"]
-        confirm_dfirst=request.form["dfirst"],
-        confirm_dlast=request.form["dlast"],
-        confirm_daddress=request.form["daddress"],
-        confirm_dpostcode=request.form["dpostcode"],
-        confirm_credit_name=request.form["cname"],
-        confirm_creditno=request.form["creditno"],
-        confirm_cvc=request.form["cvc"],
-        confirm_month=request.form["month"],
-        confirm_year=request.form["year"],
-        confirm_bfirst=request.form["bfirst"],
-        confirm_blast=request.form["blast"],
-        confirm_baddress=request.form["baddress"],
-        confirm_bpostcode=request.form["bpostcode"],
-
+        copy = MovieCopy(movieID, request.form["copy-description"], request.form["copy-price"])
+        db.session.add(copy)
         db.session.commit()
-    except:
-        return jsonify({"success": False, "message": "Something went wrong in confirmation."})
 
-    return jsonify({"success": True, "message": "Your payment details are confirmed!"})
+        newCopies = []
+        movie = Movie.query.filter_by(id=movieID).one()
+        for copy in movie.copies:
+            newCopies.append(copy.to_dict())
 
+        return jsonify({ "success": True, "copies": newCopies, "isStaff": g.logged_in_user.is_staff if g.logged_in_user else False })
+    except Exception as e:
+        return jsonify({ "success": False, "reason": str(e) })
 
-@routes.route("/delete-payment", methods=["POST", "DELETE"])
-@protected_view
-def delete_payment():
-    # Remove payment and move user back to payment detail input
-    # return a success response.
-
-    db.session.delete(g.logged_in_user)
-    session.pop('token', None)
-    db.session.commit()
-
-    return jsonify({"success": True, "message": "Your Payment details have been successfully deleted"})
 
 
 @routes.route("/do-get-genres", methods=["GET"])

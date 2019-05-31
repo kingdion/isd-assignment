@@ -17,35 +17,131 @@
 <p class="lead font-weight-normal"> Please review your Payment History</p>
 </div>
 <div class="col-md-3"></div>
+</div>      
+
+<div class="table-responsive">
+    <table id="payment-table" class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Time Created</th>
+                <th>Card Holder Name</th>
+                <th>Credit Number</th>
+                <th>Use this Payment</th>
+                <th>Modify Payment</th>
+                <th>Delete Payment</th>
+            </tr>
+        </thead>
+        <tbody id="movie-copies-table-body">
+            {% for payment in payments %}
+            <tr class="copy">
+                <td>{{ payment.id }}</td>
+                <td>{{ payment.join_date }}</td>
+                <td>{{ payment.credit_name }}</td>
+                <td>{{ payment.creditno }}</td>
+                <td><button name="{{ payment.id }}" 
+                    class="btn btn-primary btn-sm copy-btn use-btn" 
+                    data-toggle="tooltip" 
+                    data-placement="top" 
+                    title="Use Payment Details">
+                    <i class="far fa-edit"></i>
+                    </button>
+                </td>
+                <td><button name="{{ payment.id }}" 
+                    class="btn btn-primary btn-sm copy-btn edit-btn" 
+                    data-toggle="tooltip" 
+                    data-placement="top" 
+                    title="Update Payment Details">
+                    <i class="far fa-edit"></i>
+                    </button>
+                </td>
+                <td>
+                <button name="{{ payment.id }}" 
+                class="btn btn-danger btn-sm copy-btn delete-btn" 
+                data-toggle="tooltip" 
+                data-placement="top" 
+                title="Delete Payment Detail">
+                <i class="far fa-trash-alt"></i>
+                </button>
+                </td>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-      <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
 
-        <div class="table-responsive">
-                <table id="payment-table" class="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Time Created</th>
-                            <th>Card Holder Name</th>
-                            <th>Credit Number</th>
-                        </tr>
-                    </thead>
-                    <tbody id="movie-copies-table-body">
-                        {% for payment in payments %}
-                        <tr class="copy">
-                            <td>{{ payment.id }}</td>
-                            <td>{{ payment.join_date }}</td>
-                            <td>{{ payment.credit_name }}</td>
-                            <td>{{ payment.creditno }}</td>
-                            <td>
-                             
-                        {% endfor %}
-                    </tbody>
-                </table>
+<!--beginning of modal (popup stuff)-->
+{% if g.logged_in_user %}
+
+<div class="modal fade" id="update-payment-modal" tabindex="-1" role="dialog" aria-labelledby="update-payment" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="update-payment">Update Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <div class="modal-body">
+                <form id="update-payment-form" action="{{ url_for('routes.do_update_payment') }}" method=POST>
+                    <h5>Delivery Address</h5>
+                    <div class="form-group">
+                        <input id="dfirst-input" type="text" class="form-control" name="d-first" value="{{ payment.dfirst }}">
+                    </div>
+                     <div class="form-group">
+                        <input id="dlast-input" type="text" class="form-control" name="d-last"value="{{ payment.dlast }}">
+                    </div>
+                    <div class="form-group">
+                        <input id="daddress-input" type="text" class="form-control" name="d-address"value="{{ paymentd.daddress }}">
+                    </div>
+                    <div class="form-group">
+                        <input id="dpostcode-input" type="text" class="form-control" name="d-postcode"value="{{ payment.dpostcode }}">
+                    </div>
 
+                    <h5>Credit Card Details</h5>
+                    <div class="form-group">
+                        <input id="creditname-input" type="text" class="form-control" name="credit-name"value="{{ payment.credit_name }}">
+                    </div>
+                    <div class="row">
+                    <div class="form-group col-md-9">
+                        <input id="creditno-input" type="text" class="form-control" name="credit-no"value="{{ payment.creditno }}">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input id="cvc-input" type="text" class="form-control" name="cvc"value="{{ payment.cvc }}">
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group col-md-4">
+                        <input id="month-input" type="text" class="form-control" name="month"value="{{ payment.month }}">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input id="year-input" type="text" class="form-control" name="year"value="{{ payment.year }}">
+                    </div>
+                    </div>
+
+                    <h5>Billing Address</h5>
+                    <div class="form-group">
+                        <input id="bfirst-input" type="text" class="form-control" name="b-first"value="{{ payment.bfirst }}">
+                    </div>
+                    <div class="form-group">
+                        <input id="blast-input" type="text" class="form-control" name="b-last"value="{{ payment.blast }}">
+                    </div>
+                    <div class="form-group">
+                        <input id="baddress-input" type="text" class="form-control" name="b-address"value="{{ payment.baddress }}">
+                    </div>
+                    <div class="form-group">
+                        <input id="bpostcode-input" type="text" class="form-control" name="b-postcode"value="{{ payment.bpostcode }}">
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button id="submit-update-payment-form" type="submit" form="update-payment-form" class="btn btn-primary">Update Payment</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
                    
         <form id="payconf-form" action="{{ url_for('routes.payment_confirmation') }}" method=POST>
         </br>
@@ -56,18 +152,17 @@
             <br/>
         </form>
 
-        <br/>
-        <p class="error-message"><b>WARNING: Delete details and return to previous page</b></p>
-        <button id="delete-btn" type="submit" class="btn btn-danger btn-lg">Delete Payment Details</button>
+
+        
         <br/>
         <br/>
         <small class="d-block mb-3 text-muted">© 2019 - OMSS</small>
 
         </div>
-        <div class="col-md-1"></div>
     </div>
 </div>
 </body>
+
 {{ util.scripts() }}
 <script src="static/js/pay_confirm.js"></script>
 </html>
