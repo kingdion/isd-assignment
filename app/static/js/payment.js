@@ -9,15 +9,11 @@ $(document).ready(function(){
             { 
                 if (data.success) 
                 { 
-                    window.location.href = "/browse" 
-                    var myObj = { firsname : "John", lastname : "Doe" };
-                    console.log(myObj);
+                    window.location.href = "/payment_confirm" 
                 } 
                 else 
                 { 
-                    window.location.href = "/login"
-                    var myObj = { firsname : "No", lastname : "work" };
-                    console.log(myObj);
+                    window.alert("Error");
                 }
             },
           });

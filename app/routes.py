@@ -41,6 +41,10 @@ def logs():
 def payment():
     return render_template("payment.html")
 
+@routes.route("/payment_confirm")
+def confirm():
+    return render_template("payment_confirm.html")
+
 @routes.route("/do-payment", methods=["POST"])
 def do_payment():
     keys = ["dfirst", "dlast", "daddress", "dpostcode", "cname", "creditno", "cvc", "month", "year", "bfirst", "blast", "baddress", "bpostcode"]
