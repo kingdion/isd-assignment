@@ -20,7 +20,7 @@
 
             <h5>Registration Details</h5>
 
-            <form id="registration-update-form" action="{{ url_for('auth.update_registration_details') }}" method=post>
+            <form id="modify-update-form" action="{{ url_for('auth.modify_registration_details') }}" method=post>
                 <div class="input-group-lg">
                     <label>First Name</label>
                     <input type="text" class="form-control input-lg" value="{{account.first_name}}" name="first-name" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">

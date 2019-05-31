@@ -5,7 +5,7 @@ $(document).ready(function()
     // we are merely updating records. Send in
     // all of the inputs to change, redirect
     // on sucess or show error.
-    $('#registration-update-form').submit(function(event)
+    $('#modify-update-form').submit(function(event)
     {
         event.preventDefault();
 
@@ -25,7 +25,7 @@ $(document).ready(function()
                 if (data.success)
                 {
                     window.location.href = "/modify_user"
-                } 
+                }
                 else
                 {
                     $(".error-message").text(data.message);

@@ -75,13 +75,7 @@ def do_payment():
 
 @routes.route("/do-update-payment", methods=["POST"])
 def do_update_payment():
-        if (request.form["copy-id"] == ""\
-        or request.form["copy-price"] == ""\
-        or request.form["copy-description"] == ""):
-            return jsonify({ "success": False, "reason": "incomplete form" })
-
-        payment = Payment.query.filter_by(id=request.form["payment-id"]).one()
-
+        payment= Payment.query().filter_by(id=request.form["payment-id"])
         payment.dfirst = request.form["dfirst"],\
         payment.dlast = request.form["dlast"],\
         payment.daddress = request.form["daddress"],\
@@ -112,6 +106,10 @@ def delete_payment():
     except Exception as e:
         return jsonify({ "success": False, "reason": str(e) })
 
+@routes.route("/use-payment")
+def use_payment():
+    return render_template("create_shipment_details", payments=db.session.query(Payment).all())
+    
 
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():
@@ -494,10 +492,11 @@ def create_user():
 def view_user():
     return render_template("view_user.html", accounts=db.session.query(Account).all())
 
-@routes.route("/modify_user")
+@routes.route("/modify_user/<username>")
 @protected_view_staff
-def modify_user():
-    return render_template("modify_user.html")
+def modify_user(username):
+    account = Account.query.filter_by(id=request.form["account_id"]).one()
+    return render_template("modify_user.html", account = account)
 
 @routes.route("/order")
 def view_order():

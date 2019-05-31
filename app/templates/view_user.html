@@ -20,7 +20,7 @@
             <div class="input-group mb-3">
                 <input class="form-control" type="text" id="user-filter"/>
                 <div class="input-group-append">
-                    <button id="user-filter-button" class="btn btn-success" type="button">Find Logs</button>
+                    <button id="user-filter-button" class="btn btn-success" type="button">Find User</button>
                 </div>
             </div>
 
@@ -43,7 +43,7 @@
                             <td class ="user"><span class="name">{{account.first_name}} {{account.last_name}}</span></td>
                             <td>{{account.email}}</td>
                             <td>{{account.phone_number}}</td>
-                            <td><button id="{{account.id}}" class ="modify-user btn-info btn-sm">Modify User</button></td>
+                            <td><button id="{{account.id}}" class ="modify-user-btn btn-info btn-sm">Modify User</button></td>
                             <td><button id="{{account.id}}" class="delete-account btn btn-danger btn-sm">Delete User</button></td>
                         </tr>
                         {% endfor %}
