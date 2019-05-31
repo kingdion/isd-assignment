@@ -70,23 +70,44 @@ def do_payment():
 
     return jsonify({'success': True})
 
-@routes.route("/do-update-payment/<movieID>", methods=["POST"])
-@protected_view_staff
-def do_add_movie_copy(movieID):
-    try:
-        copy = MovieCopy(movieID, request.form["copy-description"], request.form["copy-price"])
-        db.session.add(copy)
+@routes.route("/do-update-payment", methods=["POST"])
+def do_update_payment():
+        if (request.form["copy-id"] == ""\
+        or request.form["copy-price"] == ""\
+        or request.form["copy-description"] == ""):
+            return jsonify({ "success": False, "reason": "incomplete form" })
+
+        payment = Payment.query.filter_by(id=request.form["payment-id"]).one()
+
+        payment.dfirst = request.form["dfirst"],\
+        payment.dlast = request.form["dlast"],\
+        payment.daddress = request.form["daddress"],\
+        payment.dpostcode = request.form["dpostcode"],\
+        payment.credit_name = request.form["cname"],\
+        payment.creditno = request.form["creditno"],\
+        payment.cvc = request.form["cvc"],\
+        payment.month = request.form["month"],\
+        payment.year = request.form["year"],\
+        payment.bfirst = request.form["bfirst"],\
+        payment.blast = request.form["blast"],\
+        payment.baddress = request.form["baddress"],\
+        payment.bpostcode = request.form["bpostcode"],\
+
         db.session.commit()
 
-        newCopies = []
-        movie = Movie.query.filter_by(id=movieID).one()
-        for copy in movie.copies:
-            newCopies.append(copy.to_dict())
+        return jsonify({ "success": True })
 
-        return jsonify({ "success": True, "copies": newCopies, "isStaff": g.logged_in_user.is_staff if g.logged_in_user else False })
+@routes.route("/do-delete-payment", methods=["POST"])
+@protected_view_staff
+def delete_payment():
+    try:
+        payment = Payment.query.filter_by(id=request.form["id"]).one()
+       
+        db.session.delete(payment)
+        db.session.commit()
+        return jsonify({ "success": True, "id": request.form["id"] })
     except Exception as e:
         return jsonify({ "success": False, "reason": str(e) })
-
 
 
 @routes.route("/do-get-genres", methods=["GET"])

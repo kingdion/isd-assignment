@@ -85,25 +85,28 @@
                 <form id="update-payment-form" action="{{ url_for('routes.do_update_payment') }}" method=POST>
                     <h5>Delivery Address</h5>
                     <div class="form-group">
-                        <input id="dfirst-input" type="text" class="form-control" name="d-first" value="{{ payment.dfirst }}">
+                                    <input id="payment-id-input" type="text" class="form-control" name="payment-id" readonly>
+                                </div>
+                    <div class="form-group">
+                        <input id="dfirst-input" type="text" class="form-control" name="dfirst" value="{{ payment.dfirst }}">
                     </div>
                      <div class="form-group">
-                        <input id="dlast-input" type="text" class="form-control" name="d-last"value="{{ payment.dlast }}">
+                        <input id="dlast-input" type="text" class="form-control" name="dlast"value="{{ payment.dlast }}">
                     </div>
                     <div class="form-group">
-                        <input id="daddress-input" type="text" class="form-control" name="d-address"value="{{ paymentd.daddress }}">
+                        <input id="daddress-input" type="text" class="form-control" name="daddress"value="{{ paymentd.daddress }}">
                     </div>
                     <div class="form-group">
-                        <input id="dpostcode-input" type="text" class="form-control" name="d-postcode"value="{{ payment.dpostcode }}">
+                        <input id="dpostcode-input" type="text" class="form-control" name="dpostcode"value="{{ payment.dpostcode }}">
                     </div>
 
                     <h5>Credit Card Details</h5>
                     <div class="form-group">
-                        <input id="creditname-input" type="text" class="form-control" name="credit-name"value="{{ payment.credit_name }}">
+                        <input id="creditname-input" type="text" class="form-control" name="creditname"value="{{ payment.credit_name }}">
                     </div>
                     <div class="row">
                     <div class="form-group col-md-9">
-                        <input id="creditno-input" type="text" class="form-control" name="credit-no"value="{{ payment.creditno }}">
+                        <input id="creditno-input" type="text" class="form-control" name="creditno"value="{{ payment.creditno }}">
                     </div>
                     <div class="form-group col-md-3">
                         <input id="cvc-input" type="text" class="form-control" name="cvc"value="{{ payment.cvc }}">
@@ -120,16 +123,16 @@
 
                     <h5>Billing Address</h5>
                     <div class="form-group">
-                        <input id="bfirst-input" type="text" class="form-control" name="b-first"value="{{ payment.bfirst }}">
+                        <input id="bfirst-input" type="text" class="form-control" name="bfirst"value="{{ payment.bfirst }}">
                     </div>
                     <div class="form-group">
-                        <input id="blast-input" type="text" class="form-control" name="b-last"value="{{ payment.blast }}">
+                        <input id="blast-input" type="text" class="form-control" name="b-ast"value="{{ payment.blast }}">
                     </div>
                     <div class="form-group">
-                        <input id="baddress-input" type="text" class="form-control" name="b-address"value="{{ payment.baddress }}">
+                        <input id="baddress-input" type="text" class="form-control" name="baddress"value="{{ payment.baddress }}">
                     </div>
                     <div class="form-group">
-                        <input id="bpostcode-input" type="text" class="form-control" name="b-postcode"value="{{ payment.bpostcode }}">
+                        <input id="bpostcode-input" type="text" class="form-control" name="bpostcode"value="{{ payment.bpostcode }}">
                     </div>
                     
                 </form>
