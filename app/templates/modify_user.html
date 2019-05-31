@@ -11,7 +11,7 @@
 
         <div class="container">
             <h4 id="error-message" class="error-message"></h4>
-            {% for account in accounts %}
+
             <h1> {{ account.username }} </h1>
             <h4 class="greyed"> {{ account.first_name }} {{ account.last_name }} </h4>
             <p class="greyed">Joined OMSS on: {{ account.join_date }}</p>
@@ -46,7 +46,7 @@
                     <label>Phone Number</label>
                     <input type="number" class="form-control input-lg" value="{{account.phone_number}}" name="phone-number" data-toggle="tooltip" data-trigger="manual" data-placement="right" title="">
                 </div>
-                {% endfor %}
+                
                 <br/>
 
                 <button id="submit-btn" type="submit" class="btn btn-success btn-lg">Save Changes</button>
