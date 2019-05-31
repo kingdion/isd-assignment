@@ -109,7 +109,7 @@ def delete_payment():
 @routes.route("/use-payment")
 def use_payment():
     return render_template("create_shipment_details", payments=db.session.query(Payment).all())
-    
+
 
 @routes.route("/do-get-genres", methods=["GET"])
 def do_get_genres():
@@ -492,10 +492,10 @@ def create_user():
 def view_user():
     return render_template("view_user.html", accounts=db.session.query(Account).all())
 
-@routes.route("/modify_user/<username>")
+@routes.route("/modify_user/<accountID>")
 @protected_view_staff
-def modify_user(username):
-    account = Account.query.filter_by(id=request.form["account_id"]).one()
+def modify_user(accountID):
+    account = Account.query.filter_by(id=accountID)
     return render_template("modify_user.html", account = account)
 
 @routes.route("/order")

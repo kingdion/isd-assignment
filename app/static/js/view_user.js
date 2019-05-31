@@ -22,13 +22,13 @@ $(document).ready(function()
           });
     });
 
-    $("#modify-user-btn").click(function()
+    $(".modify-user-btn").click(function()
     {
         event.preventDefault();
         window.location.href = "/modify_user/" + $(this).parent().parent().attr('id');
     });
 
-    $("#user-filter-button").click(function(event)
+    $("#user-filter-btn").click(function(event)
     {
         // Gets the value for the inputted data
         var dataToFilterBy = $("#user-filter").val();

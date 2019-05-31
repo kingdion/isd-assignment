@@ -182,7 +182,6 @@ def modify_registration_details():
         # Try access the selected user and update it
         # according to the staff's changes. Verify no data is empty.
         keys = ["first_name", "last_name", "postcode", "phone_number", "street_address"]
-        account = Account.query.filter_by(id=request.form["account_id"]).one()
         empty_validation = validate_not_empty(request, keys)
         if (empty_validation != None):
             return empty_validation
