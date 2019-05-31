@@ -9,7 +9,6 @@ $('#add-copy-form').submit(function(event) {
         if (data.success) {
             alert('Copy successfully added!');
             $('#add-copy-form')[0].reset();
-
             update_table(data.copies, data.isStaff);
             bind_buttons();
         }
@@ -26,10 +25,10 @@ $('#edit-copy-form').submit(function(event) {
         if (data.success) {
             $.get('/do-get-movie-copies/' + $('#new-btn').attr('name'), function(data) {
                 if (data.success) {
-                    update_table(data.copies, data.iStaff);
+                    update_table(data.copies, data.isStaff);
                     bind_buttons();
                     $('#edit-copy-modal').modal('hide');
-
+                    //console.log($('#copy-id-input').val());
                     $('[name=' + $('#copy-id-input').val() + ']').parent().parent().addClass('highlight');
                     setTimeout(function() {
                         $('[name=' + $('#copy-id-input').val() + ']').parent().parent().removeClass('highlight');
@@ -47,12 +46,10 @@ $('#edit-copy-form').submit(function(event) {
 });
 
 function bind_buttons() {
-    console.log('prick');
     $('.edit-btn').click(function(event) {
-        //set copy id input to id
         $('#copy-id-input').val($(this).attr('name'));
         $('#copy-price-input').val($(this).parent().parent().children('td')[2].textContent.slice(1))
-        $('#copy-description-input').text($(this).parent().parent().children('td')[1].textContent);
+        $('#copy-description-input').val($(this).parent().parent().children('td')[1].textContent);
         $('#edit-copy-modal').modal('show');
     });
 
@@ -73,6 +70,15 @@ function bind_buttons() {
     $('.add-to-order-btn').click(function(event) {
         //@Amara, fill in code here
         //It should make a post request (using $.post()) to '/do-add-to-order'
+          var orders = JSON.parse(localStorage.getItem(“orders”)) ?? [];
+          if (orders.indexOf($(this).attr('name')) == -1) {
+            orders.push($(this).attr('name'));
+            localStorage.setItem(“orders”, JSON.stringify(orders))
+        }
+        else {
+          alert("This movie has already been added to your order.");
+        }
+
     });
 
     $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
