@@ -17,7 +17,8 @@
             <form method="POST" action="{{ url_for('routes.create_shipment_details') }}">
                 <div class="form-group">
                     <label for="order_id_input">Order ID</label>
-                    <input id="order_id_input" name="order_id" class="form-control" placeholder="Order ID (eg. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)" />
+                    <input id="order_id_input" name="order_id" class="form-control" required pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+placeholder="Order ID (eg. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)" />
                 </div>
                 <div class="form-group">
                     <label for="date_input">Date</label>
@@ -36,6 +37,10 @@
                 <button type="submit" class="btn btn-primary">Create</button>
             </form>
         </div>
+        {% if not_found_id is defined %}
+        <div class="alert alert-warning">An error occurred when processing your request! Most likely your ID is wrong or you an order with this ID already exists. Provided ID: {{not_found_id}}</div>
+        {% endif %}
+    </div>
     </body>
 
     {{ util.scripts() }}

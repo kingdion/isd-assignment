@@ -240,5 +240,11 @@ class ShipmentDetails(db.Model):
         assert shipment_method in ("Express","Standard")
         return shipment_method
 
+    @validates("order_id")
+    def validate_order_id(self, key, order_id):
+        if self.order_id:
+            assert order_id == self.order_id
+        return order_id
+
     def __repr__(self):
         return f'ShipmentDetails: {self.date}, {self.address}, {self.shipment_method}'
