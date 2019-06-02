@@ -69,16 +69,15 @@ function bind_buttons() {
     $('.add-to-order-btn').click(function(event) {
         //@Amara, fill in code here
         //It should make a post request (using $.post()) to '/do-add-to-order'
-          var orders = JSON.parse(localStorage.getItem(“orders”)) || [];
-          if (orders.indexOf($(this).attr('name')) == -1) {
+        var orders = JSON.parse(localStorage.getItem('orders')) || [];
+        if (orders.indexOf($(this).attr('name')) == -1) {
             orders.push($(this).attr('name'));
-            localStorage.setItem(“orders”, JSON.stringify(orders));
+            localStorage.setItem('orders', JSON.stringify(orders));
             alert("This movie has been added to your order.");
         }
         else {
           alert("This movie has already been added to your order.");
         }
-
     });
 
     $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
