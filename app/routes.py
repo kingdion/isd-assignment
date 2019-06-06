@@ -393,8 +393,7 @@ def delete_movie():
 def do_add_to_order():
     try:
         movie = Movie.query.filter_by(id=request.form["id"]).one()
-        #@Amara, this is going to create an order EVERY TIME you add to order, you need to change this so it looks for an existing order first
-
+      
 
         order = Orders(\
             accountId = g.logged_in_user.id,\
